@@ -1,5 +1,8 @@
 package com.javaclasses.chatroom.servlets;
 
+import com.javaclasses.chatroom.RegistrationService;
+import com.javaclasses.chatroom.entities.User;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +13,8 @@ import java.io.PrintWriter;
 
 @WebServlet("/RegistrationServlet")
 public class RegistrationServlet extends HttpServlet {
+    RegistrationService registrationService = new RegistrationService();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String registrationForm = "  <div id=\"registrationForm\">\n" +
@@ -25,7 +30,9 @@ public class RegistrationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
+        User user = new User(login, password);
+        registrationService.registrate(user);
         PrintWriter printWriter = resp.getWriter();
-        printWriter.print(login + " " + password);
+        printWriter.print("Welcome, " + login);
     }
 }
