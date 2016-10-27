@@ -1,6 +1,8 @@
 package com.javaclasses.chatroom.login;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.javaclasses.chatroom.AuthenticationException;
 import com.javaclasses.chatroom.AuthenticationService;
 import com.javaclasses.chatroom.entity.SecurityToken;
@@ -21,7 +23,7 @@ public class LoginServlet extends HttpServlet {
 
     private final static Logger LOG = LoggerFactory.getLogger(LoginServlet.class);
 
-    private AuthenticationService authenticationService = new AuthenticationServiceImpl();
+    private final AuthenticationService authenticationService = new AuthenticationServiceImpl();
 
     private final Gson gson = new Gson();
 
@@ -40,16 +42,14 @@ public class LoginServlet extends HttpServlet {
         }
 
         final PrintWriter writer = resp.getWriter();
-
         final LoginInfo loginInfo = gson.fromJson(req.getParameter("loginInfo"), LoginInfo.class);
 
         try {
             SecurityToken token = authenticationService.login(loginInfo.getLogin(), loginInfo.getPassword());
-            writer.print(token);
+            writer.print(token.getToken());
         } catch (AuthenticationException ex) {
             writer.print(ex.getMessage());
         }
-
     }
 
 }

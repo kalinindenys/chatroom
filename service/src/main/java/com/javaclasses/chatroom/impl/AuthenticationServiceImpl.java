@@ -18,9 +18,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public SecurityToken login(String login, String password) throws AuthenticationException {
-        if (userRepository.findByLoginAndPassword(login, password) == null) {
-            throw new AuthenticationException("Wrong login or password");
-        }
+//        if (userRepository.findByLoginAndPassword(login, password) == null) {
+//            throw new AuthenticationException("Wrong login or password");
+//        }
 
         SecurityToken securityToken = generateSecuritToken();
 
