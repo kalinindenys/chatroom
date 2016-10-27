@@ -1,3 +1,5 @@
 rootProject.name = 'chatroom'
 include 'client'
+include 'persistence'
+include 'service'
 
