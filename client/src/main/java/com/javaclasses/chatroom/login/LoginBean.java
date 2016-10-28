@@ -1,6 +1,6 @@
 package com.javaclasses.chatroom.login;
 
-public class LoginInfo {
+public class LoginBean {
     private String login;
     private String password;
 
@@ -10,5 +10,13 @@ public class LoginInfo {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
