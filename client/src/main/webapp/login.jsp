@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <script src="login.js"></script>
+    <script src="login-script.js"></script>
 
 </head>
 <body>
@@ -24,11 +24,11 @@
     <form:form id="loginForm" action="/login" method="post">
         <div class="form-group">
             <label for="login">Login:</label>
-            <input type="text" class="form-control" required placeholder="Enter login" id="login">
+            <input type="text" class="form-control" required placeholder="Enter login" id="login" name="login">
         </div>
         <div class="form-group">
             <label for="password">Password:</label>
-            <input type="password" class="form-control" required placeholder="Enter password" id="password">
+            <input type="password" class="form-control" required placeholder="Enter password" id="password" name="password">
             </div>
         <button type="submit" class="btn btn-default">Sign in</button>
     </form:form>

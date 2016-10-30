@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login")
                     .defaultSuccessUrl("/chats")
-                    .failureUrl("/loginError")
+//                    .failureUrl("/loginError")
 //                    .loginProcessingUrl("/login")
                     .usernameParameter("login")
                     .passwordParameter("password")
@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .authoritiesByUsernameQuery("select login, role from user_roles where username=?");
 
         auth.inMemoryAuthentication()
-                .withUser("1").password("1");
+                .withUser("1").password("1").roles("USER");
 
     }
 

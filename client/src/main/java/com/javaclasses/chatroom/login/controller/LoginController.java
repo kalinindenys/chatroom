@@ -29,16 +29,16 @@ public class LoginController {
         return model;
     }
 
-    @RequestMapping(value = { "/loginError" }, method = RequestMethod.GET)
-    public ModelAndView loginError() {
-
-        ModelAndView model = new ModelAndView();
-        model.addObject("error", "true");
-        model.addObject("msg", "wrong credentials");
-        model.setViewName("login");
-
-        return model;
-    }
+//    @RequestMapping(value = { "/loginError" }, method = RequestMethod.GET)
+//    public ModelAndView loginError() {
+//
+//        ModelAndView model = new ModelAndView();
+//        model.addObject("error", "true");
+//        model.addObject("msg", "wrong credentials");
+//        model.setViewName("login");
+//
+//        return model;
+//    }
 
     @RequestMapping(value = { "/login" }, method = RequestMethod.POST)
 //    public ModelAndView submitLogin(Model inpModel, @ModelAttribute("loginBean") LoginBean loginbean) {
