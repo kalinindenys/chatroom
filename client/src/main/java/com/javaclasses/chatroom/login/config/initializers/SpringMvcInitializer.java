@@ -1,13 +1,13 @@
 package com.javaclasses.chatroom.login.config.initializers;
 
-import com.javaclasses.chatroom.login.config.AppConfig;
+import com.javaclasses.chatroom.login.config.WebMvcConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { AppConfig.class };
+        return new Class[] { WebMvcConfig.class };
     }
 
     @Override

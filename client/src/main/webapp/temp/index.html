@@ -1,6 +1,4 @@
-<%@ taglib prefix="th" uri="http://www.springframework.org/tags/form" %>
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Chatroom</title>
@@ -8,12 +6,19 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <script src="login-script.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://code.angularjs.org/2.0.0-beta.8/angular2-polyfills.js"></script>
+    <script src="https://code.angularjs.org/tools/system.js"></script>
+    <script src="https://code.angularjs.org/tools/typescript.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-beta.8/Rx.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-beta.8/angular2.dev.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-beta.8/http.dev.js"></script>
+
+    <script src="/js/login.js"></script>
 
 </head>
-<body>
+<body ng-app="chatroom" ng-cloak class="ng-cloak">
 
     <div class="container">
         <div id="header" class="page-header">
@@ -21,8 +26,12 @@
             <p>Welcome to chatroom!</p>
         </div>
 
-        <div id="content">
-            <a href="/login"><button id="signIn" type="submit" class="btn btn-default">Sign in</button></a>
+        <div ng-view class="container">
+
+        </div>
+
+        <div id="content" ng-controller="login">
+            <a href="#login"><button id="signIn" type="submit" class="btn btn-default">Sign in</button></a>
             <button id="signUp" class="btn btn-default">Sign up</button>
         </div>
 
