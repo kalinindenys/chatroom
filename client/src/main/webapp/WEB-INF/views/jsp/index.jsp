@@ -1,5 +1,13 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: denis.kalinin
+  Date: 10/31/2016
+  Time: 6:52 PM
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Chatroom</title>
@@ -11,7 +19,8 @@
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="js/registrationHandle.js"></script>
+    <spring:url value="/resources/js/registrationHandle.js" var="registationHandle"/>
+    <script src="${registationHandle}"></script>
 
 </head>
 <body>
@@ -24,7 +33,7 @@
 
     <div id="content">
         <button id="signIn" class="btn btn-default">Sign in</button>
-        <button id="signUp" onclick="showRegistrationFormByJS()" class="btn btn-default">Sign up</button>
+        <button id="signUpButton" onclick="showRegistrationFormByJS()" class="btn btn-default">Sign up</button>
     </div>
 
     <div id="registrationForm"></div>

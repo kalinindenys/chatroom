@@ -18,8 +18,8 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String registrationForm = "  <div id=\"registrationForm\">\n" +
-                "        <input id=\"logInInput\" type=\"text\">Login\n" +
-                "        <input id=\"passInput\" type=\"password\">\n" +
+                "        Login<input id=\"logInInput\" type=\"text\">\n" +
+                "        Password<input id=\"passInput\" type=\"password\">\n" +
                 "        <button id=\"okSignUpButton\" class=\"btn btn-default\" onclick=\"signUpUser()\">Sign me up!</button>\n" +
                 "    </div>";
         PrintWriter out = resp.getWriter();
