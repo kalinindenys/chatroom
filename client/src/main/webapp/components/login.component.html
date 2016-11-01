@@ -1,11 +1,11 @@
-<form [ngFormModel]="loginFormGroup" (submit)="doLogin($event)" class="form-group">
+<form [ngFormModel]="loginForm" (submit)="doLogin($event)" class="form-group">
     <div class="form-group">
         <label for="login">Login:</label>
-        <input [ngFormControl]="loginFormGroup.controls['login']" type="text" required placeholder="Enter login" class="form-control" id="login">
+        <input ngControl="login" type="text" required placeholder="Enter login" class="form-control" id="login">
     </div>
     <div class="form-group">
         <label for="password">Password:</label>
-        <input [ngFormControl]="loginFormGroup.controls['password']" type="password" required placeholder="Enter password" class="form-control" id="password">
+        <input  type="password" required placeholder="Enter password" class="form-control" id="password">
     </div>
     <button type="submit" class="btn btn-default">Sign in</button>
 </form>

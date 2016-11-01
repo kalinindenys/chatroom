@@ -1,30 +1,30 @@
 import { Component }                from 'angular2/core';
-import { ControlGroup }             from 'angular2/common';
-import { FormBuilder, Validators }  from 'angular2/common';
-import { CORE_DIRECTIVES }          from 'angular2/common';
-import { FORM_DIRECTIVES }          from 'angular2/common';
+import {
+    FORM_DIRECTIVES, FormBuilder, ControlGroup, ControlArray, Validators, NgForm, Control,
+    AbstractControl
+} from 'angular2/common';
 
 import { AuthenticationService }    from 'authentication.service';
 
 @Component({
     selector: 'login-form',
     templateUrl: `components/login.component.html`,
-    directives: [CORE_DIRECTIVES, FORM_DIRECTIVES],
+    directives: [FORM_DIRECTIVES]
     // providers: [AuthenticationService]
 })
 
 export class LoginFormComponent {
 
-    loginFormGroup: ControlGroup;
+    // loginForm: FormGroup;
 
     serverResponse: string;
 
 // , authService: AuthenticationService
 
-    constructor(private formBuilder: FormBuilder) {
-        this.loginFormGroup = formBuilder.group({
-            login: ["", Validators.required],
-            password: ["", Validators.required]
+    constructor(formBuilder: FormBuilder) {
+        this.loginForm = formBuilder.group({
+            login: ['', Validators.required],
+            password: ['', Validators.required]
         });
     }
 
@@ -35,7 +35,9 @@ export class LoginFormComponent {
         //     () => console.log("Job Done Get !")//run this code in all cases
         // );
 
-        console.log(this.loginFormGroup.value);
+        console.log(this.loginForm.value);
+        // console.log(this.loginForm.controls.login.value);
+        // console.log(this.loginForm.cotrols.password.value);
         event.preventDefault();
     }
 
