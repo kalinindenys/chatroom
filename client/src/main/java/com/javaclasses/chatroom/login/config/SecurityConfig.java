@@ -18,12 +18,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http
-                .httpBasic()
-                    .and()
-                .authorizeRequests()
-                    .antMatchers("/index.html", "/login.html").authenticated()
-                    .anyRequest().authenticated();
+        http.csrf().disable();
+//                .authorizeRequests()
+//                    .antMatchers("/index.html", "/").permitAll()
+//                    .anyRequest().authenticated();
+
 //                    .and()
 //                .formLogin()
 //                    .loginPage("/login")
@@ -38,7 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.jdbcAuthentication().dataSource(dataSource)
 //                .usersByUsernameQuery("select login, password, enabled from users where login=?")
-//                .authoritiesByUsernameQuery("select login, role from user_roles where username=?");
+//                .authoritiesByUsernameQuery("select login, role from user_roles where username=?"
+
+
 
         auth.inMemoryAuthentication()
                 .withUser("1").password("1").roles("USER");

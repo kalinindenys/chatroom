@@ -1,3 +1,4 @@
+<div class="container">
 <form [ngFormModel]="loginForm" (submit)="doLogin($event)" class="form-group">
     <div class="form-group">
         <label for="login">Login:</label>
@@ -5,7 +6,8 @@
     </div>
     <div class="form-group">
         <label for="password">Password:</label>
-        <input  type="password" required placeholder="Enter password" class="form-control" id="password">
+        <input ngControl="password" type="password" required placeholder="Enter password" class="form-control" id="password">
     </div>
     <button type="submit" class="btn btn-default">Sign in</button>
 </form>
+</div>
