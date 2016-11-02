@@ -3,13 +3,10 @@ import { RouteConfig, ROUTER_DIRECTIVES } from 'angular2/router';
 
 import { ChatroomComponent } from './chatroom.component';
 import { LoginFormComponent } from './loginform.component'
-import {ConfirmDialogService} from "./confirm-dialog.service";
-import {AuthenticationService} from "./authentication.service";
 
 @Component({
     selector: 'chatroom-router',
     templateUrl: 'pages/chatroom.router.html',
-    providers: [ConfirmDialogService, AuthenticationService],
     directives: [ROUTER_DIRECTIVES]
 })
 
