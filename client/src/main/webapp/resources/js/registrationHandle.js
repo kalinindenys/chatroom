@@ -29,18 +29,20 @@ function signUpUserBySpring() {
         url: '/api/signUp',
         method: 'POST',
         data: data,
-        dataType: "json",
-        success: function (result) {
-            $('#registrationForm').html(null);
-            console.log("Hello here")
-        }
+    }).done(function (result) {
+        var successDiv = '<div class="alert alert-success" role="alert">Welcome, ' + result + '</div>'
+        $('#registrationForm').html(successDiv);
+    }).fail(function (err) {
+        var errorDiv = '<div class="alert alert-danger" role="alert">' + err + '</div>';
+        $('#registrationAlertDiv').html(errorDiv);
     })
 }
 
 function showRegistrationFormByJS() {
     var registerForm = 'Login <input id="logInInput" type="text">' +
         '        Password <input id="passInput" type="password">' +
-        '        <button id="okSignUpButton" class="btn btn-default" onclick="signUpUserBySpring()">Sign me up!</button>';
-    $('#content').html(registerForm);
+        '        <button id="okSignUpButton" class="btn btn-default" onclick="signUpUserBySpring()">Sign me up!</button>' +
+        '        <div id="registrationAlertDiv"></div> ';
+    $('#registrationForm').html(registerForm);
 
 }
