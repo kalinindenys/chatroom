@@ -2,6 +2,8 @@ import {Injectable}                 from '@angular/core';
 import {Http, Response}             from '@angular/http';
 import {Headers, RequestOptions}    from '@angular/http';
 import {Observable}                 from 'rxjs/Observable';
+import 'rxjs/Rx';
+
 
 @Injectable()
 export class AuthenticationService {
@@ -20,7 +22,14 @@ export class AuthenticationService {
         let options = new RequestOptions({ headers: headers, method: "post" });
 
         return this.http.post(loginUrl, body, options)
-            .map(res => res.json())
+            .map((res) => res.json())
+            .map((res) => {
+                console.log(res);
+                // if (res.dataerror) {
+                //     console.log("loggedin");
+                //     this.loggedIn = true;
+                // }
+            })
             .catch(this.handleError);
     }
 

@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
 
@@ -35,7 +36,8 @@ import {AuthenticationService} from "./authentication.service";
     providers: [
         SignedInGuard,
         AuthenticationService,
-        {provide: APP_BASE_HREF, useValue : '/'}
+        {provide: APP_BASE_HREF, useValue : '/'},
+        {provide: LocationStrategy, useClass: HashLocationStrategy}
     ]
 })
 class MainModule {}
