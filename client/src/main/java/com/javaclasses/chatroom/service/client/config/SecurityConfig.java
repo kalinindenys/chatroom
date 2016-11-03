@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.login.config;
+package com.javaclasses.chatroom.service.client.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -19,12 +19,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                .authorizeRequests()
+//                .authorizeRequests()
 //                    .anyRequest().permitAll()
-                    .antMatchers("/", "/home", "/signin", "index.html").permitAll()
+//                    .antMatchers("/", "/home", "/signin", "index.html").permitAll()
 //                    .antMatchers("index.html/secured").authenticated()
 //                    .anyRequest().authenticated()
-                    .and()
+//                    .and()
                 .csrf().disable();
 //                .authorizeRequests()
 //                    .antMatchers("/index.html", "/").permitAll()
@@ -32,9 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 //                    .and()
 //                .formLogin()
-//                    .loginPage("/login")
+//                    .loginPage("/client")
 //                    .defaultSuccessUrl("/chats")
-//                    .usernameParameter("login")
+//                    .usernameParameter("client")
 //                    .passwordParameter("password")
 //                    .permitAll();
 
@@ -43,8 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.jdbcAuthentication().dataSource(dataSource)
-//                .usersByUsernameQuery("select login, password, enabled from users where login=?")
-//                .authoritiesByUsernameQuery("select login, role from user_roles where username=?"
+//                .usersByUsernameQuery("select client, password, enabled from users where client=?")
+//                .authoritiesByUsernameQuery("select client, role from user_roles where username=?"
 
 
 

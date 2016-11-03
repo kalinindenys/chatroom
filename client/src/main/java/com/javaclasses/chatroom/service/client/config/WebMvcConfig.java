@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.login.config;
+package com.javaclasses.chatroom.service.client.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan({ "com.javaclasses.chatroom.login.*" })
+@ComponentScan({"com.javaclasses.chatroom.client.*"})
 @Import({ SecurityConfig.class })
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 

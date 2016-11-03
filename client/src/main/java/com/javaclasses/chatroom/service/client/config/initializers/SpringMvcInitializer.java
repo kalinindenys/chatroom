@@ -1,6 +1,6 @@
-package com.javaclasses.chatroom.login.config.initializers;
+package com.javaclasses.chatroom.service.client.config.initializers;
 
-import com.javaclasses.chatroom.login.config.WebMvcConfig;
+import com.javaclasses.chatroom.service.client.config.WebMvcConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {

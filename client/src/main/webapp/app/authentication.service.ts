@@ -15,7 +15,7 @@ export class AuthenticationService {
     }
 
     public login(login: string, password: string) {
-        let loginUrl = "/login";
+        let loginUrl = "/api/signIn";
 
         let body = JSON.stringify({ "login": login, "password": password });
         let headers = new Headers({ 'Content-Type': 'application/json' });

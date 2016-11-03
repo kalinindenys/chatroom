@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.login.config.initializers;
+package com.javaclasses.chatroom.service.client.config.initializers;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

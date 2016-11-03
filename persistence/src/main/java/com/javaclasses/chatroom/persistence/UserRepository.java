@@ -1,6 +1,6 @@
-package com.javaclasses.chatroom;
+package com.javaclasses.chatroom.persistence;
 
-import com.javaclasses.chatroom.entity.User;
+import com.javaclasses.chatroom.persistence.entity.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<User, Long> {
