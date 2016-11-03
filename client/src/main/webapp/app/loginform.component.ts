@@ -1,14 +1,11 @@
-import { Component }                from 'angular2/core';
-import {ControlGroup,FormBuilder, Validators } from 'angular2/common';
-import {CORE_DIRECTIVES} from 'angular2/common';
-import {FORM_DIRECTIVES} from 'angular2/common';
+import { Component }                from '@angular/core';
+import {ControlGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthenticationService }    from './authentication.service';
 
 @Component({
     selector: 'login-form',
     templateUrl: `pages/login.component.html`,
-    directives: [CORE_DIRECTIVES, FORM_DIRECTIVES],
     providers: [AuthenticationService]
 })
 

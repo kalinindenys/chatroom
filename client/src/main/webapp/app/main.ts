@@ -1,26 +1,39 @@
-import { bootstrap }            from 'angular2/platform/browser';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { HttpModule } from '@angular/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import {provide} from 'angular2/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
 
-import { HTTP_PROVIDERS }       from 'angular2/http';
-import { XSRFStrategy }         from 'angu;ar2/http';
-import { CookieXSRFStrategy }   from 'angular2/http';
+import {APP_BASE_HREF} from '@angular/common';
 
-import { ROUTER_PROVIDERS,
-    LocationStrategy,
-    HashLocationStrategy } from 'angular2/router';
+import { ChatroomRouter } from './chatroom.router';
+import { ChatroomComponent } from './chatroom.component';
+import { LoginFormComponent } from './loginform.component'
+import { SecuredComponent } from './secured.component'
+import { routes } from './routes';
 
-import 'rxjs/Rx';
+@NgModule({
+    bootstrap: [ChatroomRouter],
+    declarations: [
+        ChatroomRouter,
+        ChatroomComponent,
+        LoginFormComponent,
+        SecuredComponent
+    ],
+    imports: [
+        BrowserModule,
+        HttpModule,
+        RouterModule.forRoot(routes),
+        FormsModule,
+        ReactiveFormsModule
+    ],
+    providers: [
+        {provide: APP_BASE_HREF, useValue : '/'}
+    ]
+})
+class MainModule {}
 
-import { ChatroomRouter }    from './chatroom.router';
 
-bootstrap(ChatroomRouter, [
-    HTTP_PROVIDERS,
-    ROUTER_PROVIDERS,
-    provide(LocationStrategy, { useClass: HashLocationStrategy })]).catch(err =>console.error(err));
-
-// bootstrap(LoginFormComponent,
-//     [
-//         HTTP_PROVIDERS,
-//         // {provide:XSRFStrategy, useValue: new CookieXSRFStrategy('csrftoken', 'X-CSRFToken')}
-//     ]).catch(err =>console.error(err));
+platformBrowserDynamic().bootstrapModule(MainModule);

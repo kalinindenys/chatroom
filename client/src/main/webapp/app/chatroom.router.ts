@@ -1,31 +1,10 @@
-import { Component } from 'angular2/core';
-import { RouteConfig, ROUTER_DIRECTIVES } from 'angular2/router';
+import { Component } from '@angular/core';
 
-import { ChatroomComponent } from './chatroom.component';
-import { LoginFormComponent } from './loginform.component'
 
 @Component({
     selector: 'chatroom-router',
     templateUrl: 'pages/chatroom.router.html',
-    directives: [ROUTER_DIRECTIVES]
 })
-
-@RouteConfig([
-
-    {
-        path: '/home',
-        name: 'Home',
-        component: ChatroomComponent,
-        useAsDefault: true
-    },
-
-    {
-        path: '/login',
-        name: 'Login',
-        component: LoginFormComponent
-    }
-
-])
 export class ChatroomRouter {
 
 }
