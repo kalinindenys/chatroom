@@ -23,13 +23,13 @@ export class AuthenticationService {
 
         return this.http.post(loginUrl, body, options)
             .map((res) => res.json())
-            .map((res) => {
-                console.log(res);
-                // if (res.dataerror) {
-                //     console.log("loggedin");
-                //     this.loggedIn = true;
-                // }
-            })
+            // .map((res) => {
+            //     console.log(res);
+            //     // if (res.dataerror) {
+            //     //     console.log("loggedin");
+            //     //     this.loggedIn = true;
+            //     // }
+            // })
             .catch(this.handleError);
     }
 

@@ -3,7 +3,8 @@ System.config({
     transpiler: 'typescript',
     //typescript compiler options
     typescriptOptions: {
-        emitDecoratorMetadata: true
+        emitDecoratorMetadata: true,
+        experimentalDecorators: true
     },
     paths: {
         'npm:': 'https://unpkg.com/'

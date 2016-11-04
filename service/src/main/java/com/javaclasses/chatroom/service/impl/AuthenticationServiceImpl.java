@@ -9,11 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 
+@Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
@@ -26,6 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public SecurityToken login(String login, String password) throws AuthenticationException {
+        userRepository.save(new User("login", "password"));
         User user = userRepository.findByLoginAndPassword(login, password);
 
         if (user != null) {

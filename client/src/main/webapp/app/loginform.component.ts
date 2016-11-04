@@ -25,7 +25,7 @@ export class LoginFormComponent {
     doLogin(event) {
         this.authService.login(this.loginForm.login, this.loginForm.password).subscribe(
             data => this.serverResponse = JSON.stringify(data), // put the data returned from the server in our variable
-            error => console.log("Error HTTP GET Service"), // in case of failure show this message
+            error => console.log("Service response error"), // in case of failure show this message
             () => console.log("Job Done Get !")//run this code in all cases
         );
 
