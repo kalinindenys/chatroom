@@ -1,7 +1,19 @@
 package com.javaclasses.chatroom.entities;
 
-public class User {
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "user")
+public class User{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
     private String login;
+
+    @NotNull
     private String password;
 
     public User(String login, String password) {
@@ -13,7 +25,6 @@ public class User {
     }
 
     public String getLogin() {
-
         return login;
     }
 
@@ -27,5 +38,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (null != obj && obj.getClass().equals(this.getClass())) {
+            return (this.login.equals(((User) obj).getLogin()) && this.password.equals(((User) obj).getLogin()));
+        }
+        return false;
     }
 }
