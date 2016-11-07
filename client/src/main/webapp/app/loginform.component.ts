@@ -4,7 +4,7 @@ import {ControlGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthenticationService }    from './authentication.service';
 
 @Component({
-    selector: 'login-form',
+    selector: 'signIn-form',
     templateUrl: `pages/login.component.html`,
     providers: [AuthenticationService]
 })

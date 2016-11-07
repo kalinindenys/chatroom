@@ -1,12 +1,15 @@
 package com.javaclasses.chatroom.service;
 
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.stereotype.Service;
+import com.javaclasses.chatroom.service.DTO.UserDTO;
+import com.javaclasses.chatroom.service.tinytypes.Login;
+import com.javaclasses.chatroom.service.tinytypes.Password;
 
 public interface AuthenticationService {
 
-    SecurityToken login(String login, String password) throws AuthenticationException;
+    void signUp(Login login, Password password) throws LoginAlreadyExistsException;
+    SecurityToken signIn(Login login, Password password) throws AuthenticationException;
+    void signOut(SecurityToken securityToken);
+    UserDTO retrieveUserDTO(SecurityToken securityToken) throws InvalidSecurityTokenException;
 
 }
