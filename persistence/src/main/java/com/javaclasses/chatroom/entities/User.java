@@ -1,12 +1,16 @@
 package com.javaclasses.chatroom.entities;
 
+import org.springframework.data.annotation.Id;
+
+import javax.annotation.Generated;
 import java.util.List;
 
 public class User {
+    @Id
     private Long id;
     private String login;
     private String password;
-    private List<Chatroom> chatroomList;
+    private List<Long> chatroomIdList;
 
     public Long getId() {
         return id;
@@ -32,11 +36,11 @@ public class User {
         this.password = password;
     }
 
-    public List<Chatroom> getChatroomList() {
-        return chatroomList;
+    public List<Long> getChatroomIdList() {
+        return chatroomIdList;
     }
 
-    public void setChatroomList(List<Chatroom> chatroomList) {
-        this.chatroomList = chatroomList;
+    public void setChatroomIdList(List<Long> chatroomIdList) {
+        this.chatroomIdList = chatroomIdList;
     }
 }

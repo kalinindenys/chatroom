@@ -5,8 +5,8 @@ import java.util.List;
 public class Chatroom {
     private Long id;
     private String name;
-    private List<User> memberList;
-    private List<Long> messages;
+    private List<Long> memberIdList;
+    private List<Long> messageIds;
 
     public Long getId() {
         return id;
@@ -24,19 +24,19 @@ public class Chatroom {
         this.name = name;
     }
 
-    public List<User> getMemberList() {
-        return memberList;
+    public List<Long> getMessageIds() {
+        return messageIds;
     }
 
-    public void setMemberList(List<User> memberList) {
-        this.memberList = memberList;
+    public void setMessageIds(List<Long> messageIds) {
+        this.messageIds = messageIds;
     }
 
-    public List<Long> getMessages() {
-        return messages;
+    public List<Long> getMemberIdList() {
+        return memberIdList;
     }
 
-    public void setMessages(List<Long> messages) {
-        this.messages = messages;
+    public void setMemberIdList(List<Long> memberIdList) {
+        this.memberIdList = memberIdList;
     }
 }
