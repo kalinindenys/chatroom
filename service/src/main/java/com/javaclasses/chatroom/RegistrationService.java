@@ -1,14 +1,13 @@
 package com.javaclasses.chatroom;
 
 import com.javaclasses.chatroom.entities.User;
+import com.javaclasses.chatroom.exceptions.RegistrationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
-@Service
-public class RegistrationService {
-    UserRepository userRepository = new UserRepositoryImpl();
+import javax.transaction.Transactional;
 
-    public void registrate(User user) {
-//// TODO: 10/27/2016 check Exceptions;
-        userRepository.addUser(user);
-    }
+public interface RegistrationService {
+    public void registerUser(User user);
 }
