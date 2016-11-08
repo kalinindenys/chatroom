@@ -1,11 +1,13 @@
 package com.javaclasses.chatroom.services;
 
-import com.javaclasses.chatroom.entities.Chatroom;
-import com.javaclasses.chatroom.entities.Message;
-import com.javaclasses.chatroom.entities.User;
+import com.javaclasses.chatroom.persistence.entities.Chatroom;
+import com.javaclasses.chatroom.persistence.entities.Message;
+import com.javaclasses.chatroom.persistence.entities.User;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@Service
 public interface ChatroomService {
     Iterable<Chatroom> getChatroomList(Long userid);
 

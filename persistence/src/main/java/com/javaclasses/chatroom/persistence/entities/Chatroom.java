@@ -1,12 +1,27 @@
-package com.javaclasses.chatroom.entities;
+package com.javaclasses.chatroom.persistence.entities;
 
+import org.springframework.data.annotation.Id;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.util.List;
 
+@Entity
 public class Chatroom {
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String name;
     private List<Long> memberIdList;
     private List<Long> messageIds;
+
+    public Chatroom(Long id, String name, List<Long> memberIdList, List<Long> messageIds) {
+        this.id = id;
+        this.name = name;
+        this.memberIdList = memberIdList;
+        this.messageIds = messageIds;
+    }
 
     public Long getId() {
         return id;
