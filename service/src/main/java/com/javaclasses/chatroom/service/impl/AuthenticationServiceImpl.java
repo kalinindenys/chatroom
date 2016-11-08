@@ -56,6 +56,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
+    public void signOut(SecurityToken securityToken) {
+        securityTokenRepository.delete(securityToken.getId());
+    }
+
+    @Override
     public UserDTO retrieveUserDTO(SecurityToken securityToken) throws InvalidSecurityTokenException {
         if (!securityTokenRepository.exists(securityToken.getId())) {
             throw new InvalidSecurityTokenException();
@@ -63,11 +68,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         User user = userRepository.findOne(securityToken.getUserId());
         return new UserDTO(user.getId(), user.getLogin(), user.getPassword());
-    }
-
-    @Override
-    public void signOut(SecurityToken securityToken) {
-        securityTokenRepository.delete(securityToken.getId());
     }
 
     private SecurityToken generateSecurityToken(Long userId) {

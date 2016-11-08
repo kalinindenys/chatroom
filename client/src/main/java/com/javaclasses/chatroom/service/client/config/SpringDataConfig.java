@@ -20,7 +20,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories("com.javaclasses.chatroom.persistence")
-public class DataConfig {
+public class SpringDataConfig {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {

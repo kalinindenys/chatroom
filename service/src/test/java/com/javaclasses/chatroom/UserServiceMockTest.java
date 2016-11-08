@@ -1,3 +1,5 @@
+package com.javaclasses.chatroom;
+
 import com.javaclasses.chatroom.persistence.SecurityTokenRepository;
 import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
@@ -6,7 +8,6 @@ import com.javaclasses.chatroom.service.DTO.UserDTO;
 import com.javaclasses.chatroom.service.InvalidSecurityTokenException;
 import com.javaclasses.chatroom.service.UserService;
 import com.javaclasses.chatroom.service.impl.UserServiceImpl;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -52,6 +53,9 @@ public class UserServiceMockTest {
     @Autowired
     private SecurityTokenRepository securityTokenRepository;
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     private final Long USER_ID = 1L;
     private final String LOGIN = "login";
     private final String OLD_PASSWORD = "old pass";
@@ -63,38 +67,36 @@ public class UserServiceMockTest {
     private final User NEW_USER = new User(LOGIN, NEW_PASSWORD);
 
     private final Long VALID_SECURITY_TOKEN_ID = 1L;
-    private final Long INVALID_SECURITY_TOKEN_ID = 2L;
+    private final Long EXPIRED_SECURITY_TOKEN_ID = 2L;
     private final LocalDateTime VALID_SECURITY_TOKEN_EXPIRATION_DATE = LocalDateTime.now().plusHours(12);
-    private final LocalDateTime INVALID_SECURITY_TOKEN_EXPIRATION_DATE = LocalDateTime.now().minusHours(12);
+    private final LocalDateTime EXPIRED_SECURITY_TOKEN_EXPIRATION_DATE = LocalDateTime.now().minusHours(12);
     private final SecurityToken VALID_SECURITY_TOKEN = new SecurityToken("valid security token", USER_ID, VALID_SECURITY_TOKEN_EXPIRATION_DATE);
-    private final SecurityToken INVALID_SECURITY_TOKEN = new SecurityToken("invalid security token", USER_ID, INVALID_SECURITY_TOKEN_EXPIRATION_DATE);
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    private final SecurityToken EXPIRED_SECURITY_TOKEN = new SecurityToken("invalid security token", USER_ID, EXPIRED_SECURITY_TOKEN_EXPIRATION_DATE);
 
     @Before
     public void setUp() throws Exception {
         VALID_SECURITY_TOKEN.setId(VALID_SECURITY_TOKEN_ID);
-        INVALID_SECURITY_TOKEN.setId(INVALID_SECURITY_TOKEN_ID);
+        EXPIRED_SECURITY_TOKEN.setId(EXPIRED_SECURITY_TOKEN_ID);
 
         Mockito.when(securityTokenRepository.exists(VALID_SECURITY_TOKEN_ID)).thenReturn(true);
-        Mockito.when(securityTokenRepository.exists(INVALID_SECURITY_TOKEN_ID)).thenReturn(false);
+        Mockito.when(securityTokenRepository.exists(EXPIRED_SECURITY_TOKEN_ID)).thenReturn(false);
     }
 
     @Test
     public void updateUserData_withValidSecurityToken() throws InvalidSecurityTokenException {
         Mockito.when(userRepository.findOne(USER_ID)).thenReturn(OLD_USER);
+
         userService.updateUserData(VALID_SECURITY_TOKEN, NEW_USER_DTO);
 
-//        Mockito.when(userRepository.findOne(USER_ID)).thenCallRealMethod();
-//        User userAfterUpdate = userRepository.findOne(USER_ID);
+        //сервис корректно перезаписал данные. captor!
+        //Mockito.verify(u)
     }
 
     @Test
     public void updateUserData_withInvalidSecurityToken() throws InvalidSecurityTokenException {
         expectedException.expect(InvalidSecurityTokenException.class);
 
-        userService.updateUserData(INVALID_SECURITY_TOKEN, NEW_USER_DTO);
+        userService.updateUserData(EXPIRED_SECURITY_TOKEN, NEW_USER_DTO);
     }
 
 }
