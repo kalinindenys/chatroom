@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -84,12 +85,7 @@ public class AuthenticationServiceMockTest {
         Mockito.when(userRepository.findByLoginAndPassword(REGISTERED_LOGIN, PASSWORD)).thenReturn(REGISTERED_USER);
         Mockito.when(userRepository.findOne(VALID_SECURITY_TOKEN.getUserId())).thenReturn(REGISTERED_USER);
         Mockito.when(securityTokenRepository.exists(VALID_TOKEN_ID)).thenReturn(true);
-    }
-
-    @After
-    public void tearDown() {
-        Mockito.reset(userRepository);
-        Mockito.reset(securityTokenRepository);
+        Mockito.when(securityTokenRepository.exists(INVALID_TOKEN_ID)).thenReturn(false);
     }
 
     @Rule
@@ -111,7 +107,7 @@ public class AuthenticationServiceMockTest {
     @Test
     public void signIn_registeredUser() throws AuthenticationException {
         SecurityToken actualToken = authenticationService.signIn(new Login(REGISTERED_LOGIN), new Password(PASSWORD));
-        assertEquals(SECURITY_TOKENS_ARE_NOT_EQUALS, VALID_SECURITY_TOKEN.getToken(), actualToken.getToken());
+        assertNotNull(actualToken);
     }
 
     @Test
