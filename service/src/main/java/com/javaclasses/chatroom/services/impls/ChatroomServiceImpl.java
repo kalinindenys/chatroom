@@ -1,11 +1,11 @@
 package com.javaclasses.chatroom.services.impls;
 
-import com.javaclasses.chatroom.ChatroomRepository;
-import com.javaclasses.chatroom.MessageRepository;
-import com.javaclasses.chatroom.UserRepository;
-import com.javaclasses.chatroom.entities.Chatroom;
-import com.javaclasses.chatroom.entities.Message;
-import com.javaclasses.chatroom.entities.User;
+import com.javaclasses.chatroom.persistence.ChatroomRepository;
+import com.javaclasses.chatroom.persistence.MessageRepository;
+import com.javaclasses.chatroom.persistence.UserRepository;
+import com.javaclasses.chatroom.persistence.entities.Chatroom;
+import com.javaclasses.chatroom.persistence.entities.Message;
+import com.javaclasses.chatroom.persistence.entities.User;
 import com.javaclasses.chatroom.services.ChatroomService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,6 +42,11 @@ public class ChatroomServiceImpl implements ChatroomService {
     }
 
     public void postMessage(Long chatroomId, Long userId, String messageContent, Date date) {
-
+        Message message = new Message();
+        message.setChatroomId(chatroomId);
+        message.setAuthorId(userId);
+        message.setContent(messageContent);
+        message.setDate(date);
+        messageRepository.save(message);
     }
 }
