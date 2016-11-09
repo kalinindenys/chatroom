@@ -10,6 +10,6 @@ public interface AuthenticationService {
     void signUp(Login login, Password password) throws LoginAlreadyExistsException;
     SecurityToken signIn(Login login, Password password) throws AuthenticationException;
     void signOut(SecurityToken securityToken);
-    UserDTO retrieveUserDTO(SecurityToken securityToken) throws InvalidSecurityTokenException;
+    UserDTO retrieveUser(SecurityToken securityToken) throws InvalidSecurityTokenException;
 
 }

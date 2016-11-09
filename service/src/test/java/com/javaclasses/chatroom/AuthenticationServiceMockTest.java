@@ -29,7 +29,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -152,7 +151,7 @@ public class AuthenticationServiceMockTest {
 
     @Test
     public void receiveUserDTO_withValidSecurityToken() throws InvalidSecurityTokenException {
-        UserDTO actualDTO = authenticationService.retrieveUserDTO(VALID_SECURITY_TOKEN);
+        UserDTO actualDTO = authenticationService.retrieveUser(VALID_SECURITY_TOKEN);
 
         Mockito.verify(userRepository).findOne(VALID_SECURITY_TOKEN.getUserId());
         assertEquals(USER_DTO.getId(), actualDTO.getId());
@@ -164,7 +163,7 @@ public class AuthenticationServiceMockTest {
     public void receiveUserDTO_withInvalidSecurityToken() throws InvalidSecurityTokenException {
         expectedException.expect(InvalidSecurityTokenException.class);
 
-        authenticationService.retrieveUserDTO(INVALID_SECURITY_TOKEN);
+        authenticationService.retrieveUser(INVALID_SECURITY_TOKEN);
     }
 
 }

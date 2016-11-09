@@ -61,7 +61,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public UserDTO retrieveUserDTO(SecurityToken securityToken) throws InvalidSecurityTokenException {
+    public UserDTO retrieveUser(SecurityToken securityToken) throws InvalidSecurityTokenException {
         if (!securityTokenRepository.exists(securityToken.getId())) {
             throw new InvalidSecurityTokenException();
         }
