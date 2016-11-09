@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.persistence.entities;
+package com.javaclasses.chatroom.persistence.entity;
 
 import org.springframework.data.annotation.Id;
 
@@ -14,13 +14,13 @@ public class User {
     private Long id;
     private String login;
     private String password;
-    private List<Long> chatroomIdList;
+    private List<Chatroom> chatroomList;
 
-    public User(Long id, String login, String password, List<Long> chatroomIdList) {
+    public User(Long id, String login, String password, List<Chatroom> chatroomIdList) {
         this.id = id;
         this.login = login;
         this.password = password;
-        this.chatroomIdList = chatroomIdList;
+        this.chatroomList = chatroomIdList;
     }
 
     public Long getId() {
@@ -47,11 +47,16 @@ public class User {
         this.password = password;
     }
 
-    public List<Long> getChatroomIdList() {
-        return chatroomIdList;
+    public List<Chatroom> getChatroomList() {
+        return chatroomList;
     }
 
-    public void setChatroomIdList(List<Long> chatroomIdList) {
-        this.chatroomIdList = chatroomIdList;
+    public void setChatroomList(List<Chatroom> chatroomList) {
+        this.chatroomList = chatroomList;
+    }
+
+    @Override
+    public String toString() {
+        return "User[ id: '" + id + "' login: '" + login + "']";
     }
 }
