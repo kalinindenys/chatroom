@@ -3,13 +3,13 @@ package com.javaclasses.chatroom.services.impls;
 import com.javaclasses.chatroom.persistence.ChatroomRepository;
 import com.javaclasses.chatroom.persistence.MessageRepository;
 import com.javaclasses.chatroom.persistence.UserRepository;
-import com.javaclasses.chatroom.persistence.entities.Chatroom;
-import com.javaclasses.chatroom.persistence.entities.Message;
-import com.javaclasses.chatroom.persistence.entities.User;
+import com.javaclasses.chatroom.persistence.entity.Chatroom;
+import com.javaclasses.chatroom.persistence.entity.Message;
+import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.services.ChatroomService;
+import com.javaclasses.chatroom.services.exception.EmptyMessageException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
 import java.util.List;
 
 public class ChatroomServiceImpl implements ChatroomService {
@@ -23,8 +23,7 @@ public class ChatroomServiceImpl implements ChatroomService {
     MessageRepository messageRepository;
 
     public Iterable<Chatroom> getChatroomList(Long userId) {
-        List<Long> ids = userRepository.findOne(userId).getChatroomIdList();
-        return chatroomRepository.findAll(ids);
+        return userRepository.findOne(userId).getChatroomList();
     }
 
     public Chatroom getChatroom(Long chatroomId) {
@@ -32,21 +31,21 @@ public class ChatroomServiceImpl implements ChatroomService {
     }
 
     public Iterable<Message> getMessages(Long chatroomId) {
-        List<Long> messageIds = chatroomRepository.findOne(chatroomId).getMessageIds();
-        return messageRepository.findAll(messageIds);
+        List<Message> messages = chatroomRepository.findOne(chatroomId).getMessages();
+        return messages;
     }
 
     public Iterable<User> getChatroomMemberList(Long chatroomId) {
         Chatroom chatroom = chatroomRepository.findOne(chatroomId);
-        return userRepository.findAll(chatroom.getMemberIdList());
+        return chatroom.getMembers();
     }
 
-    public void postMessage(Long chatroomId, Long userId, String messageContent, Date date) {
-        Message message = new Message();
-        message.setChatroomId(chatroomId);
-        message.setAuthorId(userId);
-        message.setContent(messageContent);
-        message.setDate(date);
-        messageRepository.save(message);
+    public void postMessage(Message message) throws EmptyMessageException {
+        String content = message.getContent();
+        if (null == content || content.trim().isEmpty())
+            throw new EmptyMessageException(message.toString()+" has empty content");
+        else {
+            messageRepository.save(message);
+        }
     }
 }
