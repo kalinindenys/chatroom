@@ -13,6 +13,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -66,8 +69,6 @@ public class UserServiceMockTest {
     private final User OLD_USER = new User(LOGIN, OLD_PASSWORD);
     private final User NEW_USER = new User(LOGIN, NEW_PASSWORD);
 
-    private final Long VALID_SECURITY_TOKEN_ID = 1L;
-    private final Long EXPIRED_SECURITY_TOKEN_ID = 2L;
     private final LocalDateTime VALID_SECURITY_TOKEN_EXPIRATION_DATE = LocalDateTime.now().plusHours(12);
     private final LocalDateTime EXPIRED_SECURITY_TOKEN_EXPIRATION_DATE = LocalDateTime.now().minusHours(12);
     private final SecurityToken VALID_SECURITY_TOKEN = new SecurityToken("valid security token", USER_ID, VALID_SECURITY_TOKEN_EXPIRATION_DATE);
@@ -75,21 +76,24 @@ public class UserServiceMockTest {
 
     @Before
     public void setUp() throws Exception {
-        VALID_SECURITY_TOKEN.setId(VALID_SECURITY_TOKEN_ID);
-        EXPIRED_SECURITY_TOKEN.setId(EXPIRED_SECURITY_TOKEN_ID);
+        VALID_SECURITY_TOKEN.setId(1L);
+        EXPIRED_SECURITY_TOKEN.setId(2L);
 
-        Mockito.when(securityTokenRepository.exists(VALID_SECURITY_TOKEN_ID)).thenReturn(true);
-        Mockito.when(securityTokenRepository.exists(EXPIRED_SECURITY_TOKEN_ID)).thenReturn(false);
+        Mockito.when(securityTokenRepository.exists(VALID_SECURITY_TOKEN.getId())).thenReturn(true);
+        Mockito.when(securityTokenRepository.exists(EXPIRED_SECURITY_TOKEN.getId())).thenReturn(false);
     }
 
     @Test
     public void updateUserData_withValidSecurityToken() throws InvalidSecurityTokenException {
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+
         Mockito.when(userRepository.findOne(USER_ID)).thenReturn(OLD_USER);
 
         userService.updateUserData(VALID_SECURITY_TOKEN, NEW_USER_DTO);
 
-        //сервис корректно перезаписал данные. captor!
-        //Mockito.verify(u)
+        Mockito.verify(userRepository).save(userCaptor.capture());
+        assertEquals(NEW_USER_DTO.getLogin(), userCaptor.getValue().getLogin());
+        assertEquals(NEW_USER_DTO.getPassword(), userCaptor.getValue().getPassword());
     }
 
     @Test

@@ -15,6 +15,7 @@ import com.javaclasses.chatroom.service.tinytypes.Password;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -104,8 +105,13 @@ public class AuthenticationServiceMockTest {
 
     @Test
     public void signUp_unregisteredLogin() throws LoginAlreadyExistsException {
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+
         authenticationService.signUp(new Login(UNREGISTERED_LOGIN), new Password(PASSWORD));
-        Mockito.verify(userRepository).save(any(User.class));
+
+        Mockito.verify(userRepository).save(userCaptor.capture());
+        assertEquals(UNREGISTERED_LOGIN, userCaptor.getValue().getLogin());
+        assertEquals(PASSWORD, userCaptor.getValue().getPassword());
     }
 
     @Test
@@ -118,10 +124,12 @@ public class AuthenticationServiceMockTest {
 
     @Test
     public void signIn_registeredUser() throws AuthenticationException {
+        ArgumentCaptor<SecurityToken> captor = ArgumentCaptor.forClass(SecurityToken.class);
+
         SecurityToken generatedToken = authenticationService.signIn(new Login(REGISTERED_LOGIN), new Password(PASSWORD));
 
-        Mockito.verify(securityTokenRepository).save(any(SecurityToken.class));
-        assertNotNull(generatedToken);
+        Mockito.verify(securityTokenRepository).save(captor.capture());
+        assertEquals(REGISTERED_USER.getId(), captor.getValue().getUserId());
     }
 
     @Test
