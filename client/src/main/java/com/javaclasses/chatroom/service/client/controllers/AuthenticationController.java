@@ -1,33 +1,38 @@
 package com.javaclasses.chatroom.service.client.controllers;
 
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
+import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.AuthenticationException;
 import com.javaclasses.chatroom.service.AuthenticationService;
+import com.javaclasses.chatroom.service.DTO.SignInInfo;
+import com.javaclasses.chatroom.service.LoginAlreadyExistsException;
 import com.javaclasses.chatroom.service.tinytypes.Login;
 import com.javaclasses.chatroom.service.tinytypes.Password;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
-@RequestMapping("/api/")
-public class LoginController {
+@RequestMapping("/api/auth")
+public class AuthenticationController {
 
     @Autowired
     private AuthenticationService authenticationService;
 
     @PostMapping("/signIn")
-    @ResponseBody
-    public String signIn(@RequestParam(value = "login", required = false) String login, @RequestParam(value = "password", required = false) String password) {
-
-//        SecurityToken securityToken = authenticationService.signIn(login, password);
+    public SecurityToken signIn(@RequestBody SignInInfo signInInfo) {
+        SecurityToken securityToken = null;
 
         try {
-            SecurityToken securityToken = authenticationService.signIn(new Login("123"), new Password("123"));
+            securityToken = authenticationService.signIn(new Login(signInInfo.getLogin()), new Password(signInInfo.getPassword()));
+            return securityToken;
         } catch (AuthenticationException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return "1";
     }
 
 }

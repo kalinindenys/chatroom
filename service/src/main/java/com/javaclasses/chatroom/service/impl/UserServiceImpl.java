@@ -6,10 +6,7 @@ import com.javaclasses.chatroom.persistence.entity.SecurityToken;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.DTO.UserDTO;
 import com.javaclasses.chatroom.service.InvalidSecurityTokenException;
-import com.javaclasses.chatroom.service.LoginAlreadyExistsException;
 import com.javaclasses.chatroom.service.UserService;
-import com.javaclasses.chatroom.service.tinytypes.Login;
-import com.javaclasses.chatroom.service.tinytypes.Password;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

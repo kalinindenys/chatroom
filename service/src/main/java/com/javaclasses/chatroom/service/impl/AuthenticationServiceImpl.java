@@ -52,7 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return securityToken;
         }
 
-        throw new AuthenticationException("Wrong credentials");
+        throw new AuthenticationException("Wrong credentials. Login '" + login + "', password '" + password + "'");
     }
 
     @Override
@@ -73,7 +73,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private SecurityToken generateSecurityToken(Long userId) {
         int tokenLength = 32;
         SecureRandom secureRandom = new SecureRandom();
-        return new SecurityToken(new BigInteger(130, secureRandom).toString(tokenLength), userId, LocalDateTime.now());
+        return new SecurityToken(new BigInteger(130, secureRandom).toString(tokenLength), userId, LocalDateTime.now().plusHours(1));
     }
 
 }

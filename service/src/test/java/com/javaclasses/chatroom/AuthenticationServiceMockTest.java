@@ -84,7 +84,7 @@ public class AuthenticationServiceMockTest {
     private final UserDTO USER_DTO = new UserDTO(REGISTERED_USER_ID, REGISTERED_LOGIN, PASSWORD);
 
     private final String LOGIN_ALREADY_EXISTS = "User with login '" + REGISTERED_LOGIN + "' already exists";
-    private final String WRONG_CREDENTIALS = "Wrong credentials";
+    private final String WRONG_CREDENTIALS = "Wrong credentials. Login '" + UNREGISTERED_LOGIN + "', password '" + PASSWORD + "'";
 
     @Before
     public void setUp() throws Exception {
@@ -126,7 +126,7 @@ public class AuthenticationServiceMockTest {
     public void signIn_registeredUser() throws AuthenticationException {
         ArgumentCaptor<SecurityToken> captor = ArgumentCaptor.forClass(SecurityToken.class);
 
-        SecurityToken generatedToken = authenticationService.signIn(new Login(REGISTERED_LOGIN), new Password(PASSWORD));
+        authenticationService.signIn(new Login(REGISTERED_LOGIN), new Password(PASSWORD));
 
         Mockito.verify(securityTokenRepository).save(captor.capture());
         assertEquals(REGISTERED_USER.getId(), captor.getValue().getUserId());

@@ -23,13 +23,12 @@ export class LoginFormComponent {
     }
 
     doLogin(event) {
-        this.authService.login(this.loginForm.login, this.loginForm.password).subscribe(
+        this.authService.login(this.loginForm.controls['login'].value, this.loginForm.controls['password'].value).subscribe(
             data => this.serverResponse = JSON.stringify(data), // put the data returned from the server in our variable
             error => console.log("Service response error"), // in case of failure show this message
             () => console.log("Job Done Get !")//run this code in all cases
         );
 
-        console.log(this.loginForm.value);
         event.preventDefault();
     }
 

@@ -16,6 +16,10 @@ public class SecurityToken {
     private Long userId;
     private LocalDateTime expirationDate;
 
+    public SecurityToken() {
+
+    }
+
     public SecurityToken(String token, Long userId, LocalDateTime expirationDate) {
         this.token = token;
         this.userId = userId;
