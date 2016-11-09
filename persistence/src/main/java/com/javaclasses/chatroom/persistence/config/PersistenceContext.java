@@ -2,6 +2,7 @@ package com.javaclasses.chatroom.persistence.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -22,17 +23,14 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories("com.javaclasses.chatroom.persistence")
-@PropertySource(value = { "classpath:application.properties" })
+@ComponentScan("com.javaclasses.chatroom.persistence")
 public class PersistenceContext {
-
-    @Autowired
-    private Environment environment;
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan("com.javaclasses.chatroom.persistence.entities");
+        em.setPackagesToScan("com.javaclasses.chatroom.persistence.entity");
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
