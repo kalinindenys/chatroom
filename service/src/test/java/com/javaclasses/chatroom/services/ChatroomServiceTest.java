@@ -3,9 +3,10 @@ package com.javaclasses.chatroom.services;
 import com.javaclasses.chatroom.persistence.ChatroomRepository;
 import com.javaclasses.chatroom.persistence.MessageRepository;
 import com.javaclasses.chatroom.persistence.UserRepository;
-import com.javaclasses.chatroom.persistence.entities.Chatroom;
-import com.javaclasses.chatroom.persistence.entities.Message;
-import com.javaclasses.chatroom.persistence.entities.User;
+import com.javaclasses.chatroom.persistence.entity.Chatroom;
+import com.javaclasses.chatroom.persistence.entity.Message;
+import com.javaclasses.chatroom.persistence.entity.User;
+import com.javaclasses.chatroom.services.exception.EmptyMessageException;
 import com.javaclasses.chatroom.services.impls.ChatroomServiceImpl;
 import org.junit.After;
 import org.junit.Before;
@@ -18,9 +19,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -52,13 +55,19 @@ public class ChatroomServiceTest {
     }
 
     @Autowired
-    private ChatroomService chatroomService;
+    private ChatroomService chatroomService = Mockito.mock(ChatroomService.class);
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private MessageRepository messageRepository;
     @Autowired
     private ChatroomRepository chatroomRepository;
+    User mockUser1 = new User(1L, "vasyazmeypro", "66613666", null);
+    User mockUser2 = new User(2L, "rusty228", "qwerty123", null);
+    Chatroom motoChat = new Chatroom(2114L, "Motoclub", null, null);
+    List<Chatroom> chatrooms = new ArrayList<>();
+    List<User> users = new ArrayList<>();
+    List<Message> messages = new ArrayList<>();
 
     @Before
     public void setUp() throws Exception {
@@ -76,32 +85,34 @@ public class ChatroomServiceTest {
         messageIds.add(62L);
         messageIds.add(63L);
 
-        List<Chatroom> chatrooms = new ArrayList();
-        Chatroom nyChat = new Chatroom(2112L, "New York chat", userIds, null);
-        Chatroom animeChat = new Chatroom(2113L, "Anime kawaii", userIds, null);
-        Chatroom motoChat = new Chatroom(2114L, "Motoclub", userIds, messageIds);
+
+        users.add(mockUser1);
+        users.add(mockUser2);
+
+
+        Chatroom nyChat = new Chatroom(2112L, "New York chat", users, null);
+        Chatroom animeChat = new Chatroom(2113L, "Anime kawaii", users, null);
+        motoChat.setMembers(users);
         chatrooms.add(nyChat);
         chatrooms.add(animeChat);
         chatrooms.add(motoChat);
+
+
+        messages.add(new Message(61L, mockUser1, motoChat.getId(), "Hello", LocalDateTime.now()));
+        messages.add(new Message(62L, mockUser2, motoChat.getId(), "Bye", LocalDateTime.now()));
+        messages.add(new Message(63L, mockUser1, motoChat.getId(), "Ok", LocalDateTime.now()));
 
         List<Chatroom> chatsOfMockUser = new ArrayList<>();
         chatsOfMockUser.add(nyChat);
         chatsOfMockUser.add(animeChat);
 
-        List<User> users = new ArrayList<>();
-        User mockUser1 = new User(1L, "vasyazmeypro", "66613666", chatroomIds);
-        User mockUser2 = new User(2L, "rusty228", "qwerty123", chatroomIds);
-        users.add(mockUser1);
-        users.add(mockUser2);
+        mockUser1.setChatroomList(chatrooms);
+        mockUser2.setChatroomList(chatrooms);
+        motoChat.setMessages(messages);
 
-        List<Message> messages = new ArrayList<>();
-        messages.add(new Message(61L, mockUser1.getId(), motoChat.getId(), "Hello", new Date(201601010001L)));
-        messages.add(new Message(62L, mockUser2.getId(), motoChat.getId(), "Bye", new Date(201601010002L)));
-        messages.add(new Message(63L, mockUser1.getId(), motoChat.getId(), "Ok", new Date(201601010003L)));
 
         Mockito.when(userRepository.findOne(1L)).thenReturn(mockUser1);
         Mockito.when(userRepository.findOne(2L)).thenReturn(mockUser2);
-        Mockito.when(userRepository.findAll(motoChat.getMemberIdList())).thenReturn(users);
 
         Mockito.when(chatroomRepository.findAll(chatroomIds)).thenReturn(chatrooms);
         Mockito.when(chatroomRepository.findOne(2114L)).thenReturn(motoChat);
@@ -116,28 +127,60 @@ public class ChatroomServiceTest {
 
     @Test
     public void getChatroomList() throws Exception {
-        //chatroomService.getChatroomList(1L);
+        Iterable<Chatroom> chatroomList = chatroomService.getChatroomList(1L);
+        System.out.println(chatroomList);
+        assertEquals(chatroomList, this.chatrooms);
 
     }
 
     @Test
     public void getChatroom() throws Exception {
+        Chatroom chatroom = chatroomService.getChatroom(2114L);
+        System.out.println(chatroom);
+        assertEquals(chatroom, this.motoChat);
 
     }
 
     @Test
     public void getMessages() throws Exception {
+        Iterable<Message> messages = chatroomService.getMessages(2114L);
+        System.out.println(messages);
+        assertEquals(messages, this.messages);
 
     }
 
     @Test
     public void getChatroomMemberList() throws Exception {
+        Iterable<User> chatroomMemberList = chatroomService.getChatroomMemberList(2114L);
+        System.out.println(chatroomMemberList);
+        assertEquals(chatroomMemberList, this.motoChat.getMembers());
 
     }
 
     @Test
     public void postMessage() throws Exception {
+        chatroomService.postMessage(new Message(64L, mockUser2, 2114L, "yep", LocalDateTime.now()));
 
+    }
+
+    @Test
+    public void postNullMessage() throws Exception {
+        try {
+            chatroomService.postMessage(null);
+            assert false;
+        } catch (NullPointerException npe) {
+            assert true;
+        }
+    }
+
+    @Test
+    public void postEmptyMessage() throws Exception {
+        try {
+            chatroomService.postMessage(new Message(64L, mockUser2, 2114L, null, LocalDateTime.now()));
+            assert false;
+        } catch (EmptyMessageException eme) {
+            assert true;
+        }
     }
 
 }
