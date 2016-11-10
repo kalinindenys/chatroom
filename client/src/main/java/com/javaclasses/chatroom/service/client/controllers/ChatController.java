@@ -1,9 +1,9 @@
 package com.javaclasses.chatroom.client.controller;
 
-import com.javaclasses.chatroom.services.ChatroomService;
-import com.javaclasses.chatroom.services.DTO.MessageDTO;
-import com.javaclasses.chatroom.services.DTO.RequestError;
-import com.javaclasses.chatroom.services.exception.EmptyMessageException;
+import com.javaclasses.chatroom.service.ChatroomService;
+import com.javaclasses.chatroom.service.DTO.MessageDTO;
+import com.javaclasses.chatroom.service.DTO.RequestError;
+import com.javaclasses.chatroom.service.EmptyMessageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.services.impl;
+package com.javaclasses.chatroom.service.impl;
 
 import com.javaclasses.chatroom.persistence.ChatroomRepository;
 import com.javaclasses.chatroom.persistence.MessageRepository;
@@ -6,9 +6,9 @@ import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
-import com.javaclasses.chatroom.services.ChatroomService;
-import com.javaclasses.chatroom.services.DTO.MessageDTO;
-import com.javaclasses.chatroom.services.exception.EmptyMessageException;
+import com.javaclasses.chatroom.service.ChatroomService;
+import com.javaclasses.chatroom.service.DTO.MessageDTO;
+import com.javaclasses.chatroom.service.EmptyMessageException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

@@ -1,6 +1,6 @@
-package com.javaclasses.chatroom.client.controller;
+package com.javaclasses.chatroom.service.client.controllers;
 
-import com.javaclasses.chatroom.services.ChatroomService;
+import com.javaclasses.chatroom.service.ChatroomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

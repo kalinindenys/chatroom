@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.services.DTO;
+package com.javaclasses.chatroom.service.DTO;
 
 import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.persistence.entity.User;

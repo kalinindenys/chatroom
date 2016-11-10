@@ -1,5 +1,6 @@
 package com.javaclasses.chatroom;
 
+import com.javaclasses.chatroom.service.ChatroomServiceTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -7,7 +8,8 @@ import org.junit.runners.Suite;
 
 @Suite.SuiteClasses({
         AuthenticationServiceMockTest.class,
-        UserServiceMockTest.class
+        UserServiceMockTest.class,
+        ChatroomServiceTest.class
 })
 public class ServicesTestSuite {
 }

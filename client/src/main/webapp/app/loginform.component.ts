@@ -1,7 +1,7 @@
-import { Component }                from '@angular/core';
-import {ControlGroup, FormBuilder, Validators } from '@angular/forms';
+import {Component}                from '@angular/core';
+import {ControlGroup, FormBuilder, Validators} from '@angular/forms';
 
-import { AuthenticationService }    from './authentication.service';
+import {AuthenticationService}    from './authentication.service';
 
 @Component({
     selector: 'signIn-form',

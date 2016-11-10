@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.services.DTO;
+package com.javaclasses.chatroom.service.DTO;
 
 public class RequestError {
     private final String errorMessage;
