@@ -1,13 +1,9 @@
 package com.javaclasses.chatroom.persistence.entity;
 
-import com.sun.istack.internal.NotNull;
 import org.springframework.data.annotation.Id;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 public class Message {
@@ -15,14 +11,16 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private User author;
-    private Long chatroomId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "chatroom_id")
+    private Chatroom chatroom;
     private String content;
     private LocalDateTime date;
 
-    public Message(Long id, User author, Long chatroomId, String content, LocalDateTime date) {
+    public Message(Long id, User author, Chatroom chatroomId, String content, LocalDateTime date) {
         this.id = id;
         this.author = author;
-        this.chatroomId = chatroomId;
+        this.chatroom = chatroomId;
         this.content = content;
         this.date = date;
     }
@@ -38,12 +36,12 @@ public class Message {
         this.id = id;
     }
 
-    public Long getChatroomId() {
-        return chatroomId;
+    public Chatroom getChatroom() {
+        return chatroom;
     }
 
-    public void setChatroomId(Long chatroomId) {
-        this.chatroomId = chatroomId;
+    public void setChatroom(Chatroom chatroom) {
+        this.chatroom = chatroom;
     }
 
     public String getContent() {

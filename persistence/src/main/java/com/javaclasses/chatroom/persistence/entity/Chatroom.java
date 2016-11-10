@@ -2,18 +2,22 @@ package com.javaclasses.chatroom.persistence.entity;
 
 import org.springframework.data.annotation.Id;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
 public class Chatroom {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private List<User> members;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "message_id")
     private List<Message> messages;
 
     public Chatroom(Long id, String name, List<User> members, List<Message> messages) {
@@ -57,6 +61,6 @@ public class Chatroom {
 
     @Override
     public String toString() {
-        return "Chatroom[ id: '"+id+"' name: '"+name+"']";
+        return "Chatroom[ id: '" + id + "' name: '" + name + "']";
     }
 }

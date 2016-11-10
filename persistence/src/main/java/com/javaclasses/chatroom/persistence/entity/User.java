@@ -2,9 +2,7 @@ package com.javaclasses.chatroom.persistence.entity;
 
 import org.springframework.data.annotation.Id;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -14,6 +12,9 @@ public class User {
     private Long id;
     private String login;
     private String password;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chatroom_id")
     private List<Chatroom> chatroomList;
 
     public User(Long id, String login, String password, List<Chatroom> chatroomIdList) {
