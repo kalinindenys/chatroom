@@ -17,6 +17,17 @@ public class Password {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof Password))
+            return false;
+
+        Password another = (Password) obj;
+        return password.equals(another.password);
+    }
+
+    @Override
     public String toString() {
         return password;
     }

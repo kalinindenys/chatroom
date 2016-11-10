@@ -4,11 +4,9 @@ import com.javaclasses.chatroom.persistence.SecurityTokenRepository;
 import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
 import com.javaclasses.chatroom.persistence.entity.User;
-import com.javaclasses.chatroom.service.AuthenticationException;
-import com.javaclasses.chatroom.service.AuthenticationService;
+import com.javaclasses.chatroom.service.*;
+import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
 import com.javaclasses.chatroom.service.DTO.UserDTO;
-import com.javaclasses.chatroom.service.InvalidSecurityTokenException;
-import com.javaclasses.chatroom.service.LoginAlreadyExistsException;
 import com.javaclasses.chatroom.service.impl.AuthenticationServiceImpl;
 import com.javaclasses.chatroom.service.tinytypes.Login;
 import com.javaclasses.chatroom.service.tinytypes.Password;
@@ -20,14 +18,13 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.method.P;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -70,71 +67,68 @@ public class AuthenticationServiceMockTest {
     private final User REGISTERED_USER = new User(REGISTERED_LOGIN, PASSWORD);
     private final User UNREGISTERED_USER = new User(UNREGISTERED_LOGIN, PASSWORD);
 
-    private final Long VALID_TOKEN_ID = 10L;
-    private final Long INVALID_TOKEN_ID = 20L;
-    private final String VALID_TOKEN = "valid security token";
-    private final String INVALID_TOKEN = "invalid security token";
-    private final Long REGISTERED_USER_ID = 1L;
-    private final Long UNREGISTERED_USER_ID = 2L;
-    private final LocalDateTime EXPIRATION_DATE = LocalDateTime.now().plusHours(12);
-    private final SecurityToken VALID_SECURITY_TOKEN = new SecurityToken(VALID_TOKEN, REGISTERED_USER_ID, EXPIRATION_DATE);
-    private final SecurityToken INVALID_SECURITY_TOKEN = new SecurityToken(INVALID_TOKEN, REGISTERED_USER_ID, EXPIRATION_DATE);
-
-    private final UserDTO USER_DTO = new UserDTO(REGISTERED_USER_ID, REGISTERED_LOGIN, PASSWORD);
-
-    private final String LOGIN_ALREADY_EXISTS = "User with login '" + REGISTERED_LOGIN + "' already exists";
-    private final String WRONG_CREDENTIALS = "Wrong credentials. Login '" + UNREGISTERED_LOGIN + "', password '" + PASSWORD + "'";
+    private final SecurityToken VALID_SECURITY_TOKEN = new SecurityToken("valid security token", REGISTERED_USER, LocalDateTime.now().plusHours(1));
+    private final SecurityToken INVALID_SECURITY_TOKEN = new SecurityToken("expired security token", REGISTERED_USER, LocalDateTime.now().minusHours(1));
 
     @Before
     public void setUp() throws Exception {
-        VALID_SECURITY_TOKEN.setId(VALID_TOKEN_ID);
-        INVALID_SECURITY_TOKEN.setId(INVALID_TOKEN_ID);
+        REGISTERED_USER.setId(1L);
+        UNREGISTERED_USER.setId(2L);
 
-        REGISTERED_USER.setId(REGISTERED_USER_ID);
-        UNREGISTERED_USER.setId(UNREGISTERED_USER_ID);
+        VALID_SECURITY_TOKEN.setId(1L);
+        INVALID_SECURITY_TOKEN.setId(2L);
 
         Mockito.when(userRepository.findByLogin(REGISTERED_LOGIN)).thenReturn(REGISTERED_USER);
         Mockito.when(userRepository.findByLoginAndPassword(REGISTERED_LOGIN, PASSWORD)).thenReturn(REGISTERED_USER);
-        Mockito.when(userRepository.findOne(VALID_SECURITY_TOKEN.getUserId())).thenReturn(REGISTERED_USER);
-
-        Mockito.when(securityTokenRepository.exists(VALID_TOKEN_ID)).thenReturn(true);
-        Mockito.when(securityTokenRepository.exists(INVALID_TOKEN_ID)).thenReturn(false);
-        Mockito.when(securityTokenRepository.findOne(VALID_TOKEN_ID)).thenReturn(VALID_SECURITY_TOKEN);
+        Mockito.when(userRepository.findOne(VALID_SECURITY_TOKEN.getUser().getId())).thenReturn(REGISTERED_USER);
+        Mockito.when(securityTokenRepository.exists(VALID_SECURITY_TOKEN.getId())).thenReturn(true);
+        Mockito.when(securityTokenRepository.exists(INVALID_SECURITY_TOKEN.getId())).thenReturn(false);
+        Mockito.when(securityTokenRepository.findOne(VALID_SECURITY_TOKEN.getId())).thenReturn(VALID_SECURITY_TOKEN);
     }
 
     @Test
-    public void signUp_unregisteredLogin() throws LoginAlreadyExistsException {
+    public void signUp_unregisteredLogin_correctPasswordConfirmation() throws LoginAlreadyExistsException, PasswordConfirmationException {
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
 
-        authenticationService.signUp(new Login(UNREGISTERED_LOGIN), new Password(PASSWORD));
+        authenticationService.signUp(new Login(UNREGISTERED_LOGIN), new Password(PASSWORD), new Password(PASSWORD));
 
         Mockito.verify(userRepository).save(userCaptor.capture());
         assertEquals(UNREGISTERED_LOGIN, userCaptor.getValue().getLogin());
-        assertEquals(PASSWORD, userCaptor.getValue().getPassword());
+        assertNotEquals(PASSWORD, userCaptor.getValue().getPassword());
     }
 
     @Test
-    public void signUp_registeredLogin() throws LoginAlreadyExistsException {
-        expectedException.expect(LoginAlreadyExistsException.class);
-        expectedException.expectMessage(LOGIN_ALREADY_EXISTS);
+    public void signUp_unregisteredLogin_wrongPasswordConfirmation() throws LoginAlreadyExistsException, PasswordConfirmationException {
+        expectedException.expect(PasswordConfirmationException.class);
+        expectedException.expectMessage("Password and password confirmation do not match");
 
-        authenticationService.signUp(new Login(REGISTERED_LOGIN), new Password(PASSWORD));
+        authenticationService.signUp(new Login(UNREGISTERED_LOGIN), new Password(PASSWORD), new Password(PASSWORD + "123"));
+    }
+
+    @Test
+    public void signUp_registeredLogin() throws LoginAlreadyExistsException, PasswordConfirmationException {
+        expectedException.expect(LoginAlreadyExistsException.class);
+        expectedException.expectMessage("User with login '" + REGISTERED_LOGIN + "' already exists");
+
+        authenticationService.signUp(new Login(REGISTERED_LOGIN), new Password(PASSWORD), new Password(PASSWORD + "123"));
     }
 
     @Test
     public void signIn_registeredUser() throws AuthenticationException {
+        Mockito.when(securityTokenRepository.save(any(SecurityToken.class))).thenReturn(VALID_SECURITY_TOKEN);
+
         ArgumentCaptor<SecurityToken> captor = ArgumentCaptor.forClass(SecurityToken.class);
 
         authenticationService.signIn(new Login(REGISTERED_LOGIN), new Password(PASSWORD));
 
         Mockito.verify(securityTokenRepository).save(captor.capture());
-        assertEquals(REGISTERED_USER.getId(), captor.getValue().getUserId());
+        assertEquals(VALID_SECURITY_TOKEN.getUser().getId(), captor.getValue().getUser().getId());
     }
 
     @Test
     public void signIn_unregisteredUser() throws AuthenticationException {
         expectedException.expect(AuthenticationException.class);
-        expectedException.expectMessage(WRONG_CREDENTIALS);
+        expectedException.expectMessage("Wrong credentials. Login '" + UNREGISTERED_LOGIN + "', password '" + PASSWORD + "'");
 
         authenticationService.signIn(new Login(UNREGISTERED_LOGIN), new Password(PASSWORD));
     }
@@ -143,7 +137,7 @@ public class AuthenticationServiceMockTest {
     public void signOut() {
         Mockito.doReturn(null).when(securityTokenRepository).findOne(VALID_SECURITY_TOKEN.getId());
 
-        authenticationService.signOut(VALID_SECURITY_TOKEN);
+        authenticationService.signOut(new SecurityTokenDTO(VALID_SECURITY_TOKEN.getId(), VALID_SECURITY_TOKEN.getToken()));
 
         Mockito.verify(securityTokenRepository).delete(VALID_SECURITY_TOKEN.getId());
         assertNull(securityTokenRepository.findOne(VALID_SECURITY_TOKEN.getId()));
@@ -151,19 +145,22 @@ public class AuthenticationServiceMockTest {
 
     @Test
     public void receiveUserDTO_withValidSecurityToken() throws InvalidSecurityTokenException {
-        UserDTO actualDTO = authenticationService.retrieveUser(VALID_SECURITY_TOKEN);
+        SecurityTokenDTO securityToken = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getId(), VALID_SECURITY_TOKEN.getToken());
+        UserDTO expectedDTO = new UserDTO(REGISTERED_USER.getId(), REGISTERED_USER.getLogin(), REGISTERED_USER.getPassword());
 
-        Mockito.verify(userRepository).findOne(VALID_SECURITY_TOKEN.getUserId());
-        assertEquals(USER_DTO.getId(), actualDTO.getId());
-        assertEquals(USER_DTO.getLogin(), actualDTO.getLogin());
-        assertEquals(USER_DTO.getPassword(), actualDTO.getPassword());
+        UserDTO actualDTO = authenticationService.retrieveUser(securityToken);
+
+        Mockito.verify(securityTokenRepository).findOne(VALID_SECURITY_TOKEN.getId());
+        assertEquals(expectedDTO.getId(), actualDTO.getId());
+        assertEquals(expectedDTO.getLogin(), actualDTO.getLogin());
+        assertEquals(expectedDTO.getAvatarURL(), actualDTO.getAvatarURL());
     }
 
     @Test
     public void receiveUserDTO_withInvalidSecurityToken() throws InvalidSecurityTokenException {
         expectedException.expect(InvalidSecurityTokenException.class);
 
-        authenticationService.retrieveUser(INVALID_SECURITY_TOKEN);
+        authenticationService.retrieveUser(new SecurityTokenDTO(INVALID_SECURITY_TOKEN.getId(), INVALID_SECURITY_TOKEN.getToken()));
     }
 
 }

@@ -4,11 +4,9 @@ import com.javaclasses.chatroom.persistence.SecurityTokenRepository;
 import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
 import com.javaclasses.chatroom.persistence.entity.User;
-import com.javaclasses.chatroom.service.AuthenticationException;
-import com.javaclasses.chatroom.service.AuthenticationService;
+import com.javaclasses.chatroom.service.*;
+import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
 import com.javaclasses.chatroom.service.DTO.UserDTO;
-import com.javaclasses.chatroom.service.InvalidSecurityTokenException;
-import com.javaclasses.chatroom.service.LoginAlreadyExistsException;
 import com.javaclasses.chatroom.service.tinytypes.Login;
 import com.javaclasses.chatroom.service.tinytypes.Password;
 import org.slf4j.Logger;
@@ -17,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 
@@ -33,47 +33,68 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     @Override
-    public void signUp(Login login, Password password) throws LoginAlreadyExistsException {
+    public void signUp(Login login, Password password, Password passwordConfirmation) throws LoginAlreadyExistsException, PasswordConfirmationException {
         if (userRepository.findByLogin(login.getLogin()) != null) {
             throw new LoginAlreadyExistsException("User with login '" + login + "' already exists");
         }
+        if (!password.equals(passwordConfirmation)) {
+            throw new PasswordConfirmationException("Password and password confirmation do not match");
+        }
 
-        User user = new User(login.getLogin(), password.getPassword());
+        User user = new User(login.getLogin(), hashPassword(password.getPassword()));
         userRepository.save(user);
     }
 
     @Override
-    public SecurityToken signIn(Login login, Password password) throws AuthenticationException {
-        User user = userRepository.findByLoginAndPassword(login.getLogin(), password.getPassword());
+    public SecurityTokenDTO signIn(Login login, Password password) throws AuthenticationException {
+        final User user = userRepository.findByLoginAndPassword(login.getLogin(), password.getPassword());
 
-        if (user != null) {
-            SecurityToken securityToken = generateSecurityToken(user.getId());
-            securityTokenRepository.save(securityToken);
-            return securityToken;
+        if (user == null) {
+            throw new AuthenticationException("Wrong credentials. Login '" + login + "', password '" + password + "'");
         }
 
-        throw new AuthenticationException("Wrong credentials. Login '" + login + "', password '" + password + "'");
+        final String token = generateSecurityToken();
+        final SecurityToken securityToken = new SecurityToken(token, user, LocalDateTime.now().plusHours(1));
+
+        return new SecurityTokenDTO(securityTokenRepository.save(securityToken).getId(), token);
     }
 
     @Override
-    public void signOut(SecurityToken securityToken) {
+    public void signOut(SecurityTokenDTO securityToken) {
         securityTokenRepository.delete(securityToken.getId());
     }
 
     @Override
-    public UserDTO retrieveUser(SecurityToken securityToken) throws InvalidSecurityTokenException {
+    public UserDTO retrieveUser(SecurityTokenDTO securityToken) throws InvalidSecurityTokenException {
         if (!securityTokenRepository.exists(securityToken.getId())) {
             throw new InvalidSecurityTokenException();
         }
 
-        User user = userRepository.findOne(securityToken.getUserId());
+        final User user = securityTokenRepository.findOne(securityToken.getId()).getUser();
         return new UserDTO(user.getId(), user.getLogin(), user.getPassword());
     }
 
-    private SecurityToken generateSecurityToken(Long userId) {
+    private String generateSecurityToken() {
         int tokenLength = 32;
         SecureRandom secureRandom = new SecureRandom();
-        return new SecurityToken(new BigInteger(130, secureRandom).toString(tokenLength), userId, LocalDateTime.now().plusHours(1));
+        return new BigInteger(130, secureRandom).toString(tokenLength);
+    }
+
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(password.getBytes());
+
+            StringBuilder stringBuilder = new StringBuilder();
+            for (byte bytes : messageDigest) {
+                stringBuilder.append(String.format("%02x", bytes & 0xff));
+            }
+
+            return stringBuilder.toString();
+
+        } catch (NoSuchAlgorithmException ex) {
+            throw new IllegalStateException(ex.getMessage());
+        }
     }
 
 }
