@@ -7,6 +7,7 @@ import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.services.ChatroomService;
+import com.javaclasses.chatroom.services.DTO.MessageDTO;
 import com.javaclasses.chatroom.services.exception.EmptyMessageException;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -40,12 +41,12 @@ public class ChatroomServiceImpl implements ChatroomService {
         return chatroom.getMembers();
     }
 
-    public void postMessage(Message message) throws EmptyMessageException {
+    public void postMessage(MessageDTO message) throws EmptyMessageException {
         String content = message.getContent();
         if (null == content || content.trim().isEmpty())
-            throw new EmptyMessageException(message.toString()+" has empty content");
+            throw new EmptyMessageException(message.toString() + " has empty content");
         else {
-            messageRepository.save(message);
+            messageRepository.save(new Message(message.getId(), message.getAuthor(), message.getChatroom(), message.getContent(), message.getDate()));
         }
     }
 }
