@@ -12,6 +12,14 @@ public class MessageDTO {
     private String content;
     private LocalDateTime date;
 
+    public MessageDTO(Long id, User author, Chatroom chatroom, String content, LocalDateTime date) {
+        this.id = id;
+        Author = author;
+        this.chatroom = chatroom;
+        this.content = content;
+        this.date = date;
+    }
+
     public Long getId() {
         return id;
     }
