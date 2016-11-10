@@ -13,6 +13,7 @@ import { SignedInGuard } from './signed-in.guard';
 
 import { ChatroomRouter } from './chatroom.router';
 import { ChatroomComponent } from './chatroom.component';
+import { UserComponent } from './user.component';
 import { LoginFormComponent } from './loginform.component'
 import { SecuredComponent } from './secured.component'
 import { routes } from './routes';
@@ -24,7 +25,8 @@ import {AuthenticationService} from "./authentication.service";
         ChatroomRouter,
         ChatroomComponent,
         LoginFormComponent,
-        SecuredComponent
+        SecuredComponent,
+        UserComponent
     ],
     imports: [
         BrowserModule,

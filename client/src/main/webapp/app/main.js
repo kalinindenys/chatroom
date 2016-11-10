@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/platform-browser', '@angular/router', '@angular/http', '@angular/forms', '@angular/common', '@angular/platform-browser-dynamic', './signed-in.guard', './chatroom.router', './chatroom.component', './loginform.component', './secured.component', './routes', "./authentication.service"], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/platform-browser', '@angular/router', '@angular/http', '@angular/forms', '@angular/common', '@angular/platform-browser-dynamic', './signed-in.guard', './chatroom.router', './chatroom.component', './user.component', './loginform.component', './secured.component', './routes', "./authentication.service"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/router'
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, platform_browser_1, router_1, http_1, forms_1, common_1, platform_browser_dynamic_1, common_2, signed_in_guard_1, chatroom_router_1, chatroom_component_1, loginform_component_1, secured_component_1, routes_1, authentication_service_1;
+    var core_1, platform_browser_1, router_1, http_1, forms_1, common_1, platform_browser_dynamic_1, common_2, signed_in_guard_1, chatroom_router_1, chatroom_component_1, user_component_1, loginform_component_1, secured_component_1, routes_1, authentication_service_1;
     var MainModule;
     return {
         setters:[
@@ -45,6 +45,9 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/router'
             function (chatroom_component_1_1) {
                 chatroom_component_1 = chatroom_component_1_1;
             },
+            function (user_component_1_1) {
+                user_component_1 = user_component_1_1;
+            },
             function (loginform_component_1_1) {
                 loginform_component_1 = loginform_component_1_1;
             },
@@ -68,7 +71,8 @@ System.register(['@angular/core', '@angular/platform-browser', '@angular/router'
                             chatroom_router_1.ChatroomRouter,
                             chatroom_component_1.ChatroomComponent,
                             loginform_component_1.LoginFormComponent,
-                            secured_component_1.SecuredComponent
+                            secured_component_1.SecuredComponent,
+                            user_component_1.UserComponent
                         ],
                         imports: [
                             platform_browser_1.BrowserModule,
