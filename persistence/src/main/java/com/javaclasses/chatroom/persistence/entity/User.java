@@ -7,6 +7,7 @@ import java.util.List;
 
 @Entity
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,6 +23,10 @@ public class User {
         this.login = login;
         this.password = password;
         this.chatroomList = chatroomIdList;
+    }
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
     }
 
     public Long getId() {
