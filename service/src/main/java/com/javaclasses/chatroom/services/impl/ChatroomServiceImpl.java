@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.services.impls;
+package com.javaclasses.chatroom.services.impl;
 
 import com.javaclasses.chatroom.persistence.ChatroomRepository;
 import com.javaclasses.chatroom.persistence.MessageRepository;

@@ -7,7 +7,7 @@ import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.services.exception.EmptyMessageException;
-import com.javaclasses.chatroom.services.impls.ChatroomServiceImpl;
+import com.javaclasses.chatroom.services.impl.ChatroomServiceImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,6 +62,7 @@ public class ChatroomServiceTest {
     private MessageRepository messageRepository;
     @Autowired
     private ChatroomRepository chatroomRepository;
+
     User mockUser1 = new User(1L, "vasyazmeypro", "66613666", null);
     User mockUser2 = new User(2L, "rusty228", "qwerty123", null);
     Chatroom motoChat = new Chatroom(2114L, "Motoclub", null, null);
