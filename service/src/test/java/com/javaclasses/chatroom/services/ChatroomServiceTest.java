@@ -6,6 +6,7 @@ import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
+import com.javaclasses.chatroom.services.DTO.MessageDTO;
 import com.javaclasses.chatroom.services.exception.EmptyMessageException;
 import com.javaclasses.chatroom.services.impl.ChatroomServiceImpl;
 import org.junit.After;
@@ -99,9 +100,9 @@ public class ChatroomServiceTest {
         chatrooms.add(motoChat);
 
 
-        messages.add(new Message(61L, mockUser1, motoChat.getId(), "Hello", LocalDateTime.now()));
-        messages.add(new Message(62L, mockUser2, motoChat.getId(), "Bye", LocalDateTime.now()));
-        messages.add(new Message(63L, mockUser1, motoChat.getId(), "Ok", LocalDateTime.now()));
+        messages.add(new Message(61L, mockUser1, motoChat, "Hello", LocalDateTime.now()));
+        messages.add(new Message(62L, mockUser2, motoChat, "Bye", LocalDateTime.now()));
+        messages.add(new Message(63L, mockUser1, motoChat, "Ok", LocalDateTime.now()));
 
         List<Chatroom> chatsOfMockUser = new ArrayList<>();
         chatsOfMockUser.add(nyChat);
@@ -160,7 +161,7 @@ public class ChatroomServiceTest {
 
     @Test
     public void postMessage() throws Exception {
-        chatroomService.postMessage(new Message(64L, mockUser2, 2114L, "yep", LocalDateTime.now()));
+        chatroomService.postMessage(new MessageDTO(64L, mockUser2, motoChat, "yep", LocalDateTime.now()));
 
     }
 
@@ -177,7 +178,7 @@ public class ChatroomServiceTest {
     @Test
     public void postEmptyMessage() throws Exception {
         try {
-            chatroomService.postMessage(new Message(64L, mockUser2, 2114L, null, LocalDateTime.now()));
+            chatroomService.postMessage(new MessageDTO(64L, mockUser2, motoChat, null, LocalDateTime.now()));
             assert false;
         } catch (EmptyMessageException eme) {
             assert true;
