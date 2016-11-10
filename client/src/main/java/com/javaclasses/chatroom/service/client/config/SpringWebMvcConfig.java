@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebMvc
+@EnableScheduling
 @ComponentScan({"com.javaclasses.chatroom"})
 @Import({ SpringSecurityConfig.class })
 public class SpringWebMvcConfig extends WebMvcConfigurerAdapter {

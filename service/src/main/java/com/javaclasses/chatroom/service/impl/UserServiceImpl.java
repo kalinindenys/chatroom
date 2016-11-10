@@ -13,6 +13,11 @@ import com.javaclasses.chatroom.service.tinytypes.Password;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -23,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserData(SecurityTokenDTO securityToken, UserDTO user) throws InvalidSecurityTokenException {
-        if (!securityTokenRepository.exists(securityToken.getId())) {
+        if (securityTokenRepository.findByToken(securityToken.getToken()) == null) {
             throw new InvalidSecurityTokenException();
         }
 
@@ -39,8 +44,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateAvatar(SecurityTokenDTO securityToken) throws InvalidSecurityTokenException {
+    public void updateAvatar(SecurityTokenDTO securityToken, byte[] avatar) throws InvalidSecurityTokenException {
+        final SecurityToken persistentToken = securityTokenRepository.findByToken(securityToken.getToken());
 
+        if (persistentToken == null) {
+            throw new InvalidSecurityTokenException();
+        }
+
+        final User user = persistentToken.getUser();
+        user.setAvatar(avatar);
+
+        userRepository.save(user);
     }
 
     @Override

@@ -23,13 +23,15 @@ export class AuthenticationService {
 
         return this.http.post(loginUrl, body, options)
             .map((res) => res.json())
-            // .map((res) => {
-            //     console.log(res);
-            //     // if (res.dataerror) {
-            //     //     console.log("loggedin");
-            //     //     this.loggedIn = true;
-            //     // }
-            // })
+            .map((res) => {
+                console.log(res);
+                if (!res.errorMessage) {
+                    localStorage.setItem('auth_token', res.token);
+                    this.loggedIn = true;
+                }
+
+                return this.loggedIn;
+            })
             .catch(this.handleError);
     }
 

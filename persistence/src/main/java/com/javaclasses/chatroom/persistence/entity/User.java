@@ -13,6 +13,7 @@ public class User {
     private Long id;
     private String login;
     private String password;
+    private byte[] avatar;
 
     public User() {
 
@@ -47,5 +48,12 @@ public class User {
         this.password = password;
     }
 
+    public byte[] getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
+    }
 
 }

@@ -47,7 +47,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public SecurityTokenDTO signIn(Login login, Password password) throws AuthenticationException {
-        final User user = userRepository.findByLoginAndPassword(login.getLogin(), password.getPassword());
+        final User user = userRepository.findByLoginAndPassword(login.getLogin(), hashPassword(password.getPassword()));
 
         if (user == null) {
             throw new AuthenticationException("Wrong credentials. Login '" + login + "', password '" + password + "'");
@@ -56,21 +56,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         final String token = generateSecurityToken();
         final SecurityToken securityToken = new SecurityToken(token, user, LocalDateTime.now().plusHours(1));
 
-        return new SecurityTokenDTO(securityTokenRepository.save(securityToken).getId(), token);
+        return new SecurityTokenDTO(token);
     }
 
     @Override
     public void signOut(SecurityTokenDTO securityToken) {
-        securityTokenRepository.delete(securityToken.getId());
+        final SecurityToken persistentToken = securityTokenRepository.findByToken(securityToken.getToken());
+
+        if (persistentToken != null) {
+            securityTokenRepository.delete(persistentToken.getId());
+        }
     }
 
     @Override
     public UserDTO retrieveUser(SecurityTokenDTO securityToken) throws InvalidSecurityTokenException {
-        if (!securityTokenRepository.exists(securityToken.getId())) {
+        final SecurityToken persistentToken = securityTokenRepository.findByToken(securityToken.getToken());
+
+        if (persistentToken == null) {
             throw new InvalidSecurityTokenException();
         }
 
-        final User user = securityTokenRepository.findOne(securityToken.getId()).getUser();
+        final User user = persistentToken.getUser();
         return new UserDTO(user.getId(), user.getLogin(), user.getPassword());
     }
 

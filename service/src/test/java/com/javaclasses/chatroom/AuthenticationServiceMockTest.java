@@ -81,9 +81,8 @@ public class AuthenticationServiceMockTest {
         Mockito.when(userRepository.findByLogin(REGISTERED_LOGIN)).thenReturn(REGISTERED_USER);
         Mockito.when(userRepository.findByLoginAndPassword(REGISTERED_LOGIN, PASSWORD)).thenReturn(REGISTERED_USER);
         Mockito.when(userRepository.findOne(VALID_SECURITY_TOKEN.getUser().getId())).thenReturn(REGISTERED_USER);
-        Mockito.when(securityTokenRepository.exists(VALID_SECURITY_TOKEN.getId())).thenReturn(true);
-        Mockito.when(securityTokenRepository.exists(INVALID_SECURITY_TOKEN.getId())).thenReturn(false);
-        Mockito.when(securityTokenRepository.findOne(VALID_SECURITY_TOKEN.getId())).thenReturn(VALID_SECURITY_TOKEN);
+        Mockito.when(securityTokenRepository.findByToken(VALID_SECURITY_TOKEN.getToken())).thenReturn(VALID_SECURITY_TOKEN);
+        Mockito.when(securityTokenRepository.findByToken(INVALID_SECURITY_TOKEN.getToken())).thenReturn(null);
     }
 
     @Test
@@ -137,20 +136,19 @@ public class AuthenticationServiceMockTest {
     public void signOut() {
         Mockito.doReturn(null).when(securityTokenRepository).findOne(VALID_SECURITY_TOKEN.getId());
 
-        authenticationService.signOut(new SecurityTokenDTO(VALID_SECURITY_TOKEN.getId(), VALID_SECURITY_TOKEN.getToken()));
+        authenticationService.signOut(new SecurityTokenDTO(VALID_SECURITY_TOKEN.getToken()));
 
         Mockito.verify(securityTokenRepository).delete(VALID_SECURITY_TOKEN.getId());
-        assertNull(securityTokenRepository.findOne(VALID_SECURITY_TOKEN.getId()));
     }
 
     @Test
     public void receiveUserDTO_withValidSecurityToken() throws InvalidSecurityTokenException {
-        SecurityTokenDTO securityToken = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getId(), VALID_SECURITY_TOKEN.getToken());
+        SecurityTokenDTO securityToken = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getToken());
         UserDTO expectedDTO = new UserDTO(REGISTERED_USER.getId(), REGISTERED_USER.getLogin(), REGISTERED_USER.getPassword());
 
         UserDTO actualDTO = authenticationService.retrieveUser(securityToken);
 
-        Mockito.verify(securityTokenRepository).findOne(VALID_SECURITY_TOKEN.getId());
+        Mockito.verify(securityTokenRepository).findByToken(VALID_SECURITY_TOKEN.getToken());
         assertEquals(expectedDTO.getId(), actualDTO.getId());
         assertEquals(expectedDTO.getLogin(), actualDTO.getLogin());
         assertEquals(expectedDTO.getAvatarURL(), actualDTO.getAvatarURL());
@@ -160,7 +158,7 @@ public class AuthenticationServiceMockTest {
     public void receiveUserDTO_withInvalidSecurityToken() throws InvalidSecurityTokenException {
         expectedException.expect(InvalidSecurityTokenException.class);
 
-        authenticationService.retrieveUser(new SecurityTokenDTO(INVALID_SECURITY_TOKEN.getId(), INVALID_SECURITY_TOKEN.getToken()));
+        authenticationService.retrieveUser(new SecurityTokenDTO(INVALID_SECURITY_TOKEN.getToken()));
     }
 
 }

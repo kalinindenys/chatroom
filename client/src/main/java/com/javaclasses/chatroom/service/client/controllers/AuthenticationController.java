@@ -1,25 +1,21 @@
 package com.javaclasses.chatroom.service.client.controllers;
 
-import com.javaclasses.chatroom.service.AuthenticationException;
-import com.javaclasses.chatroom.service.AuthenticationService;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.javaclasses.chatroom.service.*;
 import com.javaclasses.chatroom.service.DTO.*;
-import com.javaclasses.chatroom.service.LoginAlreadyExistsException;
-import com.javaclasses.chatroom.service.PasswordConfirmationException;
 import com.javaclasses.chatroom.service.tinytypes.Login;
 import com.javaclasses.chatroom.service.tinytypes.Password;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/auth/")
 public class AuthenticationController {
 
     private static final Logger LOG = getLogger(AuthenticationController.class);
@@ -27,7 +23,7 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @PostMapping("/signUp")
+    @PostMapping("signUp")
     public ResponseEntity<?> signUp(@RequestBody SignUpInfo signUpInfo) {
         Login login = new Login(signUpInfo.getLogin());
         Password password = new Password(signUpInfo.getPassword());
@@ -45,7 +41,7 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("/signIn")
+    @PostMapping("signIn")
     public ResponseEntity<?> signIn(@RequestBody SignInInfo signInInfo) {
         SecurityTokenDTO securityToken;
 
@@ -59,5 +55,33 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RequestError(ex.getMessage()));
         }
     }
+
+    @PostMapping("signOut")
+    public ResponseEntity<?> signOut(@RequestHeader(name = "Security-Token") String securityToken) {
+        authenticationService.signOut(new SecurityTokenDTO(securityToken));
+        return ResponseEntity.ok("Signed out");
+    }
+
+    @GetMapping("getUser")
+    public ResponseEntity<?> getUser(@RequestHeader(name = "Security-Token") String securityToken) {
+        try {
+            UserDTO user = authenticationService.retrieveUser(new SecurityTokenDTO(securityToken));
+            return ResponseEntity.ok(user);
+        } catch (InvalidSecurityTokenException ex) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error(ex.getMessage());
+            }
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RequestError(ex.getMessage()));
+        }
+    }
+
+//    @PostMapping("test")
+//    public String test() {
+//        final JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
+//        ObjectNode parent = nodeFactory.objectNode();
+//        parent.put("success", false);
+//        return "{\"yolo\": true}";
+//    }
 
 }

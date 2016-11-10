@@ -73,8 +73,8 @@ public class UserServiceMockTest {
         VALID_SECURITY_TOKEN.setId(1L);
         EXPIRED_SECURITY_TOKEN.setId(2L);
 
-        Mockito.when(securityTokenRepository.exists(VALID_SECURITY_TOKEN.getId())).thenReturn(true);
-        Mockito.when(securityTokenRepository.exists(EXPIRED_SECURITY_TOKEN.getId())).thenReturn(false);
+        Mockito.when(securityTokenRepository.findByToken(VALID_SECURITY_TOKEN.getToken())).thenReturn(VALID_SECURITY_TOKEN);
+        Mockito.when(securityTokenRepository.findByToken(EXPIRED_SECURITY_TOKEN.getToken())).thenReturn(null);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class UserServiceMockTest {
         Mockito.when(userRepository.findOne(USER.getId())).thenReturn(USER);
 
         final ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        final SecurityTokenDTO securityTokenDTO = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getId(), VALID_SECURITY_TOKEN.getToken());
+        final SecurityTokenDTO securityTokenDTO = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getToken());
 
         userService.updateUserData(securityTokenDTO, new UserDTO(USER.getId(), "new login", "path"));
 
@@ -94,9 +94,14 @@ public class UserServiceMockTest {
     public void updateUserData_withInvalidSecurityToken() throws InvalidSecurityTokenException {
         expectedException.expect(InvalidSecurityTokenException.class);
 
-        final SecurityTokenDTO securityTokenDTO = new SecurityTokenDTO(EXPIRED_SECURITY_TOKEN.getId(), EXPIRED_SECURITY_TOKEN.getToken());
+        final SecurityTokenDTO securityTokenDTO = new SecurityTokenDTO(EXPIRED_SECURITY_TOKEN.getToken());
 
         userService.updateUserData(securityTokenDTO, new UserDTO(USER.getId(), "new login", "path"));
     }
+
+//    @Test
+//    public void updateAvatar() {
+//        userService.updateAvatar();
+//    }
 
 }
