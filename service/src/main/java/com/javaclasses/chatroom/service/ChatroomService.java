@@ -5,6 +5,7 @@ import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.DTO.MessageDTO;
 import com.javaclasses.chatroom.service.EmptyMessageException;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 
@@ -18,4 +19,6 @@ public interface ChatroomService {
     Iterable<User> getChatroomMemberList(Long chatroomId);
 
     void postMessage(MessageDTO message) throws EmptyMessageException;
+
+    Page<Chatroom> getAllChatrooms(int pageCount);
 }
