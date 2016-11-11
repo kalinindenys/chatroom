@@ -185,4 +185,9 @@ public class ChatroomServiceTest {
         }
     }
 
+    @Test
+    public void getAllChatroomsTest() throws Exception {
+        chatroomService.getAllChatrooms(1);
+    }
+
 }
