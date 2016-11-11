@@ -10,6 +10,8 @@ import com.javaclasses.chatroom.service.ChatroomService;
 import com.javaclasses.chatroom.service.DTO.MessageDTO;
 import com.javaclasses.chatroom.service.EmptyMessageException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,5 +52,9 @@ public class ChatroomServiceImpl implements ChatroomService {
         else {
             messageRepository.save(new Message(message.getId(), message.getAuthor(), message.getChatroom(), message.getContent(), message.getDate()));
         }
+    }
+
+    public Page<Chatroom> getAllChatrooms(int pageCount) {
+        return chatroomRepository.findAll(new PageRequest(pageCount, 50));
     }
 }
