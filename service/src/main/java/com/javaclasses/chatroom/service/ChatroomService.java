@@ -8,7 +8,6 @@ import com.javaclasses.chatroom.service.EmptyMessageException;
 import org.springframework.stereotype.Service;
 
 
-@Service
 public interface ChatroomService {
     Iterable<Chatroom> getChatroomList(Long userid);
 

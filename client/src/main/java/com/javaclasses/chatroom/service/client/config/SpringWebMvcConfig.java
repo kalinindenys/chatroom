@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan({"com.javaclasses.chatroom"})
+@ComponentScan({"com.javaclasses.chatroom.service.client.controllers","com.javaclasses.chatroom.service"})
 @Import({ SpringSecurityConfig.class })
 public class SpringWebMvcConfig extends WebMvcConfigurerAdapter {
 

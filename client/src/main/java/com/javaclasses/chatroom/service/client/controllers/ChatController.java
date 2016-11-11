@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.client.controller;
+package com.javaclasses.chatroom.service.client.controllers;
 
 import com.javaclasses.chatroom.service.ChatroomService;
 import com.javaclasses.chatroom.service.DTO.MessageDTO;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class ChatController {
 
     @Autowired
-    ChatroomService chatroomService;
+    private ChatroomService chatroomService;
 
     @PostMapping("/{chatroomId}/sendMessage")
     public ResponseEntity<?> sendMessage(@RequestBody MessageDTO messageDTO,@PathVariable Long chatroomId) {

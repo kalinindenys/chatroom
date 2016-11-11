@@ -20,7 +20,7 @@ public class LoginController {
     public String signIn(@RequestParam(value = "login", required = false) String login, @RequestParam(value = "password", required = false) String password) {
 
 //        SecurityToken securityToken = authenticationService.signIn(login, password);
-
+        System.out.println(login + " -- what i found here -- "+password);
         try {
             SecurityToken securityToken = authenticationService.signIn(new Login("123"), new Password("123"));
         } catch (AuthenticationException e) {

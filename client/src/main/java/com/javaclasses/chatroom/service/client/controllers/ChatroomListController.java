@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatroomListController {
 
     @Autowired
-    ChatroomService chatroomService;
+    private ChatroomService chatroomService;
 
     @GetMapping("/getChatroomList/{userId}")
     public ResponseEntity<?> getChatroomList(@PathVariable Long userId) {
