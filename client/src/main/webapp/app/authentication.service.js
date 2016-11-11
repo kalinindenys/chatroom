@@ -32,12 +32,21 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/Rx']
                     this.loggedIn = false;
                 }
                 AuthenticationService.prototype.login = function (login, password) {
-                    var loginUrl = "/api/signIn";
+                    var _this = this;
+                    var loginUrl = "/api/auth/signIn";
                     var body = JSON.stringify({ "login": login, "password": password });
                     var headers = new http_2.Headers({ 'Content-Type': 'application/json' });
                     var options = new http_2.RequestOptions({ headers: headers, method: "post" });
                     return this.http.post(loginUrl, body, options)
                         .map(function (res) { return res.json(); })
+                        .map(function (res) {
+                        console.log(res);
+                        if (!res.errorMessage) {
+                            localStorage.setItem('auth_token', res.token);
+                            _this.loggedIn = true;
+                        }
+                        return _this.loggedIn;
+                    })
                         .catch(this.handleError);
                 };
                 AuthenticationService.prototype.isLoggedIn = function () {
