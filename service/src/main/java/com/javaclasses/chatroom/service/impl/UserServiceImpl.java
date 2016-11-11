@@ -2,6 +2,7 @@ package com.javaclasses.chatroom.service.impl;
 
 import com.javaclasses.chatroom.persistence.SecurityTokenRepository;
 import com.javaclasses.chatroom.persistence.UserRepository;
+import com.javaclasses.chatroom.persistence.entity.AvatarData;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
@@ -13,10 +14,9 @@ import com.javaclasses.chatroom.service.tinytypes.Password;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.*;
+import java.sql.Blob;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -44,15 +44,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateAvatar(SecurityTokenDTO securityToken, byte[] avatar) throws InvalidSecurityTokenException {
+    public void updateAvatar(SecurityTokenDTO securityToken, InputStream avatarData, String fileExtension) throws InvalidSecurityTokenException {
         final SecurityToken persistentToken = securityTokenRepository.findByToken(securityToken.getToken());
 
         if (persistentToken == null) {
             throw new InvalidSecurityTokenException();
         }
 
+        Blob blob = convertToBlob()
         final User user = persistentToken.getUser();
-        user.setAvatar(avatar);
+//        user.setAvatarData(new AvatarData(avatarData.));
 
         userRepository.save(user);
     }
@@ -60,6 +61,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void resetPassword(SecurityTokenDTO securityToken, Password oldPassword, Password newPassword, Password passwordConfirmation)
             throws InvalidSecurityTokenException, PasswordConfirmationException {
+
+    }
+
+    private Blob convertToBlob(InputStream inputStream) {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        inputStream.read
 
     }
 }

@@ -55,6 +55,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         final String token = generateSecurityToken();
         final SecurityToken securityToken = new SecurityToken(token, user, LocalDateTime.now().plusHours(1));
+        securityTokenRepository.save(securityToken);
 
         return new SecurityTokenDTO(token);
     }

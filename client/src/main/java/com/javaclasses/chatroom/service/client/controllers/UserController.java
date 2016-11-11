@@ -36,7 +36,7 @@ public class UserController {
     @PostMapping("/updateAvatar")
     public ResponseEntity<?> updateAvatar(@RequestBody MultipartFile multipartFile, SecurityTokenDTO securityToken) {
         try {
-            userService.updateAvatar(securityToken, multipartFile.getBytes());
+            userService.updateAvatar(securityToken, multipartFile.getInputStream());
         } catch (InvalidSecurityTokenException e) {
             e.printStackTrace();
         } catch (IOException e) {

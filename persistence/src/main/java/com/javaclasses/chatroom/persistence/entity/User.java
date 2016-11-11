@@ -1,9 +1,6 @@
 package com.javaclasses.chatroom.persistence.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class User {
@@ -11,9 +8,11 @@ public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+
+    @OneToOne
+    private AvatarData avatarData;
     private String login;
     private String password;
-    private byte[] avatar;
 
     public User() {
 
@@ -48,12 +47,11 @@ public class User {
         this.password = password;
     }
 
-    public byte[] getAvatar() {
-        return avatar;
+    public AvatarData getAvatarData() {
+        return avatarData;
     }
 
-    public void setAvatar(byte[] avatar) {
-        this.avatar = avatar;
+    public void setAvatarData(AvatarData avatarData) {
+        this.avatarData = avatarData;
     }
-
 }

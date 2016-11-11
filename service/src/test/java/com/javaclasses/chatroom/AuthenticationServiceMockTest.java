@@ -79,7 +79,6 @@ public class AuthenticationServiceMockTest {
         INVALID_SECURITY_TOKEN.setId(2L);
 
         Mockito.when(userRepository.findByLogin(REGISTERED_LOGIN)).thenReturn(REGISTERED_USER);
-        Mockito.when(userRepository.findByLoginAndPassword(REGISTERED_LOGIN, PASSWORD)).thenReturn(REGISTERED_USER);
         Mockito.when(userRepository.findOne(VALID_SECURITY_TOKEN.getUser().getId())).thenReturn(REGISTERED_USER);
         Mockito.when(securityTokenRepository.findByToken(VALID_SECURITY_TOKEN.getToken())).thenReturn(VALID_SECURITY_TOKEN);
         Mockito.when(securityTokenRepository.findByToken(INVALID_SECURITY_TOKEN.getToken())).thenReturn(null);
@@ -114,6 +113,8 @@ public class AuthenticationServiceMockTest {
 
     @Test
     public void signIn_registeredUser() throws AuthenticationException {
+        final String passwordHash = "5f4dcc3b5aa765d61d8327deb882cf99"; //for PASSWORD value
+        Mockito.when(userRepository.findByLoginAndPassword(REGISTERED_LOGIN, passwordHash)).thenReturn(REGISTERED_USER);
         Mockito.when(securityTokenRepository.save(any(SecurityToken.class))).thenReturn(VALID_SECURITY_TOKEN);
 
         ArgumentCaptor<SecurityToken> captor = ArgumentCaptor.forClass(SecurityToken.class);
