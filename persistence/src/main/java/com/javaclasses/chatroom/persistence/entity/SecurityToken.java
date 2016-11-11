@@ -1,9 +1,6 @@
 package com.javaclasses.chatroom.persistence.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,13 +9,20 @@ public class SecurityToken {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+
+    @ManyToOne
+    private User user;
+
     private String token;
-    private Long userId;
     private LocalDateTime expirationDate;
 
-    public SecurityToken(String token, Long userId, LocalDateTime expirationDate) {
+    public SecurityToken() {
+
+    }
+
+    public SecurityToken(String token, User user, LocalDateTime expirationDate) {
         this.token = token;
-        this.userId = userId;
+        this.user = user;
         this.expirationDate = expirationDate;
     }
 
@@ -38,12 +42,12 @@ public class SecurityToken {
         this.token = token;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDateTime getExpirationDate() {

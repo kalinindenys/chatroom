@@ -4,6 +4,7 @@ import com.javaclasses.chatroom.persistence.SecurityTokenRepository;
 import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
 import com.javaclasses.chatroom.persistence.entity.User;
+import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
 import com.javaclasses.chatroom.service.DTO.UserDTO;
 import com.javaclasses.chatroom.service.InvalidSecurityTokenException;
 import com.javaclasses.chatroom.service.UserService;
@@ -59,48 +60,48 @@ public class UserServiceMockTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    private final Long USER_ID = 1L;
-    private final String LOGIN = "login";
-    private final String OLD_PASSWORD = "old pass";
-    private final String NEW_PASSWORD = "new pass";
+    private final User USER = new User("login", "password");
+//    private final UserDTO USER_DTO = new UserDTO(1L, USER.getLogin(), USER.getPassword());
 
-    private final UserDTO OLD_USER_DTO = new UserDTO(USER_ID, LOGIN, OLD_PASSWORD);
-    private final UserDTO NEW_USER_DTO = new UserDTO(USER_ID, LOGIN, NEW_PASSWORD);
-    private final User OLD_USER = new User(LOGIN, OLD_PASSWORD);
-    private final User NEW_USER = new User(LOGIN, NEW_PASSWORD);
-
-    private final LocalDateTime VALID_SECURITY_TOKEN_EXPIRATION_DATE = LocalDateTime.now().plusHours(12);
-    private final LocalDateTime EXPIRED_SECURITY_TOKEN_EXPIRATION_DATE = LocalDateTime.now().minusHours(12);
-    private final SecurityToken VALID_SECURITY_TOKEN = new SecurityToken("valid security token", USER_ID, VALID_SECURITY_TOKEN_EXPIRATION_DATE);
-    private final SecurityToken EXPIRED_SECURITY_TOKEN = new SecurityToken("invalid security token", USER_ID, EXPIRED_SECURITY_TOKEN_EXPIRATION_DATE);
+    private final SecurityToken VALID_SECURITY_TOKEN = new SecurityToken("valid security token", USER, LocalDateTime.now().plusHours(1));
+    private final SecurityToken EXPIRED_SECURITY_TOKEN = new SecurityToken("invalid security token", USER, LocalDateTime.now().minusHours(1));
 
     @Before
     public void setUp() throws Exception {
+        USER.setId(1L);
+
         VALID_SECURITY_TOKEN.setId(1L);
         EXPIRED_SECURITY_TOKEN.setId(2L);
 
-        Mockito.when(securityTokenRepository.exists(VALID_SECURITY_TOKEN.getId())).thenReturn(true);
-        Mockito.when(securityTokenRepository.exists(EXPIRED_SECURITY_TOKEN.getId())).thenReturn(false);
+        Mockito.when(securityTokenRepository.findByToken(VALID_SECURITY_TOKEN.getToken())).thenReturn(VALID_SECURITY_TOKEN);
+        Mockito.when(securityTokenRepository.findByToken(EXPIRED_SECURITY_TOKEN.getToken())).thenReturn(null);
     }
 
     @Test
     public void updateUserData_withValidSecurityToken() throws InvalidSecurityTokenException {
-        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        Mockito.when(userRepository.findOne(USER.getId())).thenReturn(USER);
 
-        Mockito.when(userRepository.findOne(USER_ID)).thenReturn(OLD_USER);
+        final ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        final SecurityTokenDTO securityTokenDTO = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getToken());
 
-        userService.updateUserData(VALID_SECURITY_TOKEN, NEW_USER_DTO);
+        userService.updateUserData(securityTokenDTO, new UserDTO(USER.getId(), "new login", "path"));
 
         Mockito.verify(userRepository).save(userCaptor.capture());
-        assertEquals(NEW_USER_DTO.getLogin(), userCaptor.getValue().getLogin());
-        assertEquals(NEW_USER_DTO.getPassword(), userCaptor.getValue().getPassword());
+        assertEquals("new login", userCaptor.getValue().getLogin());
     }
 
     @Test
     public void updateUserData_withInvalidSecurityToken() throws InvalidSecurityTokenException {
         expectedException.expect(InvalidSecurityTokenException.class);
 
-        userService.updateUserData(EXPIRED_SECURITY_TOKEN, NEW_USER_DTO);
+        final SecurityTokenDTO securityTokenDTO = new SecurityTokenDTO(EXPIRED_SECURITY_TOKEN.getToken());
+
+        userService.updateUserData(securityTokenDTO, new UserDTO(USER.getId(), "new login", "path"));
     }
+
+//    @Test
+//    public void updateAvatar() {
+//        userService.updateAvatar();
+//    }
 
 }

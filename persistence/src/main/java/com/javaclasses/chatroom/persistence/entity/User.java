@@ -1,19 +1,26 @@
 package com.javaclasses.chatroom.persistence.entity;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     private String login;
     private String password;
+    private byte[] avatar;
 
     @ManyToMany(mappedBy = "members")
     private List<Chatroom> chatroomList;
+
+    public User() {
+
+    }
 
     public User(Long id, String login, String password, List<Chatroom> chatroomIdList) {
         this.id = id;
@@ -52,6 +59,13 @@ public class User {
 
     public List<Chatroom> getChatroomList() {
         return chatroomList;
+    }
+    public byte[] getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
     }
 
     public void setChatroomList(List<Chatroom> chatroomList) {

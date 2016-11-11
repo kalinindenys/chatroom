@@ -20,37 +20,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-//                    .antMatchers("index.html", "api/signIn").permitAll()
-                    .anyRequest().permitAll().and()
-//                .authorizeRequests()
-//                    .anyRequest().permitAll()
-//                    .antMatchers("/", "/home", "/signin", "index.html").permitAll()
-//                    .antMatchers("index.html/secured").authenticated()
-//                    .anyRequest().authenticated()
-//                    .and()
+                    .antMatchers("/**").permitAll()
+                    .anyRequest().authenticated()
+                    .and()
                 .csrf().disable();
-//                .authorizeRequests()
-//                    .antMatchers("/index.html", "/").permitAll()
-//                    .anyRequest().authenticated();
-
-//                    .and()
-//                .formLogin()
-//                    .loginPage("/client")
-//                    .defaultSuccessUrl("/chats")
-//                    .usernameParameter("client")
-//                    .passwordParameter("password")
-//                    .permitAll();
 
     }
 
     @Autowired
     public void configureAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.jdbcAuthentication().dataSource(dataSource)
-//                .usersByUsernameQuery("select client, password, enabled from users where client=?")
-//                .authoritiesByUsernameQuery("select client, role from user_roles where username=?"
-
-
-
         auth.inMemoryAuthentication()
                 .withUser("1").password("1").roles("USER");
 
