@@ -1,19 +1,16 @@
 package com.javaclasses.chatroom.persistence.entity;
 
-import org.springframework.data.annotation.Id;
-
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 public class Chatroom {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<User> members;
 
     @ManyToMany(fetch = FetchType.LAZY)

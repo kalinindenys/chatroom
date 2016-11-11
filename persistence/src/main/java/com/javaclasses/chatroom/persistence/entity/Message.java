@@ -1,7 +1,5 @@
 package com.javaclasses.chatroom.persistence.entity;
 
-import org.springframework.data.annotation.Id;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -10,9 +8,11 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(targetEntity = User.class,cascade = CascadeType.ALL)
     private User author;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "chatroom_id")
+
+    @ManyToOne(targetEntity = Chatroom.class,cascade = CascadeType.ALL)
     private Chatroom chatroom;
     private String content;
     private LocalDateTime date;
