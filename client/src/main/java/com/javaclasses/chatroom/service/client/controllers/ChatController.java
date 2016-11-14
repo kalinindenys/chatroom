@@ -19,8 +19,8 @@ public class ChatController {
     @PostMapping("/{chatroomId}/sendMessage")
     public ResponseEntity<?> sendMessage(@RequestBody MessageDTO messageDTO,@PathVariable Long chatroomId) {
         try {
-            chatroomService.postMessage(messageDTO);
-            return ResponseEntity.ok(chatroomService.getMessages(messageDTO.getChatroom().getId()));
+            chatroomService.postMessage(messageDTO, chatroomId);
+            return ResponseEntity.ok(chatroomService.getMessages(chatroomId));
         } catch (EmptyMessageException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RequestError(e.getMessage()));

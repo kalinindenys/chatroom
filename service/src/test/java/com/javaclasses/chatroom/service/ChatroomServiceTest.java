@@ -161,14 +161,14 @@ public class ChatroomServiceTest {
 
     @Test
     public void postMessage() throws Exception {
-        chatroomService.postMessage(new MessageDTO(64L, mockUser2, motoChat, "yep", LocalDateTime.now()));
+        chatroomService.postMessage(new MessageDTO(mockUser2, "yep"), motoChat.getId());
 
     }
 
     @Test
     public void postNullMessage() throws Exception {
         try {
-            chatroomService.postMessage(null);
+            chatroomService.postMessage(null, null);
             assert false;
         } catch (NullPointerException npe) {
             assert true;
@@ -178,7 +178,7 @@ public class ChatroomServiceTest {
     @Test
     public void postEmptyMessage() throws Exception {
         try {
-            chatroomService.postMessage(new MessageDTO(64L, mockUser2, motoChat, null, LocalDateTime.now()));
+            chatroomService.postMessage(new MessageDTO(mockUser2, null),motoChat.getId());
             assert false;
         } catch (EmptyMessageException eme) {
             assert true;

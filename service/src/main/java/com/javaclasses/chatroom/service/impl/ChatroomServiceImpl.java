@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -45,12 +46,13 @@ public class ChatroomServiceImpl implements ChatroomService {
         return chatroom.getMembers();
     }
 
-    public void postMessage(MessageDTO message) throws EmptyMessageException {
+    public void postMessage(MessageDTO message, Long chatroomId) throws EmptyMessageException {
         String content = message.getContent();
         if (null == content || content.trim().isEmpty())
             throw new EmptyMessageException(message.toString() + " has empty content");
         else {
-            messageRepository.save(new Message(message.getAuthor(), message.getChatroom(), message.getContent(), message.getDate()));
+            messageRepository.save(new Message(message.getAuthor(), chatroomRepository.findOne(chatroomId), message.getContent(), LocalDateTime.now()));
+            // TODO: 11/14/2016 add MessagePostException
         }
     }
 

@@ -18,7 +18,7 @@ public interface ChatroomService {
 
     Iterable<User> getChatroomMemberList(Long chatroomId);
 
-    void postMessage(MessageDTO message) throws EmptyMessageException;
+    void postMessage(MessageDTO message, Long chatroomId) throws EmptyMessageException;
 
     Page<Chatroom> getAllChatrooms(int pageCount);
 }
