@@ -17,11 +17,13 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -70,6 +72,7 @@ public class ChatroomServiceTest {
     List<Chatroom> chatrooms = new ArrayList<>();
     List<User> users = new ArrayList<>();
     List<Message> messages = new ArrayList<>();
+    List<Chatroom> foundByNameChatrooms = new ArrayList<>();
 
     @Before
     public void setUp() throws Exception {
@@ -116,9 +119,12 @@ public class ChatroomServiceTest {
         Mockito.when(userRepository.findOne(1L)).thenReturn(mockUser1);
         Mockito.when(userRepository.findOne(2L)).thenReturn(mockUser2);
 
-        Mockito.when(chatroomRepository.findAll(chatroomIds)).thenReturn(chatrooms);
+        Mockito.when(chatroomRepository.findAll()).thenReturn(chatrooms);
         Mockito.when(chatroomRepository.findOne(2114L)).thenReturn(motoChat);
 
+
+        foundByNameChatrooms.add(motoChat);
+        Mockito.when(chatroomRepository.findAllByName("Motoclub")).thenReturn(foundByNameChatrooms);
         Mockito.when(messageRepository.findAll(messageIds)).thenReturn(messages);
 
     }
@@ -178,7 +184,7 @@ public class ChatroomServiceTest {
     @Test
     public void postEmptyMessage() throws Exception {
         try {
-            chatroomService.postMessage(new MessageDTO(mockUser2, null),motoChat.getId());
+            chatroomService.postMessage(new MessageDTO(mockUser2, null), motoChat.getId());
             assert false;
         } catch (EmptyMessageException eme) {
             assert true;
@@ -187,7 +193,14 @@ public class ChatroomServiceTest {
 
     @Test
     public void getAllChatroomsTest() throws Exception {
-        chatroomService.getAllChatrooms(1);
+        Iterable<Chatroom> allChatrooms = chatroomService.getAllChatrooms();
+        assertEquals(chatrooms, allChatrooms);
+    }
+
+    @Test
+    public void findChatroomTest() throws Exception {
+        Iterable<Chatroom> chatroom = chatroomService.findChatroom("Motoclub");
+        assertEquals(foundByNameChatrooms, chatroom);
     }
 
 }
