@@ -6,6 +6,7 @@ import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
+import com.javaclasses.chatroom.service.ChatroomNotFoundException;
 import com.javaclasses.chatroom.service.ChatroomService;
 import com.javaclasses.chatroom.service.DTO.MessageDTO;
 import com.javaclasses.chatroom.service.EmptyMessageException;
@@ -26,15 +27,23 @@ public class ChatroomServiceImpl implements ChatroomService {
     @Autowired
     MessageRepository messageRepository;
 
-    public Iterable<Chatroom> getChatroomList(Long userId) {
+    public Iterable<Chatroom> getChatroomList(Long userId) throws ChatroomNotFoundException {
+        if (null == userId || !userRepository.exists(userId)) {
+            String message = "Chatrooms for user with id '" + userId + "' not found";
+            throw new ChatroomNotFoundException(message);
+        }
         return userRepository.findOne(userId).getChatroomList();
     }
 
-    public Chatroom getChatroom(Long chatroomId) {
+    public Chatroom getChatroom(Long chatroomId) throws ChatroomNotFoundException {
+        if (null == chatroomId|| !userRepository.exists(chatroomId)){
+            String message = "Chatrooms for user with id '" + chatroomId + "' not found";
+            throw new ChatroomNotFoundException(message);
+        }
         return chatroomRepository.findOne(chatroomId);
     }
 
-    public Iterable<Chatroom> findChatroom(String name) {
+    public Iterable<Chatroom> findChatroomsByName(String name) {
         return chatroomRepository.findAllByName(name);
     }
 
