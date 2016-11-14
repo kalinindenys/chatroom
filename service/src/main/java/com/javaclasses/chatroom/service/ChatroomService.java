@@ -7,11 +7,11 @@ import com.javaclasses.chatroom.service.DTO.MessageDTO;
 
 
 public interface ChatroomService {
-    Iterable<Chatroom> getChatroomList(Long userid);
+    Iterable<Chatroom> getChatroomList(Long userid) throws ChatroomNotFoundException;
 
-    Chatroom getChatroom(Long chatroomId);
+    Chatroom getChatroom(Long chatroomId) throws ChatroomNotFoundException;
 
-    Iterable<Chatroom> findChatroom(String name);
+    Iterable<Chatroom> findChatroomsByName(String name);
 
     Iterable<Message> getMessages(Long chatroomId);
 
