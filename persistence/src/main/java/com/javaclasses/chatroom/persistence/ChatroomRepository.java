@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChatroomRepository extends PagingAndSortingRepository<Chatroom, Long> {
+    Iterable<Chatroom> findAllByName(String name);
 }
