@@ -13,7 +13,7 @@ public class Chatroom {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "chatroomList")
     private List<User> members;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="chatroom")
     private List<Message> messages;
 
     public Chatroom(String name, List<User> members, List<Message> messages) {

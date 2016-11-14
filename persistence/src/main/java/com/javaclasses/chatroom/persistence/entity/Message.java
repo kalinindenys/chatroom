@@ -12,7 +12,8 @@ public class Message {
     @ManyToOne(targetEntity = User.class,cascade = CascadeType.ALL)
     private User author;
 
-    @ManyToOne(targetEntity = Chatroom.class,cascade = CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="chatroom_id")
     private Chatroom chatroom;
 
     private String content;

@@ -13,7 +13,7 @@ public class User {
     private String password;
     private byte[] avatar;
 
-    @ManyToMany(cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinTable(name="user_chatroom",
             joinColumns={@JoinColumn(name="user_id")},
             inverseJoinColumns={@JoinColumn(name="chatroom_id")})
