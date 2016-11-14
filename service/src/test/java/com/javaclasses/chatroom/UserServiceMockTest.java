@@ -1,7 +1,9 @@
 package com.javaclasses.chatroom;
 
+import com.javaclasses.chatroom.persistence.AvatarDataRepository;
 import com.javaclasses.chatroom.persistence.SecurityTokenRepository;
 import com.javaclasses.chatroom.persistence.UserRepository;
+import com.javaclasses.chatroom.persistence.entity.AvatarData;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
@@ -9,6 +11,7 @@ import com.javaclasses.chatroom.service.DTO.UserDTO;
 import com.javaclasses.chatroom.service.InvalidSecurityTokenException;
 import com.javaclasses.chatroom.service.UserService;
 import com.javaclasses.chatroom.service.impl.UserServiceImpl;
+import com.javaclasses.chatroom.service.tinytypes.FileExtension;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,9 +24,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.StreamUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -48,6 +57,11 @@ public class UserServiceMockTest {
             return Mockito.mock(SecurityTokenRepository.class);
         }
 
+        @Bean
+        public AvatarDataRepository avatarDataRepository() {
+            return Mockito.mock(AvatarDataRepository.class);
+        }
+
     }
 
     @Autowired
@@ -56,12 +70,13 @@ public class UserServiceMockTest {
     private UserRepository userRepository;
     @Autowired
     private SecurityTokenRepository securityTokenRepository;
+    @Autowired
+    private AvatarDataRepository avatarDataRepository;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     private final User USER = new User("login", "password");
-//    private final UserDTO USER_DTO = new UserDTO(1L, USER.getLogin(), USER.getPassword());
 
     private final SecurityToken VALID_SECURITY_TOKEN = new SecurityToken("valid security token", USER, LocalDateTime.now().plusHours(1));
     private final SecurityToken EXPIRED_SECURITY_TOKEN = new SecurityToken("invalid security token", USER, LocalDateTime.now().minusHours(1));
@@ -99,9 +114,28 @@ public class UserServiceMockTest {
         userService.updateUserData(securityTokenDTO, new UserDTO(USER.getId(), "new login", "path"));
     }
 
-//    @Test
-//    public void updateAvatar() {
-//        userService.updateAvatar();
-//    }
+    @Test
+    public void updateAvatar_withValidSecurityToken() throws Exception {
+        final ArgumentCaptor<AvatarData> avatarDataCaptor = ArgumentCaptor.forClass(AvatarData.class);
+        final SecurityTokenDTO securityTokenDTO = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getToken());
+        final File uploadedFile = new File("build.gradle");
+        final InputStream inputStreamFromUploadedFile = new FileInputStream(uploadedFile);
+        final byte[] bytesFromUploadedImage = StreamUtils.copyToByteArray(inputStreamFromUploadedFile);
+
+        userService.updateAvatar(securityTokenDTO, inputStreamFromUploadedFile, new FileExtension("jpg"));
+
+        Mockito.verify(avatarDataRepository).save(avatarDataCaptor.capture());
+        assertTrue(Arrays.equals(bytesFromUploadedImage, avatarDataCaptor.getValue().getAvatar()));
+        assertEquals("jpg",avatarDataCaptor.getValue().getFileExtension());
+    }
+
+    @Test
+    public void updateAvatar_withInvalidSecurityToken() throws Exception {
+        expectedException.expect(InvalidSecurityTokenException.class);
+
+        final SecurityTokenDTO securityTokenDTO = new SecurityTokenDTO(EXPIRED_SECURITY_TOKEN.getToken());
+
+        userService.updateAvatar(securityTokenDTO, new FileInputStream("file.jpg"), new FileExtension("jpg"));
+    }
 
 }

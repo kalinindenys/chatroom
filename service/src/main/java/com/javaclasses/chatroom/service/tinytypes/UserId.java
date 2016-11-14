@@ -2,17 +2,17 @@ package com.javaclasses.chatroom.service.tinytypes;
 
 public class UserId {
 
-    private int userId;
+    private Long userId;
 
-    public UserId(int userId) {
+    public UserId(Long userId) {
         this.userId = userId;
     }
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

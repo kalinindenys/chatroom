@@ -1,8 +1,8 @@
-package com.javaclasses.chatroom.service.client.config;
+package com.javaclasses.chatroom.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -13,7 +13,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -21,6 +20,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories("com.javaclasses.chatroom.persistence")
+@ComponentScan({"com.javaclasses.chatroom"})
 public class SpringDataConfig {
 
     @Bean
@@ -40,7 +40,7 @@ public class SpringDataConfig {
     public DataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/chatroom");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/chatroomTest?createDatabaseIfNotExist=true");
         dataSource.setUsername( "root" );
         dataSource.setPassword( "root" );
         return dataSource;
@@ -63,6 +63,7 @@ public class SpringDataConfig {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        properties.setProperty("hibernate.show_sql", "true");
         return properties;
     }
 

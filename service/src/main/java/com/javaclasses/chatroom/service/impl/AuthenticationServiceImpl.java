@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -33,6 +34,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     @Override
+    @Transactional
     public void signUp(Login login, Password password, Password passwordConfirmation) throws LoginAlreadyExistsException, PasswordConfirmationException {
         if (userRepository.findByLogin(login.getLogin()) != null) {
             throw new LoginAlreadyExistsException("User with login '" + login + "' already exists");
@@ -46,6 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
+    @Transactional
     public SecurityTokenDTO signIn(Login login, Password password) throws AuthenticationException {
         final User user = userRepository.findByLoginAndPassword(login.getLogin(), hashPassword(password.getPassword()));
 
@@ -61,6 +64,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
+    @Transactional
     public void signOut(SecurityTokenDTO securityToken) {
         final SecurityToken persistentToken = securityTokenRepository.findByToken(securityToken.getToken());
 

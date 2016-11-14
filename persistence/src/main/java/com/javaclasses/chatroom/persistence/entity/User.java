@@ -9,7 +9,7 @@ public class User {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private AvatarData avatarData;
     private String login;
     private String password;

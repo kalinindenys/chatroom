@@ -1,9 +1,7 @@
 package com.javaclasses.chatroom.persistence.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.InputStream;
 import java.sql.Blob;
 
 @Entity
@@ -13,13 +11,15 @@ public class AvatarData {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    private Blob avatar;
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] avatar;
     private String fileExtension;
 
     public AvatarData() {
     }
 
-    public AvatarData(Blob avatar, String fileExtension) {
+    public AvatarData(byte[] avatar, String fileExtension) {
         this.avatar = avatar;
         this.fileExtension = fileExtension;
     }
@@ -32,11 +32,11 @@ public class AvatarData {
         this.id = id;
     }
 
-    public Blob getAvatar() {
+    public byte[] getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(Blob avatar) {
+    public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
     }
 
