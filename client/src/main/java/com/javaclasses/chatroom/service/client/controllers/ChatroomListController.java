@@ -34,8 +34,13 @@ public class ChatroomListController {
 
     @GetMapping("/selectChatroom/{chatroomId}")
     public ResponseEntity<?> selectChatroom(@PathVariable Long chatroomId) {
-        Chatroom chatroom = chatroomService.getChatroom(chatroomId);
-        return ResponseEntity.ok(chatroom);
+        try {
+            Chatroom chatroom = chatroomService.getChatroom(chatroomId);
+            return ResponseEntity.ok(chatroom);
+        } catch (ChatroomNotFoundException e) {
+            LOGGER.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RequestError(e.getMessage()));
+        }
     }
 
     @GetMapping("/findChatroom/{chatroomName}")
