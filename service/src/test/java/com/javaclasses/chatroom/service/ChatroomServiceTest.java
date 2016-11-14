@@ -7,30 +7,30 @@ import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.DTO.MessageDTO;
-import com.javaclasses.chatroom.service.EmptyMessageException;
 import com.javaclasses.chatroom.service.impl.ChatroomServiceImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.Page;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.slf4j.LoggerFactory.getLogger;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class ChatroomServiceTest {
+    private static final Logger LOGGER = getLogger(ChatroomServiceTest.class);
 
     @Configuration
     static class ChatroomServiceTestContextConfiguration {
@@ -66,13 +66,13 @@ public class ChatroomServiceTest {
     @Autowired
     private ChatroomRepository chatroomRepository;
 
-    User mockUser1 = new User("vasyazmeypro", "66613666", null);
-    User mockUser2 = new User("rusty228", "qwerty123", null);
-    Chatroom motoChat = new Chatroom("Motoclub", null, null);
-    List<Chatroom> chatrooms = new ArrayList<>();
-    List<User> users = new ArrayList<>();
-    List<Message> messages = new ArrayList<>();
-    List<Chatroom> foundByNameChatrooms = new ArrayList<>();
+    private User mockUser1 = new User("vasyazmeypro", "66613666", null);
+    private User mockUser2 = new User("rusty228", "qwerty123", null);
+    private Chatroom motoChat = new Chatroom("Motoclub", null, null);
+    private List<Chatroom> chatrooms = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
+    private List<Chatroom> foundByNameChatrooms = new ArrayList<>();
 
     @Before
     public void setUp() throws Exception {
@@ -121,6 +121,7 @@ public class ChatroomServiceTest {
 
         Mockito.when(chatroomRepository.findAll()).thenReturn(chatrooms);
         Mockito.when(chatroomRepository.findOne(2114L)).thenReturn(motoChat);
+        Mockito.when(userRepository.exists(1L)).thenReturn(true);
 
 
         foundByNameChatrooms.add(motoChat);
@@ -136,7 +137,7 @@ public class ChatroomServiceTest {
     @Test
     public void getChatroomList() throws Exception {
         Iterable<Chatroom> chatroomList = chatroomService.getChatroomList(1L);
-        System.out.println(chatroomList);
+        LOGGER.info(chatroomList.toString());
         assertEquals(chatroomList, this.chatrooms);
 
     }
@@ -144,7 +145,7 @@ public class ChatroomServiceTest {
     @Test
     public void getChatroom() throws Exception {
         Chatroom chatroom = chatroomService.getChatroom(2114L);
-        System.out.println(chatroom);
+        LOGGER.info(chatroom.toString());
         assertEquals(chatroom, this.motoChat);
 
     }
@@ -152,7 +153,7 @@ public class ChatroomServiceTest {
     @Test
     public void getMessages() throws Exception {
         Iterable<Message> messages = chatroomService.getMessages(2114L);
-        System.out.println(messages);
+        LOGGER.info(messages.toString());
         assertEquals(messages, this.messages);
 
     }
@@ -160,7 +161,7 @@ public class ChatroomServiceTest {
     @Test
     public void getChatroomMemberList() throws Exception {
         Iterable<User> chatroomMemberList = chatroomService.getChatroomMemberList(2114L);
-        System.out.println(chatroomMemberList);
+        LOGGER.info(chatroomMemberList.toString());
         assertEquals(chatroomMemberList, this.motoChat.getMembers());
 
     }
@@ -194,12 +195,14 @@ public class ChatroomServiceTest {
     @Test
     public void getAllChatroomsTest() throws Exception {
         Iterable<Chatroom> allChatrooms = chatroomService.getAllChatrooms();
+        LOGGER.info(allChatrooms.toString());
         assertEquals(chatrooms, allChatrooms);
     }
 
     @Test
     public void findChatroomTest() throws Exception {
-        Iterable<Chatroom> chatroom = chatroomService.findChatroom("Motoclub");
+        Iterable<Chatroom> chatroom = chatroomService.findChatroomsByName("Motoclub");
+        LOGGER.info(chatroom.toString());
         assertEquals(foundByNameChatrooms, chatroom);
     }
 
