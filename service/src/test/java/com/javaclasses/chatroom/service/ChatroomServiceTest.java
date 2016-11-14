@@ -64,9 +64,9 @@ public class ChatroomServiceTest {
     @Autowired
     private ChatroomRepository chatroomRepository;
 
-    User mockUser1 = new User(1L, "vasyazmeypro", "66613666", null);
-    User mockUser2 = new User(2L, "rusty228", "qwerty123", null);
-    Chatroom motoChat = new Chatroom(2114L, "Motoclub", null, null);
+    User mockUser1 = new User("vasyazmeypro", "66613666", null);
+    User mockUser2 = new User("rusty228", "qwerty123", null);
+    Chatroom motoChat = new Chatroom("Motoclub", null, null);
     List<Chatroom> chatrooms = new ArrayList<>();
     List<User> users = new ArrayList<>();
     List<Message> messages = new ArrayList<>();
@@ -92,17 +92,17 @@ public class ChatroomServiceTest {
         users.add(mockUser2);
 
 
-        Chatroom nyChat = new Chatroom(2112L, "New York chat", users, null);
-        Chatroom animeChat = new Chatroom(2113L, "Anime kawaii", users, null);
+        Chatroom nyChat = new Chatroom("New York chat", users, null);
+        Chatroom animeChat = new Chatroom("Anime kawaii", users, null);
         motoChat.setMembers(users);
         chatrooms.add(nyChat);
         chatrooms.add(animeChat);
         chatrooms.add(motoChat);
 
 
-        messages.add(new Message(61L, mockUser1, motoChat, "Hello", LocalDateTime.now()));
-        messages.add(new Message(62L, mockUser2, motoChat, "Bye", LocalDateTime.now()));
-        messages.add(new Message(63L, mockUser1, motoChat, "Ok", LocalDateTime.now()));
+        messages.add(new Message(mockUser1, motoChat, "Hello", LocalDateTime.now()));
+        messages.add(new Message(mockUser2, motoChat, "Bye", LocalDateTime.now()));
+        messages.add(new Message(mockUser1, motoChat, "Ok", LocalDateTime.now()));
 
         List<Chatroom> chatsOfMockUser = new ArrayList<>();
         chatsOfMockUser.add(nyChat);

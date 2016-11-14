@@ -17,8 +17,7 @@ public class Message {
     private String content;
     private LocalDateTime date;
 
-    public Message(Long id, User author, Chatroom chatroomId, String content, LocalDateTime date) {
-        this.id = id;
+    public Message(User author, Chatroom chatroomId, String content, LocalDateTime date) {
         this.author = author;
         this.chatroom = chatroomId;
         this.content = content;

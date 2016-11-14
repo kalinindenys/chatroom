@@ -20,8 +20,7 @@ public class User {
 
     }
 
-    public User(Long id, String login, String password, List<Chatroom> chatroomIdList) {
-        this.id = id;
+    public User(String login, String password, List<Chatroom> chatroomIdList) {
         this.login = login;
         this.password = password;
         this.chatroomList = chatroomIdList;

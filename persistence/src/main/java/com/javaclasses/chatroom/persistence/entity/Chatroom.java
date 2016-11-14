@@ -17,8 +17,7 @@ public class Chatroom {
     @JoinColumn(name = "message_id")
     private List<Message> messages;
 
-    public Chatroom(Long id, String name, List<User> members, List<Message> messages) {
-        this.id = id;
+    public Chatroom(String name, List<User> members, List<Message> messages) {
         this.name = name;
         this.members = members;
         this.messages = messages;
