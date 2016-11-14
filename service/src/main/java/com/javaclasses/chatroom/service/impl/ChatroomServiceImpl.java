@@ -50,7 +50,7 @@ public class ChatroomServiceImpl implements ChatroomService {
         if (null == content || content.trim().isEmpty())
             throw new EmptyMessageException(message.toString() + " has empty content");
         else {
-            messageRepository.save(new Message(message.getId(), message.getAuthor(), message.getChatroom(), message.getContent(), message.getDate()));
+            messageRepository.save(new Message(message.getAuthor(), message.getChatroom(), message.getContent(), message.getDate()));
         }
     }
 
