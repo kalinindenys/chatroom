@@ -14,6 +14,7 @@ public class Message {
 
     @ManyToOne(targetEntity = Chatroom.class,cascade = CascadeType.ALL)
     private Chatroom chatroom;
+
     private String content;
     private LocalDateTime date;
 

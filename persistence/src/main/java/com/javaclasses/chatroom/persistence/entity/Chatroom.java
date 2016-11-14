@@ -10,11 +10,10 @@ public class Chatroom {
     private Long id;
     private String name;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "chatroomList")
     private List<User> members;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "message_id")
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Message> messages;
 
     public Chatroom(String name, List<User> members, List<Message> messages) {
