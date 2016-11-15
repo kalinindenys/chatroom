@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.service;
+package com.javaclasses.chatroom.service.mockito;
 
 import com.javaclasses.chatroom.persistence.ChatroomRepository;
 import com.javaclasses.chatroom.persistence.MessageRepository;
@@ -6,7 +6,9 @@ import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
+import com.javaclasses.chatroom.service.ChatroomService;
 import com.javaclasses.chatroom.service.DTO.MessageDTO;
+import com.javaclasses.chatroom.service.EmptyMessageException;
 import com.javaclasses.chatroom.service.impl.ChatroomServiceImpl;
 import org.junit.After;
 import org.junit.Before;
@@ -29,8 +31,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class ChatroomServiceTest {
-    private static final Logger LOGGER = getLogger(ChatroomServiceTest.class);
+public class MockitoChatroomServiceTest {
+    private static final Logger LOGGER = getLogger(MockitoChatroomServiceTest.class);
 
     @Configuration
     static class ChatroomServiceTestContextConfiguration {
@@ -122,6 +124,7 @@ public class ChatroomServiceTest {
         Mockito.when(chatroomRepository.findAll()).thenReturn(chatrooms);
         Mockito.when(chatroomRepository.findOne(2114L)).thenReturn(motoChat);
         Mockito.when(userRepository.exists(1L)).thenReturn(true);
+        Mockito.when(chatroomRepository.exists(2114L)).thenReturn(true);
 
 
         foundByNameChatrooms.add(motoChat);
