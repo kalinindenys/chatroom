@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom;
+package com.javaclasses.chatroom.mock;
 
 import com.javaclasses.chatroom.persistence.AvatarDataRepository;
 import com.javaclasses.chatroom.persistence.SecurityTokenRepository;
@@ -34,6 +34,7 @@ import java.util.Arrays;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.times;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
@@ -93,7 +94,7 @@ public class UserServiceMockTest {
     }
 
     @Test
-    public void updateUserData_withValidSecurityToken() throws InvalidSecurityTokenException {
+    public void updateUserData_withValidSecurityToken() throws Exception {
         Mockito.when(userRepository.findOne(USER.getId())).thenReturn(USER);
 
         final ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
@@ -106,7 +107,7 @@ public class UserServiceMockTest {
     }
 
     @Test
-    public void updateUserData_withInvalidSecurityToken() throws InvalidSecurityTokenException {
+    public void updateUserData_withInvalidSecurityToken() throws Exception {
         expectedException.expect(InvalidSecurityTokenException.class);
 
         final SecurityTokenDTO securityTokenDTO = new SecurityTokenDTO(EXPIRED_SECURITY_TOKEN.getToken());
@@ -116,17 +117,16 @@ public class UserServiceMockTest {
 
     @Test
     public void updateAvatar_withValidSecurityToken() throws Exception {
-        final ArgumentCaptor<AvatarData> avatarDataCaptor = ArgumentCaptor.forClass(AvatarData.class);
+        final ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
         final SecurityTokenDTO securityTokenDTO = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getToken());
-        final File uploadedFile = new File("build.gradle");
-        final InputStream inputStreamFromUploadedFile = new FileInputStream(uploadedFile);
-        final byte[] bytesFromUploadedImage = StreamUtils.copyToByteArray(inputStreamFromUploadedFile);
+        final File uploadedFile = new File("src/test/resources/images/uploaded.jpg");
+        final byte[] bytesFromUploadedImage = StreamUtils.copyToByteArray(new FileInputStream(uploadedFile));
 
-        userService.updateAvatar(securityTokenDTO, inputStreamFromUploadedFile, new FileExtension("jpg"));
+        userService.updateAvatar(securityTokenDTO, new FileInputStream(uploadedFile), new FileExtension("jpg"));
 
-        Mockito.verify(avatarDataRepository).save(avatarDataCaptor.capture());
-        assertTrue(Arrays.equals(bytesFromUploadedImage, avatarDataCaptor.getValue().getAvatar()));
-        assertEquals("jpg",avatarDataCaptor.getValue().getFileExtension());
+        Mockito.verify(userRepository).save(argumentCaptor.capture());
+        assertTrue(Arrays.equals(bytesFromUploadedImage, argumentCaptor.getValue().getAvatarData().getAvatar()));
+        assertEquals("jpg", argumentCaptor.getValue().getAvatarData().getFileExtension());
     }
 
     @Test
@@ -135,7 +135,7 @@ public class UserServiceMockTest {
 
         final SecurityTokenDTO securityTokenDTO = new SecurityTokenDTO(EXPIRED_SECURITY_TOKEN.getToken());
 
-        userService.updateAvatar(securityTokenDTO, new FileInputStream("file.jpg"), new FileExtension("jpg"));
+        userService.updateAvatar(securityTokenDTO, new FileInputStream("src/test/resources/images/uploaded.jpg"), new FileExtension("jpg"));
     }
 
 }

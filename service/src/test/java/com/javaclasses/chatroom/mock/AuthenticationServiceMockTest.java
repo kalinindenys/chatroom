@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom;
+package com.javaclasses.chatroom.mock;
 
 import com.javaclasses.chatroom.persistence.SecurityTokenRepository;
 import com.javaclasses.chatroom.persistence.UserRepository;
@@ -18,7 +18,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.method.P;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -68,7 +67,7 @@ public class AuthenticationServiceMockTest {
     private final User UNREGISTERED_USER = new User(UNREGISTERED_LOGIN, PASSWORD);
 
     private final SecurityToken VALID_SECURITY_TOKEN = new SecurityToken("valid security token", REGISTERED_USER, LocalDateTime.now().plusHours(1));
-    private final SecurityToken INVALID_SECURITY_TOKEN = new SecurityToken("expired security token", REGISTERED_USER, LocalDateTime.now().minusHours(1));
+    private final SecurityToken EXPIRED_SECURITY_TOKEN = new SecurityToken("expired security token", REGISTERED_USER, LocalDateTime.now().minusHours(1));
 
     @Before
     public void setUp() throws Exception {
@@ -76,12 +75,12 @@ public class AuthenticationServiceMockTest {
         UNREGISTERED_USER.setId(2L);
 
         VALID_SECURITY_TOKEN.setId(1L);
-        INVALID_SECURITY_TOKEN.setId(2L);
+        EXPIRED_SECURITY_TOKEN.setId(2L);
 
         Mockito.when(userRepository.findByLogin(REGISTERED_LOGIN)).thenReturn(REGISTERED_USER);
         Mockito.when(userRepository.findOne(VALID_SECURITY_TOKEN.getUser().getId())).thenReturn(REGISTERED_USER);
         Mockito.when(securityTokenRepository.findByToken(VALID_SECURITY_TOKEN.getToken())).thenReturn(VALID_SECURITY_TOKEN);
-        Mockito.when(securityTokenRepository.findByToken(INVALID_SECURITY_TOKEN.getToken())).thenReturn(null);
+        Mockito.when(securityTokenRepository.findByToken(EXPIRED_SECURITY_TOKEN.getToken())).thenReturn(null);
     }
 
     @Test
@@ -108,7 +107,7 @@ public class AuthenticationServiceMockTest {
         expectedException.expect(LoginAlreadyExistsException.class);
         expectedException.expectMessage("User with login '" + REGISTERED_LOGIN + "' already exists");
 
-        authenticationService.signUp(new Login(REGISTERED_LOGIN), new Password(PASSWORD), new Password(PASSWORD + "123"));
+        authenticationService.signUp(new Login(REGISTERED_LOGIN), new Password(PASSWORD), new Password(PASSWORD));
     }
 
     @Test
@@ -159,7 +158,7 @@ public class AuthenticationServiceMockTest {
     public void receiveUserDTO_withInvalidSecurityToken() throws InvalidSecurityTokenException {
         expectedException.expect(InvalidSecurityTokenException.class);
 
-        authenticationService.retrieveUser(new SecurityTokenDTO(INVALID_SECURITY_TOKEN.getToken()));
+        authenticationService.retrieveUser(new SecurityTokenDTO(EXPIRED_SECURITY_TOKEN.getToken()));
     }
 
 }

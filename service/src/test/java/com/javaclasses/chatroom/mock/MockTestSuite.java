@@ -1,5 +1,7 @@
-package com.javaclasses.chatroom;
+package com.javaclasses.chatroom.mock;
 
+import com.javaclasses.chatroom.mock.AuthenticationServiceMockTest;
+import com.javaclasses.chatroom.mock.UserServiceMockTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -9,5 +11,5 @@ import org.junit.runners.Suite;
         AuthenticationServiceMockTest.class,
         UserServiceMockTest.class
 })
-public class ServicesTestSuite {
+public class MockTestSuite {
 }

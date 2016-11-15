@@ -46,8 +46,6 @@ public class SpringTestConfig {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
         dataSource.setUrl("jdbc:hsqldb:mem:chatroomTest");
-        dataSource.setUsername( "sa" );
-        dataSource.setPassword( "" );
         return dataSource;
     }
 
@@ -68,7 +66,6 @@ public class SpringTestConfig {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
-        properties.setProperty("hibernate.archive.autodetection", "class, hbm");
         properties.setProperty("hibernate.show_sql", "true");
         return properties;
     }

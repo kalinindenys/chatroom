@@ -12,7 +12,7 @@ public class AvatarData {
     private Long id;
 
     @Lob
-    @Column(columnDefinition = "LONGBLOB")
+    @Column(columnDefinition = "BLOB")
     private byte[] avatar;
     private String fileExtension;
 
