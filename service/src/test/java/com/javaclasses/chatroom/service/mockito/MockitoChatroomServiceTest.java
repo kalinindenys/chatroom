@@ -22,8 +22,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -105,9 +106,9 @@ public class MockitoChatroomServiceTest {
         chatrooms.add(motoChat);
 
 
-        messages.add(new Message(mockUser1, motoChat, "Hello", LocalDateTime.now()));
-        messages.add(new Message(mockUser2, motoChat, "Bye", LocalDateTime.now()));
-        messages.add(new Message(mockUser1, motoChat, "Ok", LocalDateTime.now()));
+        messages.add(new Message(mockUser1, motoChat, "Hello", Date.from(Instant.now())));
+        messages.add(new Message(mockUser2, motoChat, "Bye", Date.from(Instant.now())));
+        messages.add(new Message(mockUser1, motoChat, "Ok", Date.from(Instant.now())));
 
         List<Chatroom> chatsOfMockUser = new ArrayList<>();
         chatsOfMockUser.add(nyChat);
