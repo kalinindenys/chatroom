@@ -1,7 +1,9 @@
 package com.javaclasses.chatroom.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 public class Message {
@@ -17,9 +19,11 @@ public class Message {
     private Chatroom chatroom;
 
     private String content;
-    private LocalDateTime date;
 
-    public Message(User author, Chatroom chatroomId, String content, LocalDateTime date) {
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm a z")
+    private Date date;
+
+    public Message(User author, Chatroom chatroomId, String content, Date date) {
         this.author = author;
         this.chatroom = chatroomId;
         this.content = content;
@@ -53,11 +57,11 @@ public class Message {
         this.content = content;
     }
 
-    public LocalDateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
