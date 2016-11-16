@@ -11,7 +11,6 @@ public class AvatarData {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @Lob
     @Column(columnDefinition = "BLOB")
     private byte[] avatar;
     private String fileExtension;

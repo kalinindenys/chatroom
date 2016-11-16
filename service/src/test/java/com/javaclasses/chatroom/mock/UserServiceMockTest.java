@@ -6,12 +6,14 @@ import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.AvatarData;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
 import com.javaclasses.chatroom.persistence.entity.User;
+import com.javaclasses.chatroom.service.AvatarNotFoundException;
 import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
 import com.javaclasses.chatroom.service.DTO.UserDTO;
 import com.javaclasses.chatroom.service.InvalidSecurityTokenException;
 import com.javaclasses.chatroom.service.UserService;
 import com.javaclasses.chatroom.service.impl.UserServiceImpl;
 import com.javaclasses.chatroom.service.tinytypes.FileExtension;
+import com.javaclasses.chatroom.service.tinytypes.UserId;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -78,9 +80,10 @@ public class UserServiceMockTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     private final User USER = new User("login", "password");
-
     private final SecurityToken VALID_SECURITY_TOKEN = new SecurityToken("valid security token", USER, LocalDateTime.now().plusHours(1));
     private final SecurityToken EXPIRED_SECURITY_TOKEN = new SecurityToken("invalid security token", USER, LocalDateTime.now().minusHours(1));
+    private final SecurityTokenDTO VALID_SECURITY_TOKEN_DTO = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getToken());
+    private final SecurityTokenDTO EXPIRED_SECURITY_TOKEN_DTO = new SecurityTokenDTO(EXPIRED_SECURITY_TOKEN.getToken());
 
     @Before
     public void setUp() throws Exception {
@@ -98,9 +101,8 @@ public class UserServiceMockTest {
         Mockito.when(userRepository.findOne(USER.getId())).thenReturn(USER);
 
         final ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        final SecurityTokenDTO securityTokenDTO = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getToken());
 
-        userService.updateUserData(securityTokenDTO, new UserDTO(USER.getId(), "new login", "path"));
+        userService.updateUserData(VALID_SECURITY_TOKEN_DTO, new UserDTO(USER.getId(), "new login", "path"));
 
         Mockito.verify(userRepository).save(userCaptor.capture());
         assertEquals("new login", userCaptor.getValue().getLogin());
@@ -110,19 +112,16 @@ public class UserServiceMockTest {
     public void updateUserData_withInvalidSecurityToken() throws Exception {
         expectedException.expect(InvalidSecurityTokenException.class);
 
-        final SecurityTokenDTO securityTokenDTO = new SecurityTokenDTO(EXPIRED_SECURITY_TOKEN.getToken());
-
-        userService.updateUserData(securityTokenDTO, new UserDTO(USER.getId(), "new login", "path"));
+        userService.updateUserData(EXPIRED_SECURITY_TOKEN_DTO, new UserDTO(USER.getId(), "new login", "path"));
     }
 
     @Test
     public void updateAvatar_withValidSecurityToken() throws Exception {
         final ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
-        final SecurityTokenDTO securityTokenDTO = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getToken());
         final File uploadedFile = new File("src/test/resources/images/uploaded.jpg");
         final byte[] bytesFromUploadedImage = StreamUtils.copyToByteArray(new FileInputStream(uploadedFile));
 
-        userService.updateAvatar(securityTokenDTO, new FileInputStream(uploadedFile), new FileExtension("jpg"));
+        userService.updateAvatar(VALID_SECURITY_TOKEN_DTO, new FileInputStream(uploadedFile), new FileExtension("jpg"));
 
         Mockito.verify(userRepository).save(argumentCaptor.capture());
         assertTrue(Arrays.equals(bytesFromUploadedImage, argumentCaptor.getValue().getAvatarData().getAvatar()));
@@ -133,9 +132,37 @@ public class UserServiceMockTest {
     public void updateAvatar_withInvalidSecurityToken() throws Exception {
         expectedException.expect(InvalidSecurityTokenException.class);
 
-        final SecurityTokenDTO securityTokenDTO = new SecurityTokenDTO(EXPIRED_SECURITY_TOKEN.getToken());
+        userService.updateAvatar(EXPIRED_SECURITY_TOKEN_DTO, new FileInputStream("src/test/resources/images/uploaded.jpg"), new FileExtension("jpg"));
+    }
 
-        userService.updateAvatar(securityTokenDTO, new FileInputStream("src/test/resources/images/uploaded.jpg"), new FileExtension("jpg"));
+    @Test
+    public void receiveAvatar_withInvalidSecurityToken() throws Exception {
+        expectedException.expect(InvalidSecurityTokenException.class);
+
+        userService.receiveAvatar(EXPIRED_SECURITY_TOKEN_DTO, new UserId(1L));
+    }
+
+    @Test
+    public void receiveAvatar_whichNotUploadedYet() throws Exception {
+        expectedException.expect(AvatarNotFoundException.class);
+
+        userService.receiveAvatar(VALID_SECURITY_TOKEN_DTO, new UserId(USER.getId()));
+    }
+
+    @Test
+    public void receiveAvatar_positiveTest() throws Exception {
+        final User userWithAvatar = new User("log", "pass");
+        final File avatar = new File("src/test/resources/images/uploaded.jpg");
+        final AvatarData expectedAvatarData = new AvatarData(StreamUtils.copyToByteArray(new FileInputStream(avatar)), "jpg");
+        userWithAvatar.setAvatarData(expectedAvatarData);
+        userWithAvatar.setId(111L);
+
+        Mockito.when(userRepository.findOne(userWithAvatar.getId())).thenReturn(userWithAvatar);
+
+        final AvatarData actualAvatarData = userService.receiveAvatar(VALID_SECURITY_TOKEN_DTO, new UserId(userWithAvatar.getId()));
+
+        assertTrue(Arrays.equals(expectedAvatarData.getAvatar(), actualAvatarData.getAvatar()));
+        assertEquals(expectedAvatarData.getFileExtension(), actualAvatarData.getFileExtension());
     }
 
 }

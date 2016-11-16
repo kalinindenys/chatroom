@@ -5,14 +5,12 @@ import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.AvatarData;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
 import com.javaclasses.chatroom.persistence.entity.User;
-import com.javaclasses.chatroom.service.AvatarSaveException;
+import com.javaclasses.chatroom.service.*;
 import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
 import com.javaclasses.chatroom.service.DTO.UserDTO;
-import com.javaclasses.chatroom.service.InvalidSecurityTokenException;
-import com.javaclasses.chatroom.service.PasswordConfirmationException;
-import com.javaclasses.chatroom.service.UserService;
 import com.javaclasses.chatroom.service.tinytypes.FileExtension;
 import com.javaclasses.chatroom.service.tinytypes.Password;
+import com.javaclasses.chatroom.service.tinytypes.UserId;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,10 +76,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public void resetPassword(SecurityTokenDTO securityToken, Password oldPassword, Password newPassword, Password passwordConfirmation)
-            throws InvalidSecurityTokenException, PasswordConfirmationException {
+    public AvatarData receiveAvatar(SecurityTokenDTO securityToken, UserId userId) throws InvalidSecurityTokenException, AvatarNotFoundException {
+        if (securityTokenRepository.findByToken(securityToken.getToken()) == null) {
+            throw new InvalidSecurityTokenException();
+        }
 
+        AvatarData avatarData = userRepository.findOne(userId.getUserId()).getAvatarData();
+
+        if (avatarData == null) {
+            throw new AvatarNotFoundException("User have no avatar");
+        } else {
+            return avatarData;
+        }
     }
-
 }
