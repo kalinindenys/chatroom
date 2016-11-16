@@ -1,8 +1,7 @@
-package com.javaclasses.chatroom.service.mockDB;
+package com.javaclasses.chatroom.service.mockDB.config;
 
-import com.github.springtestdbunit.bean.DatabaseConfigBean;
-import com.github.springtestdbunit.bean.DatabaseDataSourceConnectionFactoryBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -21,8 +20,8 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories("com.javaclasses.chatroom.persistence")
+@ComponentScan({"com.javaclasses.chatroom"})
 public class MockDBConfiguration {
-
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -37,7 +36,7 @@ public class MockDBConfiguration {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf){
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(emf);
 
@@ -45,7 +44,7 @@ public class MockDBConfiguration {
     }
 
     @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
@@ -62,19 +61,5 @@ public class MockDBConfiguration {
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
         return properties;
-    }
-
-    @Bean
-    DatabaseConfigBean configBean() {
-        DatabaseConfigBean databaseConfigBean = new DatabaseConfigBean();
-        databaseConfigBean.setSkipOracleRecyclebinTables(true);
-        return databaseConfigBean;
-    }
-
-    @Bean
-    DatabaseDataSourceConnectionFactoryBean factoryBean() {
-        DatabaseDataSourceConnectionFactoryBean connectionFactoryBean = new DatabaseDataSourceConnectionFactoryBean();
-        connectionFactoryBean.setDatabaseConfig(configBean());
-        return connectionFactoryBean;
     }
 }
