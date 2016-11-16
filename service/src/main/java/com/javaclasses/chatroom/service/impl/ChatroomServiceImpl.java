@@ -12,8 +12,11 @@ import com.javaclasses.chatroom.service.DTO.MessageDTO;
 import com.javaclasses.chatroom.service.EmptyMessageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,6 +29,10 @@ public class ChatroomServiceImpl implements ChatroomService {
 
     @Autowired
     MessageRepository messageRepository;
+
+    public Iterable<Chatroom> getAllChatrooms() {
+        return chatroomRepository.findAll();
+    }
 
     public Iterable<Chatroom> getChatroomList(Long userId) throws ChatroomNotFoundException {
         if (null == userId || !userRepository.exists(userId)) {
@@ -52,22 +59,29 @@ public class ChatroomServiceImpl implements ChatroomService {
         return messages;
     }
 
-    public Iterable<User> getChatroomMemberList(Long chatroomId) {
-        Chatroom chatroom = chatroomRepository.findOne(chatroomId);
-        return chatroom.getMembers();
-    }
-
+    @Transactional
     public void postMessage(MessageDTO message, Long chatroomId) throws EmptyMessageException {
         String content = message.getContent();
         if (null == content || content.trim().isEmpty())
             throw new EmptyMessageException(message.toString() + " has empty content");
         else {
-            messageRepository.save(new Message(message.getAuthor(), chatroomRepository.findOne(chatroomId), message.getContent(), LocalDateTime.now()));
+            //for DBUnit test implementation
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
+            try {
+                Date date = formatter.parse("11-November-2008 13:23:10");
+                messageRepository.save(new Message(message.getAuthor(), chatroomRepository.findOne(chatroomId), message.getContent(), date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            //original implementation
+            //messageRepository.save(new Message(message.getAuthor(), chatroomRepository.findOne(chatroomId), message.getContent(), Date.from(Instant.now())));
             // TODO: 11/14/2016 add MessagePostException
         }
     }
 
-    public Iterable<Chatroom> getAllChatrooms() {
-        return chatroomRepository.findAll();
+    public Iterable<User> getChatroomMemberList(Long chatroomId) {
+        Chatroom chatroom = chatroomRepository.findOne(chatroomId);
+        return chatroom.getMembers();
     }
 }
