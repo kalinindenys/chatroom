@@ -16,6 +16,9 @@ public class Chatroom {
     @OneToMany(mappedBy="chatroom")
     private List<Message> messages;
 
+    public Chatroom() {
+    }
+
     public Chatroom(String name, List<User> members, List<Message> messages) {
         this.name = name;
         this.members = members;
