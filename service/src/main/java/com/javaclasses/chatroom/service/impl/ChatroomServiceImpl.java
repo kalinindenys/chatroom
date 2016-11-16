@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -65,17 +66,17 @@ public class ChatroomServiceImpl implements ChatroomService {
         if (null == content || content.trim().isEmpty())
             throw new EmptyMessageException(message.toString() + " has empty content");
         else {
-            //for DBUnit test implementation
+       /*     //for DBUnit test implementation
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
             try {
                 Date date = formatter.parse("11-November-2008 13:23:10");
                 messageRepository.save(new Message(message.getAuthor(), chatroomRepository.findOne(chatroomId), message.getContent(), date));
             } catch (ParseException e) {
                 e.printStackTrace();
-            }
+            }*/
 
             //original implementation
-            //messageRepository.save(new Message(message.getAuthor(), chatroomRepository.findOne(chatroomId), message.getContent(), Date.from(Instant.now())));
+            messageRepository.save(new Message(message.getAuthor(), chatroomRepository.findOne(chatroomId), message.getContent(), Date.from(Instant.now())));
             // TODO: 11/14/2016 add MessagePostException
         }
     }
