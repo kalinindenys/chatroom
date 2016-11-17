@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.util.Date;
+
 @RestController
 @RequestMapping("/api/chat")
 public class ChatController {
@@ -19,7 +22,7 @@ public class ChatController {
     @PostMapping("/{chatroomId}/sendMessage")
     public ResponseEntity<?> sendMessage(@RequestBody MessageDTO messageDTO,@PathVariable Long chatroomId) {
         try {
-            chatroomService.postMessage(messageDTO, chatroomId);
+            chatroomService.postMessage(messageDTO, chatroomId, Date.from(Instant.now()));
             return ResponseEntity.ok(chatroomService.getMessages(chatroomId));
         } catch (EmptyMessageException e) {
             e.printStackTrace();

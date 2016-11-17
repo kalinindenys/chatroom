@@ -5,6 +5,8 @@ import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.DTO.MessageDTO;
 
+import java.util.Date;
+
 
 public interface ChatroomService {
     Iterable<Chatroom> getAllChatrooms();
@@ -17,7 +19,7 @@ public interface ChatroomService {
 
     Iterable<Message> getMessages(Long chatroomId);
 
-    void postMessage(MessageDTO message, Long chatroomId) throws EmptyMessageException;
+    void postMessage(MessageDTO message, Long chatroomId, Date date) throws EmptyMessageException;
 
     Iterable<User> getChatroomMemberList(Long chatroomId);
 }

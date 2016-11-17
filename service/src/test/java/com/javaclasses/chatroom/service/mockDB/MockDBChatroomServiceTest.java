@@ -26,6 +26,10 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static org.slf4j.LoggerFactory.getLogger;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -95,7 +99,7 @@ public class MockDBChatroomServiceTest {
     @DatabaseSetup("/InitialData.xml")
     @ExpectedDatabase("/PostMessageResultData.xml")
     public void postMessage() throws Exception {
-        chatroomService.postMessage(new MessageDTO(userRepository.findOne(0L), "Added message from test"), 20L);
+        chatroomService.postMessage(new MessageDTO(userRepository.findOne(0L), "Added message from test"), 20L, setDefaultDate());
 
     }
 
@@ -104,7 +108,7 @@ public class MockDBChatroomServiceTest {
     @DatabaseSetup("/InitialData.xml")
     public void postNullMessage() throws Exception {
         try {
-            chatroomService.postMessage(null, null);
+            chatroomService.postMessage(null, null, null);
             assert false;
         } catch (NullPointerException npe) {
             LOGGER.info("NullPointerException has been caught");
@@ -116,7 +120,7 @@ public class MockDBChatroomServiceTest {
     @DatabaseSetup("/InitialData.xml")
     public void postEmptyMessage() throws Exception {
         try {
-            chatroomService.postMessage(new MessageDTO(userRepository.findOne(2L), null), 20L);
+            chatroomService.postMessage(new MessageDTO(userRepository.findOne(2L), null), 20L, setDefaultDate());
         } catch (EmptyMessageException eme) {
             LOGGER.info("EmptyMessageException has been caught");
         }
@@ -143,5 +147,16 @@ public class MockDBChatroomServiceTest {
         chatroom = chatroomService.findChatroomsByName("chatroom");
         LOGGER.info("findChatroomTest:  by 'chatroom'" + chatroom.toString());
 
+    }
+
+    private Date setDefaultDate(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
+        try {
+            Date date = formatter.parse("11-November-2008 13:23:10");
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
