@@ -172,14 +172,14 @@ public class MockitoChatroomServiceTest {
 
     @Test
     public void postMessage() throws Exception {
-        chatroomService.postMessage(new MessageDTO(mockUser2, "yep"), motoChat.getId());
+        chatroomService.postMessage(new MessageDTO(mockUser2, "yep"), motoChat.getId(), Date.from(Instant.now()));
 
     }
 
     @Test
     public void postNullMessage() throws Exception {
         try {
-            chatroomService.postMessage(null, null);
+            chatroomService.postMessage(null, null, null);
             assert false;
         } catch (NullPointerException npe) {
             assert true;
@@ -189,7 +189,7 @@ public class MockitoChatroomServiceTest {
     @Test
     public void postEmptyMessage() throws Exception {
         try {
-            chatroomService.postMessage(new MessageDTO(mockUser2, null), motoChat.getId());
+            chatroomService.postMessage(new MessageDTO(mockUser2, null), motoChat.getId(), Date.from(Instant.now()));
             assert false;
         } catch (EmptyMessageException eme) {
             assert true;
