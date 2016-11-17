@@ -35,7 +35,7 @@ public class ChatroomServiceImpl implements ChatroomService {
         return chatroomRepository.findAll();
     }
 
-    public Iterable<Chatroom> getChatroomList(Long userId) throws ChatroomNotFoundException {
+    public Iterable<Chatroom> getUserChatroomList(Long userId) throws ChatroomNotFoundException {
         if (null == userId || !userRepository.exists(userId)) {
             String message = "Chatrooms for user with id '" + userId + "' not found";
             throw new ChatroomNotFoundException(message);

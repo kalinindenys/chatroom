@@ -63,7 +63,7 @@ public class MockDBChatroomServiceTest {
     @DatabaseSetup("/InitialData.xml")
     @ExpectedDatabase("/InitialData.xml")
     public void getChatroomList() throws Exception {
-        Iterable<Chatroom> chatroomList = chatroomService.getChatroomList(1L);
+        Iterable<Chatroom> chatroomList = chatroomService.getUserChatroomList(1L);
         LOGGER.info(chatroomList.toString());
 
     }

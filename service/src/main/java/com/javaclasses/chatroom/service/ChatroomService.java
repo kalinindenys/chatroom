@@ -11,7 +11,7 @@ import java.util.Date;
 public interface ChatroomService {
     Iterable<Chatroom> getAllChatrooms();
 
-    Iterable<Chatroom> getChatroomList(Long userid) throws ChatroomNotFoundException;
+    Iterable<Chatroom> getUserChatroomList(Long userid) throws ChatroomNotFoundException;
 
     Chatroom getChatroom(Long chatroomId) throws ChatroomNotFoundException;
 
