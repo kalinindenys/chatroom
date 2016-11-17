@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Avatardata id="500" avatar="null" fileExtension="jpg"/>
+
+    <User id="0" login="login0" password="password0" avatarData_id="500"/>
+    <User id="1" login="login1" password="password1" avatarData_id="500"/>
+    <User id="2" login="login2" password="password2" avatarData_id="500"/>
+    <User id="3" login="login3" password="password3" avatarData_id="500"/>
+    <User id="4" login="login4" password="password4" avatarData_id="500"/>
+    <User id="5" login="login5" password="password5" avatarData_id="500"/>
+    <User id="6" login="login6" password="password6" avatarData_id="500"/>
+    <User id="7" login="login7" password="password7" avatarData_id="500"/>
+    <User id="8" login="login8" password="password8" avatarData_id="500"/>
+    <User id="9" login="login9" password="password9" avatarData_id="500"/>
+
+
+    <Chatroom id="20" name="chatroom20"/>
+    <Chatroom id="21" name="chatroom21"/>
+    <Chatroom id="22" name="chatroom22"/>
+    <Chatroom id="23" name="chatroom23"/>
+    <Chatroom id="24" name="chatroom24"/>
+    <Chatroom id="25" name="chatroom25"/>
+    <Chatroom id="26" name="chatroom26"/>
+    <Chatroom id="27" name="chatroom27"/>
+    <Chatroom id="28" name="chatroom28"/>
+    <Chatroom id="29" name="chatroom29"/>
+
+    <Message id="50" content="content50_author0_chatroom20" date="2008-11-11 13:23:00.0" author_id="0" chatroom_id="20"/>
+    <Message id="51" content="content51_author1_chatroom20" date="2008-11-11 13:23:01.0" author_id="1" chatroom_id="20"/>
+    <Message id="52" content="content52_author2_chatroom20" date="2008-11-11 13:23:02.0" author_id="2" chatroom_id="20"/>
+    <Message id="53" content="content53_author1_chatroom20" date="2008-11-11 13:23:03.0" author_id="1" chatroom_id="20"/>
+    <Message id="54" content="content54_author2_chatroom20" date="2008-11-11 13:23:04.0" author_id="2" chatroom_id="20"/>
+    <Message id="55" content="content55_author2_chatroom20" date="2008-11-11 13:23:05.0" author_id="2" chatroom_id="20"/>
+    <Message id="56" content="content56_author2_chatroom20" date="2008-11-11 13:23:06.0" author_id="2" chatroom_id="20"/>
+    <Message id="57" content="content57_author1_chatroom20" date="2008-11-11 13:23:07.0" author_id="1" chatroom_id="20"/>
+    <Message id="58" content="content58_author1_chatroom20" date="2008-11-11 13:23:08.0" author_id="1" chatroom_id="20"/>
+    <Message id="59" content="content59_author2_chatroom20" date="2008-11-11 13:23:09.0" author_id="2" chatroom_id="20"/>
+
+    <SecurityToken id="100" expirationDate="2008-11-11 13:00:00" token="token100" user_id="0"/>
+    <SecurityToken id="101" expirationDate="2008-11-11 13:00:00" token="token101" user_id="0"/>
+    <SecurityToken id="102" expirationDate="2008-11-11 13:00:00" token="token102" user_id="0"/>
+
+    <User_Chatroom user_id="0" chatroom_id="20"/>
+    <User_Chatroom user_id="0" chatroom_id="21"/>
+    <User_Chatroom user_id="0" chatroom_id="22"/>
+    <User_Chatroom user_id="0" chatroom_id="23"/>
+    <User_Chatroom user_id="0" chatroom_id="24"/>
+    <User_Chatroom user_id="1" chatroom_id="20"/>
+    <User_Chatroom user_id="1" chatroom_id="25"/>
+    <User_Chatroom user_id="1" chatroom_id="26"/>
+    <User_Chatroom user_id="2" chatroom_id="20"/>
+    <User_Chatroom user_id="2" chatroom_id="21"/>
+    <User_Chatroom user_id="2" chatroom_id="29"/>
+    <User_Chatroom user_id="3" chatroom_id="28"/>
+    <User_Chatroom user_id="3" chatroom_id="29"/>
+    <User_Chatroom user_id="4" chatroom_id="26"/>
+    <User_Chatroom user_id="4" chatroom_id="27"/>
+    <User_Chatroom user_id="5" chatroom_id="24"/>
+    <User_Chatroom user_id="5" chatroom_id="25"/>
+    <User_Chatroom user_id="6" chatroom_id="23"/>
+    <User_Chatroom user_id="7" chatroom_id="22"/>
+    <User_Chatroom user_id="8" chatroom_id="21"/>
+
+</dataset>

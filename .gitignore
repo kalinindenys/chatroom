@@ -6,3 +6,6 @@
 /gradle/
 /gradlew.bat
 /.gradle/
+/client/src/main/webapp/npm-debug.log
+/client/src/main/webapp/node_modules/
+/npm-debug.log

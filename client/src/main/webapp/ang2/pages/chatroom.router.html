@@ -1,0 +1,18 @@
+    <nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li><a [routerLink]="['/']">Home</a></li>
+            <li><a [routerLink]="['/signin']"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            <li><a [routerLink]="['/secured']">This is secured page</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Username
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a [routerLink]="['/user']">My Account</a></li>
+                    <li><a [routerLink]="['/']">My Chatrooms</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+<router-outlet></router-outlet>

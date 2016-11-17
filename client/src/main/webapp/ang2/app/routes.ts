@@ -1,0 +1,37 @@
+import { SignedInGuard } from './signed-in.guard';
+
+import { ChatroomComponent } from './chatroom.component';
+import { UserComponent } from './user.component';
+import { LoginFormComponent } from './loginform.component'
+import { SecuredComponent } from './secured.component'
+
+export const routes = [
+
+    {
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full'
+    },
+
+    {
+        path: 'home',
+        component: ChatroomComponent,
+    },
+
+    {
+        path: 'signin',
+        component: LoginFormComponent
+    },
+
+    {
+        path: 'secured',
+        component: SecuredComponent,
+        canActivate: [SignedInGuard]
+    },
+
+    {
+        path: 'user',
+        component: UserComponent,
+    }
+
+];

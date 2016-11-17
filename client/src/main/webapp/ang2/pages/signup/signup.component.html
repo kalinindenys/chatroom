@@ -1,0 +1,10 @@
+<h1>Sign up</h1>
+
+<form [formGroup]="form" onsubmit="signUp(form.value)" novalidate>
+
+    <div class="form-group" [class.has-danger]="!login.valid && login.touched">
+        <label for="login">Login:</label>
+        <input type="text" id="login">
+    </div>
+
+</form>
