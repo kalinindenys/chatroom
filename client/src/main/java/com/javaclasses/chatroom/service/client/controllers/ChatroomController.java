@@ -13,8 +13,8 @@ import java.time.Instant;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/api/chat")
-public class ChatController {
+@RequestMapping("/api/chatroom")
+public class ChatroomController {
 
     @Autowired
     private ChatroomService chatroomService;
