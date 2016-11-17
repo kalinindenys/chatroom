@@ -8,15 +8,16 @@ import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.ChatroomNotFoundException;
 import com.javaclasses.chatroom.service.ChatroomService;
+import com.javaclasses.chatroom.service.DTO.ChatroomName;
 import com.javaclasses.chatroom.service.DTO.MessageDTO;
 import com.javaclasses.chatroom.service.EmptyMessageException;
+import com.javaclasses.chatroom.service.tinytypes.ChatroomId;
+import com.javaclasses.chatroom.service.tinytypes.UserId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class ChatroomServiceImpl implements ChatroomService {
     }
 
     public Chatroom getChatroom(Long chatroomId) throws ChatroomNotFoundException {
-        if (null == chatroomId|| !chatroomRepository.exists(chatroomId)){
+        if (null == chatroomId || !chatroomRepository.exists(chatroomId)) {
             String message = "Chatrooms for user with id '" + chatroomId + "' not found";
             throw new ChatroomNotFoundException(message);
         }
@@ -74,5 +75,12 @@ public class ChatroomServiceImpl implements ChatroomService {
     public Iterable<User> getChatroomMemberList(Long chatroomId) {
         Chatroom chatroom = chatroomRepository.findOne(chatroomId);
         return chatroom.getMembers();
+    }
+
+    @Transactional
+    public void createChatroom(ChatroomName chatroomName, UserId ownerId) {
+        Chatroom chatroom = chatroomRepository.save(new Chatroom(chatroomName.getName()));
+        chatroomRepository.save(chatroom);
+        // TODO: 11/17/2016 add owner role
     }
 }

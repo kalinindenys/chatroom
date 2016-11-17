@@ -11,9 +11,12 @@ import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.ChatroomService;
+import com.javaclasses.chatroom.service.DTO.ChatroomName;
 import com.javaclasses.chatroom.service.DTO.MessageDTO;
 import com.javaclasses.chatroom.service.EmptyMessageException;
 import com.javaclasses.chatroom.service.mockDB.config.MockDBConfiguration;
+import com.javaclasses.chatroom.service.tinytypes.ChatroomId;
+import com.javaclasses.chatroom.service.tinytypes.UserId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -105,7 +108,7 @@ public class MockDBChatroomServiceTest {
 
     @Test
     @DatabaseSetup("/InitialData.xml")
-    @DatabaseSetup("/InitialData.xml")
+    @ExpectedDatabase("/InitialData.xml")
     public void postNullMessage() throws Exception {
         try {
             chatroomService.postMessage(null, null, null);
@@ -117,7 +120,7 @@ public class MockDBChatroomServiceTest {
 
     @Test
     @DatabaseSetup("/InitialData.xml")
-    @DatabaseSetup("/InitialData.xml")
+    @ExpectedDatabase("/InitialData.xml")
     public void postEmptyMessage() throws Exception {
         try {
             chatroomService.postMessage(new MessageDTO(userRepository.findOne(2L), null), 20L, setDefaultDate());
@@ -128,7 +131,7 @@ public class MockDBChatroomServiceTest {
 
     @Test
     @DatabaseSetup("/InitialData.xml")
-    @DatabaseSetup("/InitialData.xml")
+    @ExpectedDatabase("/InitialData.xml")
     public void getAllChatroomsTest() throws Exception {
         Iterable<Chatroom> allChatrooms = chatroomService.getAllChatrooms();
         LOGGER.info(allChatrooms.toString());
@@ -136,7 +139,7 @@ public class MockDBChatroomServiceTest {
 
     @Test
     @DatabaseSetup("/InitialData.xml")
-    @DatabaseSetup("/InitialData.xml")
+    @ExpectedDatabase("/InitialData.xml")
     public void findChatroomTest() throws Exception {
         Iterable<Chatroom> chatroom = chatroomService.findChatroomsByName("chatroom20");
         LOGGER.info("findChatroomTest: " + chatroom.toString());
@@ -149,7 +152,15 @@ public class MockDBChatroomServiceTest {
 
     }
 
-    private Date setDefaultDate(){
+    @Test
+    @DatabaseSetup("/InitialData.xml")
+    @ExpectedDatabase("/CreateChatroomResultData.xml")
+    public void createChatroom() throws Exception {
+        chatroomService.createChatroom(new ChatroomName("created Chatroom"), new UserId(0L));
+    }
+
+
+    private Date setDefaultDate() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
         try {
             Date date = formatter.parse("11-November-2008 13:23:10");

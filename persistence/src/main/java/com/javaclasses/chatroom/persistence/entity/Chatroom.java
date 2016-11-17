@@ -1,22 +1,27 @@
 package com.javaclasses.chatroom.persistence.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Chatroom {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY, mappedBy = "chatroomList")
-    private List<User> members;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "chatroomList")
+    private List<User> members = new ArrayList<>();
 
-    @OneToMany(mappedBy="chatroom")
+    @OneToMany(mappedBy = "chatroom")
     private List<Message> messages;
 
     public Chatroom() {
+    }
+
+    public Chatroom(String name) {
+        this.name = name;
     }
 
     public Chatroom(String name, List<User> members, List<Message> messages) {
@@ -55,6 +60,10 @@ public class Chatroom {
 
     public void setMembers(List<User> members) {
         this.members = members;
+    }
+
+    public void addMember(User user) {
+        members.add(user);
     }
 
     @Override

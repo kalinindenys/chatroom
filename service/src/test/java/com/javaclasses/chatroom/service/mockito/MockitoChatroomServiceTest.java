@@ -7,9 +7,11 @@ import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.ChatroomService;
+import com.javaclasses.chatroom.service.DTO.ChatroomName;
 import com.javaclasses.chatroom.service.DTO.MessageDTO;
 import com.javaclasses.chatroom.service.EmptyMessageException;
 import com.javaclasses.chatroom.service.impl.ChatroomServiceImpl;
+import com.javaclasses.chatroom.service.tinytypes.UserId;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -71,7 +73,7 @@ public class MockitoChatroomServiceTest {
 
     private User mockUser1 = new User("vasyazmeypro", "66613666", null);
     private User mockUser2 = new User("rusty228", "qwerty123", null);
-    private Chatroom motoChat = new Chatroom("Motoclub", null, null);
+    private Chatroom motoChat = new Chatroom("Motoclub");
     private List<Chatroom> chatrooms = new ArrayList<>();
     private List<User> users = new ArrayList<>();
     private List<Message> messages = new ArrayList<>();
@@ -98,8 +100,10 @@ public class MockitoChatroomServiceTest {
         users.add(mockUser2);
 
 
-        Chatroom nyChat = new Chatroom("New York chat", users, null);
-        Chatroom animeChat = new Chatroom("Anime kawaii", users, null);
+        Chatroom nyChat = new Chatroom("New York chat");
+        nyChat.setMembers(users);
+        Chatroom animeChat = new Chatroom("Anime kawaii");
+        animeChat.setMembers(users);
         motoChat.setMembers(users);
         chatrooms.add(nyChat);
         chatrooms.add(animeChat);
@@ -204,10 +208,15 @@ public class MockitoChatroomServiceTest {
     }
 
     @Test
-    public void findChatroomTest() throws Exception {
+    public void findChatroom() throws Exception {
         Iterable<Chatroom> chatroom = chatroomService.findChatroomsByName("Motoclub");
         LOGGER.info(chatroom.toString());
         assertEquals(foundByNameChatrooms, chatroom);
+    }
+
+    @Test
+    public void createChatroom(){
+        chatroomService.createChatroom(new ChatroomName("Rock"),new UserId(1L));
     }
 
 }
