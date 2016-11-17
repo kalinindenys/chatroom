@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.service.mockito;
+package com.javaclasses.chatroom.mock;
 
 import com.javaclasses.chatroom.persistence.ChatroomRepository;
 import com.javaclasses.chatroom.persistence.MessageRepository;

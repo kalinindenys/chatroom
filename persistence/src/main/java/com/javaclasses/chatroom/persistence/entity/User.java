@@ -7,18 +7,18 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private AvatarData avatarData;
     private String login;
     private String password;
+    @OneToOne(cascade = CascadeType.ALL)
+    private AvatarData avatarData;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinTable(name="user_chatroom",
-            joinColumns={@JoinColumn(name="user_id")},
-            inverseJoinColumns={@JoinColumn(name="chatroom_id")})
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "user_chatroom",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "chatroom_id")})
     private List<Chatroom> chatroomList;
 
     public User() {
@@ -30,6 +30,7 @@ public class User {
         this.password = password;
         this.chatroomList = chatroomIdList;
     }
+
     public User(String login, String password) {
         this.login = login;
         this.password = password;
@@ -62,12 +63,13 @@ public class User {
     public List<Chatroom> getChatroomList() {
         return chatroomList;
     }
-    public byte[] getAvatar() {
-        return avatar;
-    }
 
     public void setAvatarData(AvatarData avatarData) {
         this.avatarData = avatarData;
+    }
+
+    public AvatarData getAvatarData() {
+        return avatarData;
     }
 
     public void setChatroomList(List<Chatroom> chatroomList) {

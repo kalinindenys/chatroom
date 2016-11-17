@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.mockDB;
+package com.javaclasses.chatroom.DBUnit;
 
 
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
@@ -14,7 +14,7 @@ import com.javaclasses.chatroom.service.ChatroomService;
 import com.javaclasses.chatroom.service.DTO.ChatroomName;
 import com.javaclasses.chatroom.service.DTO.MessageDTO;
 import com.javaclasses.chatroom.service.EmptyMessageException;
-import com.javaclasses.chatroom.mockDB.config.MockDBConfiguration;
+import com.javaclasses.chatroom.DBUnit.config.MockDBConfiguration;
 import com.javaclasses.chatroom.service.tinytypes.UserId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,18 +41,14 @@ import static org.slf4j.LoggerFactory.getLogger;
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
         TransactionDbUnitTestExecutionListener.class})
-public class MockDBChatroomServiceTest {
-    private static final Logger LOGGER = getLogger(MockDBChatroomServiceTest.class);
+public class DBUnitChatroomServiceTest {
+    private static final Logger LOGGER = getLogger(DBUnitChatroomServiceTest.class);
 
 
     @Autowired
     private ChatroomService chatroomService;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private MessageRepository messageRepository;
-    @Autowired
-    private ChatroomRepository chatroomRepository;
 
     @Test
     @DatabaseSetup("/InitialData.xml")
