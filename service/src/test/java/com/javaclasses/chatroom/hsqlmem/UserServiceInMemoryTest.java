@@ -1,6 +1,6 @@
 package com.javaclasses.chatroom.hsqlmem;
 
-import com.javaclasses.chatroom.config.SpringTestConfig;
+import com.javaclasses.chatroom.config.SpringDataTestConfig;
 import com.javaclasses.chatroom.persistence.SecurityTokenRepository;
 import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.AvatarData;
@@ -33,7 +33,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { SpringTestConfig.class })
+@ContextConfiguration(classes = { SpringDataTestConfig.class })
 @Transactional
 public class UserServiceInMemoryTest {
 
@@ -48,16 +48,14 @@ public class UserServiceInMemoryTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     private User USER;
-    private SecurityToken VALID_SECURITY_TOKEN;
-    private final SecurityToken EXPIRED_SECURITY_TOKEN = new SecurityToken("invalid security token", USER, LocalDateTime.now().minusHours(1));
     private SecurityTokenDTO VALID_SECURITY_TOKEN_DTO;
-    private final SecurityTokenDTO EXPIRED_SECURITY_TOKEN_DTO = new SecurityTokenDTO(EXPIRED_SECURITY_TOKEN.getToken());
+    private final SecurityTokenDTO EXPIRED_SECURITY_TOKEN_DTO = new SecurityTokenDTO("expired security token");
 
     @Before
     public void setUp() throws Exception {
         USER = userRepository.save(new User("login", "password"));
-        VALID_SECURITY_TOKEN = securityTokenRepository.save(new SecurityToken("sec token", USER, LocalDateTime.now().plusHours(1)));
-        VALID_SECURITY_TOKEN_DTO = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getToken());
+        final SecurityToken validSecurityToken = securityTokenRepository.save(new SecurityToken("sec token", USER, LocalDateTime.now().plusHours(1)));
+        VALID_SECURITY_TOKEN_DTO = new SecurityTokenDTO(validSecurityToken.getToken());
     }
 
     @Test

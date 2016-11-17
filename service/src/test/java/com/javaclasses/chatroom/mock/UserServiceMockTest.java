@@ -81,19 +81,13 @@ public class UserServiceMockTest {
 
     private final User USER = new User("login", "password");
     private final SecurityToken VALID_SECURITY_TOKEN = new SecurityToken("valid security token", USER, LocalDateTime.now().plusHours(1));
-    private final SecurityToken EXPIRED_SECURITY_TOKEN = new SecurityToken("invalid security token", USER, LocalDateTime.now().minusHours(1));
     private final SecurityTokenDTO VALID_SECURITY_TOKEN_DTO = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getToken());
-    private final SecurityTokenDTO EXPIRED_SECURITY_TOKEN_DTO = new SecurityTokenDTO(EXPIRED_SECURITY_TOKEN.getToken());
+    private final SecurityTokenDTO EXPIRED_SECURITY_TOKEN_DTO = new SecurityTokenDTO("expired security token");
 
     @Before
     public void setUp() throws Exception {
-        USER.setId(1L);
-
-        VALID_SECURITY_TOKEN.setId(1L);
-        EXPIRED_SECURITY_TOKEN.setId(2L);
-
-        Mockito.when(securityTokenRepository.findByToken(VALID_SECURITY_TOKEN.getToken())).thenReturn(VALID_SECURITY_TOKEN);
-        Mockito.when(securityTokenRepository.findByToken(EXPIRED_SECURITY_TOKEN.getToken())).thenReturn(null);
+        Mockito.when(securityTokenRepository.findByToken(VALID_SECURITY_TOKEN_DTO.getToken())).thenReturn(VALID_SECURITY_TOKEN);
+        Mockito.when(securityTokenRepository.findByToken(EXPIRED_SECURITY_TOKEN_DTO.getToken())).thenReturn(null);
     }
 
     @Test

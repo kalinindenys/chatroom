@@ -26,7 +26,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableJpaRepositories("com.javaclasses.chatroom.persistence")
 @ComponentScan({"com.javaclasses.chatroom"})
-public class SpringTestConfig {
+public class SpringDataTestConfig {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -64,7 +64,7 @@ public class SpringTestConfig {
 
     private Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("hibernate.hbm2ddl.auto", "create");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
         properties.setProperty("hibernate.show_sql", "true");
         return properties;

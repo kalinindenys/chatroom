@@ -1,8 +1,11 @@
 package com.javaclasses.chatroom.service.client.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -23,6 +26,9 @@ import java.util.Properties;
 @EnableJpaRepositories("com.javaclasses.chatroom.persistence")
 public class SpringDataConfig {
 
+    @Autowired
+    private Environment environment;
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -41,8 +47,8 @@ public class SpringDataConfig {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/chatroom");
-        dataSource.setUsername( "root" );
-        dataSource.setPassword( "root" );
+        dataSource.setUsername("root");
+        dataSource.setPassword("root");
         return dataSource;
     }
 
@@ -59,7 +65,7 @@ public class SpringDataConfig {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-    Properties additionalProperties() {
+    private Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
