@@ -123,7 +123,7 @@ public class UserServiceMockTest {
 
         userService.updateAvatar(VALID_SECURITY_TOKEN_DTO, new FileInputStream(uploadedFile), new FileExtension("jpg"));
 
-        Mockito.verify(userRepository).save(argumentCaptor.capture());
+        Mockito.verify(userRepository, times(2)).save(argumentCaptor.capture());
         assertTrue(Arrays.equals(bytesFromUploadedImage, argumentCaptor.getValue().getAvatarData().getAvatar()));
         assertEquals("jpg", argumentCaptor.getValue().getAvatarData().getFileExtension());
     }
