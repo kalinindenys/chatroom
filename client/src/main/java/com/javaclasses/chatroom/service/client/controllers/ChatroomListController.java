@@ -21,10 +21,10 @@ public class ChatroomListController {
     @Autowired
     private ChatroomService chatroomService;
 
-    @GetMapping("/getChatroomList/{userId}")
-    public ResponseEntity<?> getChatroomList(@PathVariable Long userId) {
+    @GetMapping("/getMyChatrooms/{userId}")
+    public ResponseEntity<?> getMyChatroomList(@PathVariable Long userId) {
         try {
-            Iterable<Chatroom> chatroomList = chatroomService.getChatroomList(userId);
+            Iterable<Chatroom> chatroomList = chatroomService.getUserChatroomList(userId);
             return ResponseEntity.ok(chatroomList);
         } catch (ChatroomNotFoundException e) {
             LOGGER.info(e.getMessage());
@@ -44,8 +44,14 @@ public class ChatroomListController {
     }
 
     @GetMapping("/findChatroom/{chatroomName}")
-    public ResponseEntity<?> selectChatroom(@PathVariable String name) {
+    public ResponseEntity<?> findChatroom(@PathVariable String name) {
         Iterable<Chatroom> chatroomsByName = chatroomService.findChatroomsByName(name);
+        return ResponseEntity.ok(chatroomsByName);
+    }
+
+    @GetMapping("/showAllChatrooms")
+    public ResponseEntity<?> selectChatroom() {
+        Iterable<Chatroom> chatroomsByName = chatroomService.getAllChatrooms();
         return ResponseEntity.ok(chatroomsByName);
     }
 
