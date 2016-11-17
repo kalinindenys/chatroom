@@ -9,9 +9,11 @@ public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private AvatarData avatarData;
     private String login;
     private String password;
-    private byte[] avatar;
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinTable(name="user_chatroom",
@@ -64,8 +66,8 @@ public class User {
         return avatar;
     }
 
-    public void setAvatar(byte[] avatar) {
-        this.avatar = avatar;
+    public void setAvatarData(AvatarData avatarData) {
+        this.avatarData = avatarData;
     }
 
     public void setChatroomList(List<Chatroom> chatroomList) {

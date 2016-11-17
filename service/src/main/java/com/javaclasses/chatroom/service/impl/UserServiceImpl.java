@@ -2,24 +2,31 @@ package com.javaclasses.chatroom.service.impl;
 
 import com.javaclasses.chatroom.persistence.SecurityTokenRepository;
 import com.javaclasses.chatroom.persistence.UserRepository;
+import com.javaclasses.chatroom.persistence.entity.AvatarData;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
 import com.javaclasses.chatroom.persistence.entity.User;
+import com.javaclasses.chatroom.service.*;
 import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
 import com.javaclasses.chatroom.service.DTO.UserDTO;
-import com.javaclasses.chatroom.service.InvalidSecurityTokenException;
-import com.javaclasses.chatroom.service.PasswordConfirmationException;
-import com.javaclasses.chatroom.service.UserService;
+import com.javaclasses.chatroom.service.tinytypes.FileExtension;
 import com.javaclasses.chatroom.service.tinytypes.Password;
+import com.javaclasses.chatroom.service.tinytypes.UserId;
+import org.hibernate.Hibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.*;
+import java.sql.Blob;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private final static Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     UserRepository userRepository;
@@ -27,6 +34,7 @@ public class UserServiceImpl implements UserService {
     SecurityTokenRepository securityTokenRepository;
 
     @Override
+    @Transactional
     public void updateUserData(SecurityTokenDTO securityToken, UserDTO user) throws InvalidSecurityTokenException {
         if (securityTokenRepository.findByToken(securityToken.getToken()) == null) {
             throw new InvalidSecurityTokenException();
@@ -44,7 +52,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateAvatar(SecurityTokenDTO securityToken, byte[] avatar) throws InvalidSecurityTokenException {
+    @Transactional
+    public void updateAvatar(SecurityTokenDTO securityToken, InputStream avatarData, FileExtension fileExtension) throws InvalidSecurityTokenException, AvatarSaveException {
         final SecurityToken persistentToken = securityTokenRepository.findByToken(securityToken.getToken());
 
         if (persistentToken == null) {
@@ -52,14 +61,32 @@ public class UserServiceImpl implements UserService {
         }
 
         final User user = persistentToken.getUser();
-        user.setAvatar(avatar);
+        try {
+            user.setAvatarData(new AvatarData(StreamUtils.copyToByteArray(avatarData), fileExtension.getFileExtension()));
+        } catch (IOException e) {
+            if (LOG.isErrorEnabled())
+            {
+                LOG.error(e.getMessage());
+            }
+
+            throw new AvatarSaveException("Can not save avatar in storage");
+        }
 
         userRepository.save(user);
     }
 
     @Override
-    public void resetPassword(SecurityTokenDTO securityToken, Password oldPassword, Password newPassword, Password passwordConfirmation)
-            throws InvalidSecurityTokenException, PasswordConfirmationException {
+    public AvatarData receiveAvatar(SecurityTokenDTO securityToken, UserId userId) throws InvalidSecurityTokenException, AvatarNotFoundException {
+        if (securityTokenRepository.findByToken(securityToken.getToken()) == null) {
+            throw new InvalidSecurityTokenException();
+        }
 
+        AvatarData avatarData = userRepository.findOne(userId.getUserId()).getAvatarData();
+
+        if (avatarData == null) {
+            throw new AvatarNotFoundException("User have no avatar");
+        } else {
+            return avatarData;
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.service.mockDB.config;
+package com.javaclasses.chatroom.mockDB.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

@@ -3,12 +3,10 @@ package com.javaclasses.chatroom.service.DTO;
 public class UserDTO {
     private Long id;
     private String login;
-    private String avatarURL;
 
-    public UserDTO(Long id, String login, String avatarURL) {
+    public UserDTO(Long id, String login) {
         this.id = id;
         this.login = login;
-        this.avatarURL = avatarURL;
     }
 
     public Long getId() {
@@ -27,11 +25,4 @@ public class UserDTO {
         this.login = login;
     }
 
-    public String getAvatarURL() {
-        return avatarURL;
-    }
-
-    public void setAvatarURL(String avatarURL) {
-        this.avatarURL = avatarURL;
-    }
 }

@@ -1,8 +1,10 @@
 package com.javaclasses.chatroom.service.client.controllers;
 
+import com.javaclasses.chatroom.service.AvatarSaveException;
 import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
 import com.javaclasses.chatroom.service.InvalidSecurityTokenException;
 import com.javaclasses.chatroom.service.UserService;
+import com.javaclasses.chatroom.service.tinytypes.FileExtension;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,13 +37,17 @@ public class UserController {
 
     @PostMapping("/updateAvatar")
     public ResponseEntity<?> updateAvatar(@RequestBody MultipartFile multipartFile, SecurityTokenDTO securityToken) {
+
         try {
-            userService.updateAvatar(securityToken, multipartFile.getBytes());
+            userService.updateAvatar(securityToken, multipartFile.getInputStream(), new FileExtension(multipartFile.getContentType()));
         } catch (InvalidSecurityTokenException e) {
+            e.printStackTrace();
+        } catch (AvatarSaveException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 

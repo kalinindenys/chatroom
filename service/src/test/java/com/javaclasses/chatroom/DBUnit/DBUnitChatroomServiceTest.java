@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.service.mockDB;
+package com.javaclasses.chatroom.mockDB;
 
 
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
@@ -14,8 +14,7 @@ import com.javaclasses.chatroom.service.ChatroomService;
 import com.javaclasses.chatroom.service.DTO.ChatroomName;
 import com.javaclasses.chatroom.service.DTO.MessageDTO;
 import com.javaclasses.chatroom.service.EmptyMessageException;
-import com.javaclasses.chatroom.service.mockDB.config.MockDBConfiguration;
-import com.javaclasses.chatroom.service.tinytypes.ChatroomId;
+import com.javaclasses.chatroom.mockDB.config.MockDBConfiguration;
 import com.javaclasses.chatroom.service.tinytypes.UserId;
 import org.junit.Test;
 import org.junit.runner.RunWith;

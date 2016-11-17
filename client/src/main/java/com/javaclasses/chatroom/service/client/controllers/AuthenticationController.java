@@ -76,12 +76,4 @@ public class AuthenticationController {
         }
     }
 
-//    @PostMapping("test")
-//    public String test() {
-//        final JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
-//        ObjectNode parent = nodeFactory.objectNode();
-//        parent.put("success", false);
-//        return "{\"yolo\": true}";
-//    }
-
 }
