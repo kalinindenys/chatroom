@@ -82,7 +82,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         final User user = persistentToken.getUser();
-        return new UserDTO(user.getId(), user.getLogin(), user.getPassword());
+        return new UserDTO(user.getId(), user.getLogin());
     }
 
     private String generateSecurityToken() {

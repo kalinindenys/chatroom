@@ -102,7 +102,7 @@ public class UserServiceMockTest {
 
         final ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
 
-        userService.updateUserData(VALID_SECURITY_TOKEN_DTO, new UserDTO(USER.getId(), "new login", "path"));
+        userService.updateUserData(VALID_SECURITY_TOKEN_DTO, new UserDTO(USER.getId(), "new login"));
 
         Mockito.verify(userRepository).save(userCaptor.capture());
         assertEquals("new login", userCaptor.getValue().getLogin());
@@ -112,7 +112,7 @@ public class UserServiceMockTest {
     public void updateUserData_withInvalidSecurityToken() throws Exception {
         expectedException.expect(InvalidSecurityTokenException.class);
 
-        userService.updateUserData(EXPIRED_SECURITY_TOKEN_DTO, new UserDTO(USER.getId(), "new login", "path"));
+        userService.updateUserData(EXPIRED_SECURITY_TOKEN_DTO, new UserDTO(USER.getId(), "new login"));
     }
 
     @Test

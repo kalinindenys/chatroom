@@ -112,13 +112,12 @@ public class AuthenticationServiceInMemoryTest {
     @Test
     public void receiveUserDTO_withValidSecurityToken() throws InvalidSecurityTokenException {
         final SecurityTokenDTO securityToken = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getToken());
-        final UserDTO expectedDTO = new UserDTO(REGISTERED_USER.getId(), REGISTERED_USER.getLogin(), REGISTERED_USER.getPassword());
+        final UserDTO expectedDTO = new UserDTO(REGISTERED_USER.getId(), REGISTERED_USER.getLogin());
 
         final UserDTO actualDTO = authenticationService.retrieveUser(securityToken);
 
         assertEquals(expectedDTO.getId(), actualDTO.getId());
         assertEquals(expectedDTO.getLogin(), actualDTO.getLogin());
-        assertEquals(expectedDTO.getAvatarURL(), actualDTO.getAvatarURL());
     }
 
     @Test

@@ -64,7 +64,7 @@ public class UserServiceInMemoryTest {
     public void updateUserData_withValidSecurityToken() throws Exception {
         final String loginAfterUpdate = "new login";
 
-        userService.updateUserData(VALID_SECURITY_TOKEN_DTO, new UserDTO(USER.getId(), loginAfterUpdate, "avatar URL"));
+        userService.updateUserData(VALID_SECURITY_TOKEN_DTO, new UserDTO(USER.getId(), loginAfterUpdate));
 
         final User userAfterUpdate = userRepository.findOne(USER.getId());
 
@@ -75,7 +75,7 @@ public class UserServiceInMemoryTest {
     public void updateUserData_withInvalidSecurityToken() throws Exception {
         expectedException.expect(InvalidSecurityTokenException.class);
 
-        userService.updateUserData(EXPIRED_SECURITY_TOKEN_DTO, new UserDTO(USER.getId(), "new login", "path"));
+        userService.updateUserData(EXPIRED_SECURITY_TOKEN_DTO, new UserDTO(USER.getId(), "new login"));
     }
 
     @Test
