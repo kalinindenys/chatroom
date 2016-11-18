@@ -29,4 +29,6 @@ public interface ChatroomService {
     void createChatroom(ChatroomName chatroomName, UserId ownerId);
 
     void joinChatroom(ChatroomId chatroomId, UserId userId);
+
+    void leaveChatroom(ChatroomId chatroomId, UserId userId);
 }

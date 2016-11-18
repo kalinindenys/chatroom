@@ -5,7 +5,6 @@ import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.javaclasses.chatroom.persistence.ChatroomRepository;
-import com.javaclasses.chatroom.persistence.MessageRepository;
 import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.persistence.entity.Message;
@@ -56,15 +55,15 @@ public class DBUnitChatroomServiceTest {
     private ChatroomRepository chatroomRepository;
 
     @Test
-    @DatabaseSetup("/InitialData.xml")
-    @ExpectedDatabase("/InitialData.xml")
+    @DatabaseSetup("/DBUnit/InitialData.xml")
+    @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void test() throws Exception {
         LOGGER.info(userRepository.findByLogin("login1").toString());
     }
 
     @Test
-    @DatabaseSetup("/InitialData.xml")
-    @ExpectedDatabase("/InitialData.xml")
+    @DatabaseSetup("/DBUnit/InitialData.xml")
+    @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void getChatroomList() throws Exception {
         Iterable<Chatroom> chatroomList = chatroomService.getUserChatroomList(1L);
         LOGGER.info(chatroomList.toString());
@@ -72,8 +71,8 @@ public class DBUnitChatroomServiceTest {
     }
 
     @Test
-    @DatabaseSetup("/InitialData.xml")
-    @ExpectedDatabase("/InitialData.xml")
+    @DatabaseSetup("/DBUnit/InitialData.xml")
+    @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void getChatroom() throws Exception {
         Chatroom chatroom = chatroomService.getChatroom(24L);
         LOGGER.info(chatroom.toString());
@@ -81,8 +80,8 @@ public class DBUnitChatroomServiceTest {
     }
 
     @Test
-    @DatabaseSetup("/InitialData.xml")
-    @ExpectedDatabase("/InitialData.xml")
+    @DatabaseSetup("/DBUnit/InitialData.xml")
+    @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void getMessages() throws Exception {
         Iterable<Message> messages = chatroomService.getMessages(20L);
         LOGGER.info(messages.toString());
@@ -90,8 +89,8 @@ public class DBUnitChatroomServiceTest {
     }
 
     @Test
-    @DatabaseSetup("/InitialData.xml")
-    @ExpectedDatabase("/InitialData.xml")
+    @DatabaseSetup("/DBUnit/InitialData.xml")
+    @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void getChatroomMemberList() throws Exception {
         Iterable<User> chatroomMemberList = chatroomService.getChatroomMemberList(20L);
         LOGGER.info(chatroomMemberList.toString());
@@ -99,16 +98,16 @@ public class DBUnitChatroomServiceTest {
     }
 
     @Test
-    @DatabaseSetup("/InitialData.xml")
-    @ExpectedDatabase("/PostMessageResultData.xml")
+    @DatabaseSetup("/DBUnit/InitialData.xml")
+    @ExpectedDatabase("/DBUnit/PostMessageResultData.xml")
     public void postMessage() throws Exception {
         chatroomService.postMessage(new MessageDTO(userRepository.findOne(0L), "Added message from test"), 20L, setDefaultDate());
 
     }
 
     @Test
-    @DatabaseSetup("/InitialData.xml")
-    @ExpectedDatabase("/InitialData.xml")
+    @DatabaseSetup("/DBUnit/InitialData.xml")
+    @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void postNullMessage() throws Exception {
         try {
             chatroomService.postMessage(null, null, null);
@@ -119,8 +118,8 @@ public class DBUnitChatroomServiceTest {
     }
 
     @Test
-    @DatabaseSetup("/InitialData.xml")
-    @ExpectedDatabase("/InitialData.xml")
+    @DatabaseSetup("/DBUnit/InitialData.xml")
+    @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void postEmptyMessage() throws Exception {
         try {
             chatroomService.postMessage(new MessageDTO(userRepository.findOne(2L), null), 20L, setDefaultDate());
@@ -130,16 +129,16 @@ public class DBUnitChatroomServiceTest {
     }
 
     @Test
-    @DatabaseSetup("/InitialData.xml")
-    @ExpectedDatabase("/InitialData.xml")
+    @DatabaseSetup("/DBUnit/InitialData.xml")
+    @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void getAllChatroomsTest() throws Exception {
         Iterable<Chatroom> allChatrooms = chatroomService.getAllChatrooms();
         LOGGER.info(allChatrooms.toString());
     }
 
     @Test
-    @DatabaseSetup("/InitialData.xml")
-    @ExpectedDatabase("/InitialData.xml")
+    @DatabaseSetup("/DBUnit/InitialData.xml")
+    @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void findChatroomTest() throws Exception {
         Iterable<Chatroom> chatroom = chatroomService.findChatroomsByName("chatroom20");
         LOGGER.info("findChatroomTest: " + chatroom.toString());
@@ -153,17 +152,26 @@ public class DBUnitChatroomServiceTest {
     }
 
     @Test
-    @DatabaseSetup("/InitialData.xml")
-    @ExpectedDatabase("/CreateChatroomResultData.xml")
+    @DatabaseSetup("/DBUnit/InitialData.xml")
+    @ExpectedDatabase("/DBUnit/CreateChatroomResultData.xml")
     public void createChatroom() throws Exception {
         chatroomService.createChatroom(new ChatroomName("created Chatroom"), new UserId(0L));
     }
 
     @Test
-    @DatabaseSetup("/InitialData.xml")
-    @ExpectedDatabase("/JoinChatroomResultData.xml")
+    @DatabaseSetup("/DBUnit/InitialData.xml")
+    @ExpectedDatabase("/DBUnit/JoinChatroomResultData.xml")
     public void joinChatroom() throws Exception {
         chatroomService.joinChatroom(new ChatroomId(27L),new UserId(9L));
+        LOGGER.info(userRepository.findOne(9L).getChatrooms().toString());
+        LOGGER.info(chatroomRepository.findOne(27L).getMembers().toString());
+    }
+
+    @Test
+    @DatabaseSetup("/DBUnit/JoinChatroomResultData.xml")
+    @ExpectedDatabase("/DBUnit/InitialData.xml")
+    public void leaveChatroom() throws Exception {
+        chatroomService.leaveChatroom(new ChatroomId(27L),new UserId(9L));
         LOGGER.info(userRepository.findOne(9L).getChatrooms().toString());
         LOGGER.info(chatroomRepository.findOne(27L).getMembers().toString());
     }

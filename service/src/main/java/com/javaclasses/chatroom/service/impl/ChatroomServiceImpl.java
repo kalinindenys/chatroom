@@ -90,4 +90,12 @@ public class ChatroomServiceImpl implements ChatroomService {
         user.getChatrooms().add(room);
         userRepository.saveAndFlush(user);
     }
+
+    @Transactional
+    public void leaveChatroom(ChatroomId chatroomId, UserId userId) {
+        User user = userRepository.findOne(userId.getUserId());
+        Chatroom room = chatroomRepository.findOne(chatroomId.getId());
+        user.getChatrooms().remove(room);
+        userRepository.saveAndFlush(user);
+    }
 }
