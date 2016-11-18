@@ -48,8 +48,12 @@ public class DBUnitChatroomServiceTest {
 
     @Autowired
     private ChatroomService chatroomService;
+
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ChatroomRepository chatroomRepository;
 
     @Test
     @DatabaseSetup("/InitialData.xml")
@@ -157,17 +161,11 @@ public class DBUnitChatroomServiceTest {
 
     @Test
     @DatabaseSetup("/InitialData.xml")
-    @ExpectedDatabase("/InitialData.xml")
+    @ExpectedDatabase("/JoinChatroomResultData.xml")
     public void joinChatroom() throws Exception {
-        chatroomService.joinChatroom(new ChatroomId(20L),new UserId(9L));
-        chatroomService.joinChatroom(new ChatroomId(21L),new UserId(9L));
-        chatroomService.joinChatroom(new ChatroomId(22L),new UserId(9L));
-        chatroomService.joinChatroom(new ChatroomId(23L),new UserId(9L));
-        chatroomService.joinChatroom(new ChatroomId(24L),new UserId(9L));
-        chatroomService.joinChatroom(new ChatroomId(25L),new UserId(9L));
-        chatroomService.joinChatroom(new ChatroomId(26L),new UserId(9L));
         chatroomService.joinChatroom(new ChatroomId(27L),new UserId(9L));
         LOGGER.info(userRepository.findOne(9L).getChatrooms().toString());
+        LOGGER.info(chatroomRepository.findOne(27L).getMembers().toString());
     }
 
 

@@ -86,7 +86,8 @@ public class ChatroomServiceImpl implements ChatroomService {
     @Transactional
     public void joinChatroom(ChatroomId chatroomId, UserId userId) {
         User user = userRepository.findOne(userId.getUserId());
-        user.addChatroom(chatroomRepository.findOne(chatroomId.getId()));
-        userRepository.save(user);
+        Chatroom room = chatroomRepository.findOne(chatroomId.getId());
+        user.getChatrooms().add(room);
+        userRepository.saveAndFlush(user);
     }
 }
