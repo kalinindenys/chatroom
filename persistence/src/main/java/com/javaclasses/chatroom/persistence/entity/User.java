@@ -1,6 +1,7 @@
 package com.javaclasses.chatroom.persistence.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,6 +13,7 @@ public class User {
 
     private String login;
     private String password;
+
     @OneToOne(cascade = CascadeType.ALL)
     private AvatarData avatarData;
 
@@ -19,16 +21,16 @@ public class User {
     @JoinTable(name = "user_chatroom",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "chatroom_id")})
-    private List<Chatroom> chatroomList;
+    private List<Chatroom> chatrooms = new ArrayList<>();
 
     public User() {
 
     }
 
-    public User(String login, String password, List<Chatroom> chatroomIdList) {
+    public User(String login, String password, List<Chatroom> chatrooms) {
         this.login = login;
         this.password = password;
-        this.chatroomList = chatroomIdList;
+        this.chatrooms = chatrooms;
     }
 
     public User(String login, String password) {
@@ -60,8 +62,8 @@ public class User {
         this.password = password;
     }
 
-    public List<Chatroom> getChatroomList() {
-        return chatroomList;
+    public List<Chatroom> getChatrooms() {
+        return chatrooms;
     }
 
     public void setAvatarData(AvatarData avatarData) {
@@ -72,8 +74,12 @@ public class User {
         return avatarData;
     }
 
-    public void setChatroomList(List<Chatroom> chatroomList) {
-        this.chatroomList = chatroomList;
+    public void setChatrooms(List<Chatroom> chatrooms) {
+        this.chatrooms = chatrooms;
+    }
+
+    public void addChatroom(Chatroom chatroom) {
+        chatrooms.add(chatroom);
     }
 
     @Override
