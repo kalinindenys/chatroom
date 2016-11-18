@@ -1,6 +1,6 @@
 package com.javaclasses.chatroom.hsqlmem;
 
-import com.javaclasses.chatroom.config.SpringTestConfig;
+import com.javaclasses.chatroom.config.SpringDataTestConfig;
 import com.javaclasses.chatroom.persistence.SecurityTokenRepository;
 import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
@@ -16,7 +16,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -31,7 +30,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { SpringTestConfig.class })
+@ContextConfiguration(classes = { SpringDataTestConfig.class })
 @WebAppConfiguration
 @Transactional
 public class AuthenticationServiceInMemoryTest {

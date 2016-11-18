@@ -1,27 +1,25 @@
 var SignInComponent = function (rootElementId, eventBus) {
 
-    var render = function () {
-        $("#" + rootElementId).html(
-          '<form id="signInForm">' +
-          '<div class="form-group">' +
-          '<label for="login">Login</label>' +
-          '<input id="login" type="text" class="form-control" placeholder="Login">' +
-          '</div> ' +
-          '<div class="form-group">' +
-          '<lable for="password">Password</lable>' +
-          '<input id="password" type="password" class="form-control" placeholder="Password">' +
-          '</div>' +
-          '<button id="signIn" type="button" class="btn btn-primary">Sign in</button> ' +
-          '</form>'
-        );
+    $("#" + rootElementId).html(
+        '<form id="signInForm">' +
+        '<div class="form-group">' +
+        '<label for="login">Login</label>' +
+        '<input id="login" type="text" class="form-control" placeholder="Login">' +
+        '</div> ' +
+        '<div class="form-group">' +
+        '<lable for="password">Password</lable>' +
+        '<input id="password" type="password" class="form-control" placeholder="Password">' +
+        '</div>' +
+        '<button id="signIn" type="button" class="btn btn-primary">Sign in</button> ' +
+        '</form>'
+    );
 
-        $("#signIn").click(function () {
-            var login = $("#login").val();
-            var password = $("#password").val();
+    $("#signIn").click(function () {
+        var login = $("#login").val();
+        var password = $("#password").val();
 
-            signInRequest(login, password);
-        });
-    };
+        signInRequest(login, password);
+    });
 
     var signInRequest = function (login, password) {
         var signInInfo = {
@@ -52,9 +50,5 @@ var SignInComponent = function (rootElementId, eventBus) {
             '</div>'
         ).insertBefore("#signInForm");
     };
-
-    $(function () {
-        render();
-    });
 
 };

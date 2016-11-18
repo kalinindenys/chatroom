@@ -9,9 +9,7 @@ import com.javaclasses.chatroom.service.*;
 import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
 import com.javaclasses.chatroom.service.DTO.UserDTO;
 import com.javaclasses.chatroom.service.tinytypes.FileExtension;
-import com.javaclasses.chatroom.service.tinytypes.Password;
 import com.javaclasses.chatroom.service.tinytypes.UserId;
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 
-import javax.sql.rowset.serial.SerialBlob;
 import java.io.*;
-import java.sql.Blob;
+import java.nio.ByteBuffer;
+import java.util.Scanner;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -53,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateAvatar(SecurityTokenDTO securityToken, InputStream avatarData, FileExtension fileExtension) throws InvalidSecurityTokenException, AvatarSaveException {
+    public void updateAvatar(SecurityTokenDTO securityToken, InputStream avatarData, FileExtension fileExtension) throws InvalidSecurityTokenException, AvatarNotUpdatedException {
         final SecurityToken persistentToken = securityTokenRepository.findByToken(securityToken.getToken());
 
         if (persistentToken == null) {
@@ -69,7 +67,7 @@ public class UserServiceImpl implements UserService {
                 LOG.error(e.getMessage());
             }
 
-            throw new AvatarSaveException("Can not save avatar in storage");
+            throw new AvatarNotUpdatedException("Can not save avatar in storage");
         }
 
         userRepository.save(user);
@@ -89,4 +87,5 @@ public class UserServiceImpl implements UserService {
             return avatarData;
         }
     }
+
 }
