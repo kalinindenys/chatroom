@@ -25,9 +25,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -118,8 +116,8 @@ public class MockitoChatroomServiceTest {
         chatsOfMockUser.add(nyChat);
         chatsOfMockUser.add(animeChat);
 
-        mockUser1.setChatroomList(chatrooms);
-        mockUser2.setChatroomList(chatrooms);
+        mockUser1.setChatrooms(chatrooms);
+        mockUser2.setChatrooms(chatrooms);
         motoChat.setMessages(messages);
 
 

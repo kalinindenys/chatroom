@@ -15,6 +15,7 @@ import com.javaclasses.chatroom.service.DTO.ChatroomName;
 import com.javaclasses.chatroom.service.DTO.MessageDTO;
 import com.javaclasses.chatroom.service.EmptyMessageException;
 import com.javaclasses.chatroom.DBUnit.config.MockDBConfiguration;
+import com.javaclasses.chatroom.service.tinytypes.ChatroomId;
 import com.javaclasses.chatroom.service.tinytypes.UserId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -152,6 +153,21 @@ public class DBUnitChatroomServiceTest {
     @ExpectedDatabase("/CreateChatroomResultData.xml")
     public void createChatroom() throws Exception {
         chatroomService.createChatroom(new ChatroomName("created Chatroom"), new UserId(0L));
+    }
+
+    @Test
+    @DatabaseSetup("/InitialData.xml")
+    @ExpectedDatabase("/InitialData.xml")
+    public void joinChatroom() throws Exception {
+        chatroomService.joinChatroom(new ChatroomId(20L),new UserId(9L));
+        chatroomService.joinChatroom(new ChatroomId(21L),new UserId(9L));
+        chatroomService.joinChatroom(new ChatroomId(22L),new UserId(9L));
+        chatroomService.joinChatroom(new ChatroomId(23L),new UserId(9L));
+        chatroomService.joinChatroom(new ChatroomId(24L),new UserId(9L));
+        chatroomService.joinChatroom(new ChatroomId(25L),new UserId(9L));
+        chatroomService.joinChatroom(new ChatroomId(26L),new UserId(9L));
+        chatroomService.joinChatroom(new ChatroomId(27L),new UserId(9L));
+        LOGGER.info(userRepository.findOne(9L).getChatrooms().toString());
     }
 
 
