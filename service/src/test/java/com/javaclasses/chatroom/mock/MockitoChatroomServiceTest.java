@@ -93,10 +93,8 @@ public class MockitoChatroomServiceTest {
         messageIds.add(62L);
         messageIds.add(63L);
 
-
         users.add(mockUser1);
         users.add(mockUser2);
-
 
         Chatroom nyChat = new Chatroom("New York chat");
         nyChat.setMembers(users);
@@ -106,7 +104,6 @@ public class MockitoChatroomServiceTest {
         chatrooms.add(nyChat);
         chatrooms.add(animeChat);
         chatrooms.add(motoChat);
-
 
         messages.add(new Message(mockUser1, motoChat, "Hello", Date.from(Instant.now())));
         messages.add(new Message(mockUser2, motoChat, "Bye", Date.from(Instant.now())));
@@ -120,24 +117,18 @@ public class MockitoChatroomServiceTest {
         mockUser2.setChatrooms(chatrooms);
         motoChat.setMessages(messages);
 
+        foundByNameChatrooms.add(motoChat);
 
         Mockito.when(userRepository.findOne(1L)).thenReturn(mockUser1);
         Mockito.when(userRepository.findOne(2L)).thenReturn(mockUser2);
+        Mockito.when(userRepository.exists(1L)).thenReturn(true);
 
         Mockito.when(chatroomRepository.findAll()).thenReturn(chatrooms);
         Mockito.when(chatroomRepository.findOne(2114L)).thenReturn(motoChat);
-        Mockito.when(userRepository.exists(1L)).thenReturn(true);
         Mockito.when(chatroomRepository.exists(2114L)).thenReturn(true);
-
-
-        foundByNameChatrooms.add(motoChat);
         Mockito.when(chatroomRepository.findAllByName("Motoclub")).thenReturn(foundByNameChatrooms);
+
         Mockito.when(messageRepository.findAll(messageIds)).thenReturn(messages);
-
-    }
-
-    @After
-    public void tearDown() {
     }
 
     @Test
@@ -213,8 +204,8 @@ public class MockitoChatroomServiceTest {
     }
 
     @Test
-    public void createChatroom(){
-        chatroomService.createChatroom(new ChatroomName("Rock"),new UserId(1L));
+    public void createChatroom() {
+        chatroomService.createChatroom(new ChatroomName("Rock"), new UserId(1L));
     }
 
 }
