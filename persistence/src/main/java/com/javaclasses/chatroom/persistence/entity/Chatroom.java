@@ -1,7 +1,6 @@
 package com.javaclasses.chatroom.persistence.entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,8 +10,8 @@ public class Chatroom {
     private Long id;
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "chatroomList")
-    private List<User> members = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "chatrooms")
+    private List<User> members;
 
     @OneToMany(mappedBy = "chatroom")
     private List<Message> messages;

@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class ChatroomServiceImpl implements ChatroomService {
             String message = "Chatrooms for user with id '" + userId + "' not found";
             throw new ChatroomNotFoundException(message);
         }
-        return userRepository.findOne(userId).getChatroomList();
+        return userRepository.findOne(userId).getChatrooms();
     }
 
     public Chatroom getChatroom(Long chatroomId) throws ChatroomNotFoundException {
@@ -82,5 +81,21 @@ public class ChatroomServiceImpl implements ChatroomService {
         Chatroom chatroom = chatroomRepository.save(new Chatroom(chatroomName.getName()));
         chatroomRepository.save(chatroom);
         // TODO: 11/17/2016 add owner role
+    }
+
+    @Transactional
+    public void joinChatroom(ChatroomId chatroomId, UserId userId) {
+        User user = userRepository.findOne(userId.getUserId());
+        Chatroom room = chatroomRepository.findOne(chatroomId.getId());
+        user.getChatrooms().add(room);
+        userRepository.saveAndFlush(user);
+    }
+
+    @Transactional
+    public void leaveChatroom(ChatroomId chatroomId, UserId userId) {
+        User user = userRepository.findOne(userId.getUserId());
+        Chatroom room = chatroomRepository.findOne(chatroomId.getId());
+        user.getChatrooms().remove(room);
+        userRepository.saveAndFlush(user);
     }
 }

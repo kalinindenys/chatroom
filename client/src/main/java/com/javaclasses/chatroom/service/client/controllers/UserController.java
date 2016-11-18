@@ -1,6 +1,6 @@
 package com.javaclasses.chatroom.service.client.controllers;
 
-import com.javaclasses.chatroom.service.AvatarSaveException;
+import com.javaclasses.chatroom.service.AvatarNotUpdatedException;
 import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
 import com.javaclasses.chatroom.service.InvalidSecurityTokenException;
 import com.javaclasses.chatroom.service.UserService;
@@ -42,7 +42,7 @@ public class UserController {
             userService.updateAvatar(securityToken, multipartFile.getInputStream(), new FileExtension(multipartFile.getContentType()));
         } catch (InvalidSecurityTokenException e) {
             e.printStackTrace();
-        } catch (AvatarSaveException e) {
+        } catch (AvatarNotUpdatedException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();

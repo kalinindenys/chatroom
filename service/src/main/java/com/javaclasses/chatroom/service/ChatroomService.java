@@ -27,4 +27,8 @@ public interface ChatroomService {
     Iterable<User> getChatroomMemberList(Long chatroomId);
 
     void createChatroom(ChatroomName chatroomName, UserId ownerId);
+
+    void joinChatroom(ChatroomId chatroomId, UserId userId);
+
+    void leaveChatroom(ChatroomId chatroomId, UserId userId);
 }

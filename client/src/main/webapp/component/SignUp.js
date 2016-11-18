@@ -1,41 +1,39 @@
 var SignUpComponent = function (rootElementId, eventBus) {
 
-    var render = function () {
-        $("#" + rootElementId).html(
-            '<form id="signUpForm">' +
-                '<div class="form-group">' +
-                    '<label for="login">Login</label>' +
-                    '<input type="text" id="login" class="form-control" required placeholder="Login">' +
-                '</div> ' +
-                '<div class="form-group">' +
-                    '<label for="email">Email</label>' +
-                    '<input type="email" id="email" class="form-control" required placeholder="Email">' +
-                '</div> ' +
-                '<div class="form-group">' +
-                    '<label for="password">Password</label>' +
-                    '<input type="password" id="password" class="form-control" required placeholder="Password">' +
-                '</div> ' +
-                '<div class="form-group" id="passwordConfirmationGroup">' +
-                    '<label for="passwordConfirmation">Password confirmation</label>' +
-                    '<input type="password" id="passwordConfirmation" class="form-control" required placeholder="Password confirmation">' +
-                '</div>' +
-                '<button type="button" id="signUp" class="btn btn-primary">Sign up</button> ' +
-            '</form>'
-        );
+    $("#" + rootElementId).html(
+        '<form id="signUpForm">' +
+            '<div class="form-group">' +
+                '<label for="login">Login</label>' +
+                '<input type="text" id="login" class="form-control" required placeholder="Login">' +
+            '</div> ' +
+            '<div class="form-group">' +
+                '<label for="email">Email</label>' +
+                '<input type="email" id="email" class="form-control" required placeholder="Email">' +
+            '</div> ' +
+            '<div class="form-group">' +
+                '<label for="password">Password</label>' +
+                '<input type="password" id="password" class="form-control" required placeholder="Password">' +
+            '</div> ' +
+            '<div class="form-group" id="passwordConfirmationGroup">' +
+                '<label for="passwordConfirmation">Password confirmation</label>' +
+                '<input type="password" id="passwordConfirmation" class="form-control" required placeholder="Password confirmation">' +
+            '</div>' +
+            '<button type="button" id="signUp" class="btn btn-primary">Sign up</button> ' +
+        '</form>'
+    );
 
-        $("#signUp").click(function () {
-            var login = $("#login").val();
-            var email = $("#email").val();
-            var password = $("#password").val();
-            var passwordConfirmation = $("#passwordConfirmation").val();
+    $("#signUp").click(function () {
+        var login = $("#login").val();
+        var email = $("#email").val();
+        var password = $("#password").val();
+        var passwordConfirmation = $("#passwordConfirmation").val();
 
-            if (password !== passwordConfirmation) {
-                showError("Passwords do not match");
-            } else {
-                signUpRequest(login, email, password, passwordConfirmation);
-            }
-        });
-    };
+        if (password !== passwordConfirmation) {
+            showError("Passwords do not match");
+        } else {
+            signUpRequest(login, email, password, passwordConfirmation);
+        }
+    });
 
     var showError = function (message) {
         $('<div class="alert alert-danger">' +
@@ -68,9 +66,5 @@ var SignUpComponent = function (rootElementId, eventBus) {
             }
         })
     };
-
-    $(function () {
-        render();
-    })
 
 };
