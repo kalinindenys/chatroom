@@ -98,4 +98,11 @@ public class ChatroomServiceImpl implements ChatroomService {
         user.getChatrooms().remove(room);
         userRepository.saveAndFlush(user);
     }
+
+    @Transactional
+    public void renameChatroom(ChatroomId chatroomId, ChatroomName chatroomName) {
+        Chatroom chatroomToRename = chatroomRepository.findOne(chatroomId.getId());
+        chatroomToRename.setName(chatroomName.getName());
+        chatroomRepository.saveAndFlush(chatroomToRename);
+    }
 }
