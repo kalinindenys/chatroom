@@ -91,7 +91,7 @@ var SignUpComponent = function (rootElementId, commandBus, eventBus) {
             .insertBefore("#" + componentId);
     };
 
-    var signUpRequest = function (signUpInfo) {
+    var signUp = function (signUpInfo) {
         $.ajax({
             url: 'api/auth/signUp',
             method: 'POST',
@@ -101,15 +101,12 @@ var SignUpComponent = function (rootElementId, commandBus, eventBus) {
             eventBus.emitMessage(Events.SIGNED_UP, result);
         }).fail(function (error) {
             errorResponse = JSON.parse(error.responseText);
-
-            if (errorResponse.status !== 404) {
-                eventBus.emitMessage(Events.SIGN_UP_FAILED, errorResponse.errorMessage);
-            }
+            eventBus.emitMessage(Events.SIGN_UP_FAILED, errorResponse.errorMessage);
         })
     };
 
     commandBus.subscribe(Commands.VALIDATE_SIGN_UP_FORM, validateForm);
-    commandBus.subscribe(Commands.SIGN_UP, signUpRequest);
+    commandBus.subscribe(Commands.SIGN_UP, signUp);
 
     eventBus.subscribe(Events.SIGNED_UP_VALIDATION_FAILED, showErrors);
     eventBus.subscribe(Events.SIGN_UP_FAILED, showErrorFromServer);
