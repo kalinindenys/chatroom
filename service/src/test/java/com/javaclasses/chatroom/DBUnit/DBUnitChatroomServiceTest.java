@@ -162,7 +162,7 @@ public class DBUnitChatroomServiceTest {
     @DatabaseSetup("/DBUnit/InitialData.xml")
     @ExpectedDatabase("/DBUnit/JoinChatroomResultData.xml")
     public void joinChatroom() throws Exception {
-        chatroomService.joinChatroom(new ChatroomId(27L),new UserId(9L));
+        chatroomService.joinChatroom(new ChatroomId(27L), new UserId(9L));
         LOGGER.info(userRepository.findOne(9L).getChatrooms().toString());
         LOGGER.info(chatroomRepository.findOne(27L).getMembers().toString());
     }
@@ -171,9 +171,18 @@ public class DBUnitChatroomServiceTest {
     @DatabaseSetup("/DBUnit/JoinChatroomResultData.xml")
     @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void leaveChatroom() throws Exception {
-        chatroomService.leaveChatroom(new ChatroomId(27L),new UserId(9L));
+        chatroomService.leaveChatroom(new ChatroomId(27L), new UserId(9L));
         LOGGER.info(userRepository.findOne(9L).getChatrooms().toString());
         LOGGER.info(chatroomRepository.findOne(27L).getMembers().toString());
+    }
+
+    @Test
+    @DatabaseSetup("/DBUnit/InitialData.xml")
+    @ExpectedDatabase("/DBUnit/RenameChatroomTest.xml")
+    public void renameChatroom() throws Exception {
+        chatroomService.renameChatroom(new ChatroomId(27L), new ChatroomName("Renamed Chatroom 27"));
+        LOGGER.info(chatroomRepository.findOne(27L).toString());
+        LOGGER.info(userRepository.findOne(4L).getChatrooms().toString());
     }
 
 
