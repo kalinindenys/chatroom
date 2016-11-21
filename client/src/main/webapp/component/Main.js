@@ -17,7 +17,7 @@ var MainComponent = function (commandBus, eventBus) {
     );
 
     $("#signUp").click(function () {
-        new SignUpComponent(mainId, eventBus);
+        new SignUpComponent(mainId, commandBus, eventBus);
     });
 
     $("#signIn").click(function () {

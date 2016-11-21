@@ -1,56 +1,97 @@
-var SignUpComponent = function (rootElementId, eventBus) {
+var SignUpComponent = function (rootElementId, commandBus, eventBus) {
+
+    var componentId = rootElementId + "_signUpComponent";
+    var loginId = componentId + "_login";
+    var emailId = componentId + "_email";
+    var passwordId = componentId + "_password";
+    var passwordConfirmId = componentId + "_passwordConfirm";
+    var confirmId = componentId + "_confirm";
 
     $("#" + rootElementId).html(
-        '<form id="signUpForm">' +
+        '<form id="' + componentId + '">' +
             '<div class="form-group">' +
-                '<label for="login">Login</label>' +
-                '<input type="text" id="login" class="form-control" required placeholder="Login">' +
+                '<label for="' + loginId + '">Login</label>' +
+                '<input type="text" id="' + loginId + '" class="form-control" required placeholder="Login">' +
             '</div> ' +
             '<div class="form-group">' +
-                '<label for="email">Email</label>' +
-                '<input type="email" id="email" class="form-control" required placeholder="Email">' +
+                '<label for="' + emailId + '">Email</label>' +
+                '<input type="email" id="' + emailId + '" class="form-control" required placeholder="Email">' +
             '</div> ' +
             '<div class="form-group">' +
-                '<label for="password">Password</label>' +
-                '<input type="password" id="password" class="form-control" required placeholder="Password">' +
+                '<label for="' + passwordId + '">Password</label>' +
+                '<input type="password" id="' + passwordId + '" class="form-control" required placeholder="Password">' +
             '</div> ' +
             '<div class="form-group" id="passwordConfirmationGroup">' +
-                '<label for="passwordConfirmation">Password confirmation</label>' +
-                '<input type="password" id="passwordConfirmation" class="form-control" required placeholder="Password confirmation">' +
+                '<label for="' + passwordConfirmId + '">Password confirmation</label>' +
+                '<input type="password" id="' + passwordConfirmId + '" class="form-control" required placeholder="Password confirmation">' +
             '</div>' +
-            '<button type="button" id="signUp" class="btn btn-primary">Sign up</button> ' +
+            '<button type="button" id="' + confirmId + '" class="btn btn-primary">Sign up</button> ' +
         '</form>'
     );
 
-    $("#signUp").click(function () {
-        var login = $("#login").val();
-        var email = $("#email").val();
-        var password = $("#password").val();
-        var passwordConfirmation = $("#passwordConfirmation").val();
-
-        if (password !== passwordConfirmation) {
-            showError("Passwords do not match");
-        } else {
-            signUpRequest(login, email, password, passwordConfirmation);
+    var toMessage = function () {
+        return {
+            login: $("#" + loginId).val(),
+            email: $("#" + emailId).val(),
+            password: $("#" + passwordId).val(),
+            passwordConfirmation: $("#" + passwordConfirmId).val()
         }
-    });
-
-    var showError = function (message) {
-        $('<div class="alert alert-danger">' +
-            '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
-            message +
-            '</div>'
-        ).insertBefore("#signUpForm");
     };
 
-    var signUpRequest = function (login, email, password, passwordConfirmation) {
-        var signUpInfo = {
-            login: login,
-            email: email,
-            password: password,
-            passwordConfirmation: passwordConfirmation
-        };
+    $("#" + confirmId).click(function () {
+        commandBus.emitMessage(Commands.VALIDATE_SIGN_UP_FORM, toMessage());
+    });
 
+    var validateForm = function (fields) {
+        var errors = {};
+
+        if (fields.login.length < 3) {
+            errors.login = {
+                id: loginId,
+                message: "Length can not be less than 3"
+            };
+        }
+
+        if (fields.password.length < 5) {
+            errors.password = {
+                id: passwordId,
+                message: "Length can not be less than 5"
+            };
+        }
+
+        if (fields.passwordConfirmation !== fields.password) {
+            errors.passwordConfirmation = {
+                id: passwordConfirmId,
+                message: "Passwords do not match"
+            }
+        }
+
+        if (Object.keys(errors).length === 0) {
+            commandBus.emitMessage(Commands.SIGN_UP, fields);
+        } else {
+            eventBus.emitMessage(Events.SIGNED_UP_VALIDATION_FAILED, errors);
+        }
+    };
+
+    var showErrors = function (errors) {
+        $("p").remove(".text-danger");
+
+        for (var element in errors) {
+            if (errors.hasOwnProperty(element)) {
+                $("#" + errors[element].id).parent().append(
+                    '<p class="text-danger">' + errors[element].message + '</p>');
+            }
+        }
+    };
+
+    var showErrorFromServer = function (errorMessage) {
+        $("p").remove(".text-danger");
+
+        $('<p class="text-danger">Sign up failed! ' + errorMessage + '</p>')
+            .insertBefore("#" + componentId);
+    };
+
+    var signUpRequest = function (signUpInfo) {
         $.ajax({
             url: 'api/auth/signUp',
             method: 'POST',
@@ -62,9 +103,15 @@ var SignUpComponent = function (rootElementId, eventBus) {
             errorResponse = JSON.parse(error.responseText);
 
             if (errorResponse.status !== 404) {
-                showError(errorResponse.errorMessage);
+                eventBus.emitMessage(Events.SIGN_UP_FAILED, errorResponse.errorMessage);
             }
         })
     };
+
+    commandBus.subscribe(Commands.VALIDATE_SIGN_UP_FORM, validateForm);
+    commandBus.subscribe(Commands.SIGN_UP, signUpRequest);
+
+    eventBus.subscribe(Events.SIGNED_UP_VALIDATION_FAILED, showErrors);
+    eventBus.subscribe(Events.SIGN_UP_FAILED, showErrorFromServer);
 
 };
