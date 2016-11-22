@@ -74,7 +74,7 @@ var SignUpComponent = function (rootElementId, commandBus, eventBus) {
     };
 
     var showErrors = function (errors) {
-        $("p").remove(".text-danger");
+        $("#" + rootElementId).find("p").remove(".text-danger");
 
         for (var element in errors) {
             if (errors.hasOwnProperty(element)) {
@@ -85,7 +85,7 @@ var SignUpComponent = function (rootElementId, commandBus, eventBus) {
     };
 
     var showErrorFromServer = function (errorMessage) {
-        $("p").remove(".text-danger");
+        $("#" + rootElementId).find("p").remove(".text-danger");
 
         $('<p class="text-danger">Sign up failed! ' + errorMessage + '</p>')
             .insertBefore("#" + componentId);
