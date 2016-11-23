@@ -1,7 +1,7 @@
 package com.javaclasses.chatroom.service.client.controllers;
 
 import com.javaclasses.chatroom.service.AvatarNotUpdatedException;
-import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
+import com.javaclasses.chatroom.service.tinytypes.SecurityTokenDTO;
 import com.javaclasses.chatroom.service.InvalidSecurityTokenException;
 import com.javaclasses.chatroom.service.UserService;
 import com.javaclasses.chatroom.service.tinytypes.FileExtension;

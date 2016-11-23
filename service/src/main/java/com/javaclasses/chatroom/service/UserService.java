@@ -1,8 +1,8 @@
 package com.javaclasses.chatroom.service;
 
 import com.javaclasses.chatroom.persistence.entity.AvatarData;
-import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
-import com.javaclasses.chatroom.service.DTO.UserDTO;
+import com.javaclasses.chatroom.service.tinytypes.SecurityTokenDTO;
+import com.javaclasses.chatroom.service.tinytypes.UserDTO;
 import com.javaclasses.chatroom.service.tinytypes.FileExtension;
 import com.javaclasses.chatroom.service.tinytypes.UserId;
 

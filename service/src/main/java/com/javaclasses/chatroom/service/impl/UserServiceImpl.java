@@ -6,8 +6,8 @@ import com.javaclasses.chatroom.persistence.entity.AvatarData;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.*;
-import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
-import com.javaclasses.chatroom.service.DTO.UserDTO;
+import com.javaclasses.chatroom.service.tinytypes.SecurityTokenDTO;
+import com.javaclasses.chatroom.service.tinytypes.UserDTO;
 import com.javaclasses.chatroom.service.tinytypes.FileExtension;
 import com.javaclasses.chatroom.service.tinytypes.UserId;
 import org.slf4j.Logger;
@@ -18,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.util.Scanner;
 
 @Service
 public class UserServiceImpl implements UserService {

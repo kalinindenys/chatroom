@@ -3,7 +3,7 @@ package com.javaclasses.chatroom.service.client.controllers;
 import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.service.ChatroomNotFoundException;
 import com.javaclasses.chatroom.service.ChatroomService;
-import com.javaclasses.chatroom.service.DTO.RequestError;
+import com.javaclasses.chatroom.service.tinytypes.RequestError;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

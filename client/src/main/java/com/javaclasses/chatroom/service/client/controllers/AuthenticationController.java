@@ -1,11 +1,7 @@
 package com.javaclasses.chatroom.service.client.controllers;
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.javaclasses.chatroom.service.*;
-import com.javaclasses.chatroom.service.DTO.*;
-import com.javaclasses.chatroom.service.tinytypes.Login;
-import com.javaclasses.chatroom.service.tinytypes.Password;
+import com.javaclasses.chatroom.service.tinytypes.*;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
