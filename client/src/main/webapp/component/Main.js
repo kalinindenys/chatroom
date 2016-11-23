@@ -12,6 +12,8 @@ var MainComponent = function (commandBus, eventBus) {
         '<div id="' + mainId + '">' +
             '<button id="signUp" class="btn btn-default">Sign up</button>' +
             '<button id="signIn" class="btn btn-default">Sign in</button>' +
+            //for chat room testing
+            '<button id="chatroom" class="btn btn-default">Chat Room</button>' +
         '</div>' +
         '</div>'
     );
@@ -24,12 +26,22 @@ var MainComponent = function (commandBus, eventBus) {
         new SignInComponent(mainId, eventBus);
     });
 
+    $("#chatroom").click(function () {
+        new ChatroomComponent(mainId, eventBus);
+    });
+
     eventBus.subscribe(Events.SIGNED_UP, function (message) {
        $("#" + mainId).html(message);
     });
 
     eventBus.subscribe(Events.LOGGED_IN, function (message) {
         $("#" + mainId).html("Logged in");
+
+        localStorage.setItem("chatroom token", message.token);
+    })
+
+    eventBus.subscribe(Events.ENTER_CHAT_ROOM, function (message) {
+        $("#" + mainId).html("Entered chat room");
 
         localStorage.setItem("chatroom token", message.token);
     })
