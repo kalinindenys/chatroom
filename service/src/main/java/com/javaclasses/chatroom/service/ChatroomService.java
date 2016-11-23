@@ -22,7 +22,7 @@ public interface ChatroomService {
 
     Iterable<Message> getMessages(Long chatroomId);
 
-    void postMessage(MessageDTO message, Long chatroomId, Date date) throws EmptyMessageException;
+    MessageDTO postMessage(MessageDTO message, Long chatroomId, Date date) throws EmptyMessageException;
 
     Iterable<User> getChatroomMemberList(Long chatroomId);
 

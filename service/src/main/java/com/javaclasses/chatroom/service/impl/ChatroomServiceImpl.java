@@ -61,7 +61,7 @@ public class ChatroomServiceImpl implements ChatroomService {
     }
 
     @Transactional
-    public void postMessage(MessageDTO message, Long chatroomId, Date date) throws EmptyMessageException {
+    public MessageDTO postMessage(MessageDTO message, Long chatroomId, Date date) throws EmptyMessageException {
         String content = message.getContent();
         if (null == content || content.trim().isEmpty())
             throw new EmptyMessageException(message.toString() + " has empty content");
@@ -69,6 +69,7 @@ public class ChatroomServiceImpl implements ChatroomService {
             messageRepository.save(new Message(message.getAuthor(), chatroomRepository.findOne(chatroomId), message.getContent(), date));
             // TODO: 11/14/2016 add MessagePostException
         }
+        return message;
     }
 
     public Iterable<User> getChatroomMemberList(Long chatroomId) {
