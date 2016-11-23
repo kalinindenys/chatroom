@@ -10,8 +10,8 @@ import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.ChatroomService;
-import com.javaclasses.chatroom.service.DTO.ChatroomName;
-import com.javaclasses.chatroom.service.DTO.MessageDTO;
+import com.javaclasses.chatroom.service.dto.ChatroomName;
+import com.javaclasses.chatroom.service.dto.MessageDTO;
 import com.javaclasses.chatroom.service.EmptyMessageException;
 import com.javaclasses.chatroom.DBUnit.config.MockDBConfiguration;
 import com.javaclasses.chatroom.service.tinytypes.ChatroomId;
@@ -101,7 +101,12 @@ public class DBUnitChatroomServiceTest {
     @DatabaseSetup("/DBUnit/InitialData.xml")
     @ExpectedDatabase("/DBUnit/PostMessageResultData.xml")
     public void postMessage() throws Exception {
+
+
+
         chatroomService.postMessage(new MessageDTO(userRepository.findOne(0L), "Added message from test"), 20L, setDefaultDate());
+
+
 
     }
 

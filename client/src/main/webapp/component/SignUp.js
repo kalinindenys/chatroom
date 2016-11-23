@@ -76,10 +76,11 @@ var SignUpComponent = function (rootElementId, commandBus, eventBus) {
     var showErrors = function (errors) {
         $("#" + rootElementId).find("p").remove(".text-danger");
 
-        for (var element in errors) {
-            if (errors.hasOwnProperty(element)) {
-                $("#" + errors[element].id).parent().append(
-                    '<p class="text-danger">' + errors[element].message + '</p>');
+        for (var elementData in errors) {
+            if (errors.hasOwnProperty(elementData)) {
+                var parent = $("#" + errors[elementData].id).parent();
+                parent.append(
+                    '<p class="text-danger">' + errors[elementData].message + '</p>');
             }
         }
     };

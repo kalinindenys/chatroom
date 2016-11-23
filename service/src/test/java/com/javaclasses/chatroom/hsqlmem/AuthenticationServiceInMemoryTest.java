@@ -6,8 +6,8 @@ import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.*;
-import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
-import com.javaclasses.chatroom.service.DTO.UserDTO;
+import com.javaclasses.chatroom.service.dto.SecurityTokenDTO;
+import com.javaclasses.chatroom.service.dto.UserDTO;
 import com.javaclasses.chatroom.service.tinytypes.Login;
 import com.javaclasses.chatroom.service.tinytypes.Password;
 import org.junit.Before;
@@ -20,7 +20,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.time.LocalDateTime;
 
