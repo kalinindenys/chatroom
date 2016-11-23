@@ -1,7 +1,6 @@
 package com.javaclasses.chatroom.persistence.entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,7 +10,7 @@ public class Chatroom {
     private Long id;
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "chatrooms")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "chatrooms")
     private List<User> members;
 
     @OneToMany(mappedBy = "chatroom")
@@ -74,9 +73,9 @@ public class Chatroom {
         Chatroom chatroom = (Chatroom) o;
 
         if (id != null ? !id.equals(chatroom.id) : chatroom.id != null) return false;
-        if (name != null ? !name.equals(chatroom.name) : chatroom.name != null) return false;
-        if (!members.equals(chatroom.members)) return false;
-        return messages.equals(chatroom.messages);
+        if (!name.equals(chatroom.name)) return false;
+        if (members != null ? !members.equals(chatroom.members) : chatroom.members != null) return false;
+        return messages != null ? messages.equals(chatroom.messages) : chatroom.messages == null;
 
     }
 

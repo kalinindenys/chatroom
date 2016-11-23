@@ -74,6 +74,26 @@ public class Message {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Message message = (Message) o;
+
+        if (id != null ? !id.equals(message.id) : message.id != null) return false;
+        if (!author.equals(message.author)) return false;
+        if (!chatroom.equals(message.chatroom)) return false;
+        if (!content.equals(message.content)) return false;
+        return date.equals(message.date);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
     public String toString() {
         return "Message[ id: '" + id + "' author: '" + author + "' content: '" + content + "' date: '" + date + "']";
     }

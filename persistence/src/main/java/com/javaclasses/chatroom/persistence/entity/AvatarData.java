@@ -1,14 +1,12 @@
 package com.javaclasses.chatroom.persistence.entity;
 
 import javax.persistence.*;
-import java.io.InputStream;
-import java.sql.Blob;
 
 @Entity
 public class AvatarData {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(columnDefinition = "BLOB")

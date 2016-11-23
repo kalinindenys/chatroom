@@ -11,7 +11,7 @@ import com.javaclasses.chatroom.service.dto.ChatroomName;
 import com.javaclasses.chatroom.service.dto.MessageDTO;
 import com.javaclasses.chatroom.service.EmptyMessageException;
 import com.javaclasses.chatroom.service.impl.ChatroomServiceImpl;
-import com.javaclasses.chatroom.service.tinytypes.UserId;
+import com.javaclasses.chatroom.service.dto.UserId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -2,8 +2,6 @@ package com.javaclasses.chatroom.service.client.controllers;
 
 import com.javaclasses.chatroom.service.*;
 import com.javaclasses.chatroom.service.dto.*;
-import com.javaclasses.chatroom.service.tinytypes.Login;
-import com.javaclasses.chatroom.service.tinytypes.Password;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

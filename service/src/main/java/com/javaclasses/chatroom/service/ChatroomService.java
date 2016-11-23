@@ -5,8 +5,8 @@ import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.dto.ChatroomName;
 import com.javaclasses.chatroom.service.dto.MessageDTO;
-import com.javaclasses.chatroom.service.tinytypes.ChatroomId;
-import com.javaclasses.chatroom.service.tinytypes.UserId;
+import com.javaclasses.chatroom.service.dto.ChatroomId;
+import com.javaclasses.chatroom.service.dto.UserId;
 
 import java.util.Date;
 
@@ -22,7 +22,7 @@ public interface ChatroomService {
 
     Iterable<Message> getMessages(Long chatroomId);
 
-    void postMessage(MessageDTO message, Long chatroomId, Date date) throws EmptyMessageException;
+    MessageDTO postMessage(MessageDTO message, Long chatroomId, Date date) throws EmptyMessageException;
 
     Iterable<User> getChatroomMemberList(Long chatroomId);
 
@@ -31,4 +31,6 @@ public interface ChatroomService {
     void joinChatroom(ChatroomId chatroomId, UserId userId);
 
     void leaveChatroom(ChatroomId chatroomId, UserId userId);
+
+    void renameChatroom(ChatroomId chatroomId, ChatroomName chatroomName);
 }
