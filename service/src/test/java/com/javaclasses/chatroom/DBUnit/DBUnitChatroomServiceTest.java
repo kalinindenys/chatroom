@@ -10,12 +10,12 @@ import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.ChatroomService;
-import com.javaclasses.chatroom.service.DTO.ChatroomName;
-import com.javaclasses.chatroom.service.DTO.MessageDTO;
+import com.javaclasses.chatroom.service.dto.ChatroomName;
+import com.javaclasses.chatroom.service.dto.MessageDTO;
 import com.javaclasses.chatroom.service.EmptyMessageException;
 import com.javaclasses.chatroom.DBUnit.config.MockDBConfiguration;
-import com.javaclasses.chatroom.service.tinytypes.ChatroomId;
-import com.javaclasses.chatroom.service.tinytypes.UserId;
+import com.javaclasses.chatroom.service.dto.ChatroomId;
+import com.javaclasses.chatroom.service.dto.UserId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -162,7 +162,7 @@ public class DBUnitChatroomServiceTest {
     @DatabaseSetup("/DBUnit/InitialData.xml")
     @ExpectedDatabase("/DBUnit/JoinChatroomResultData.xml")
     public void joinChatroom() throws Exception {
-        chatroomService.joinChatroom(new ChatroomId(27L),new UserId(9L));
+        chatroomService.joinChatroom(new ChatroomId(27L), new UserId(9L));
         LOGGER.info(userRepository.findOne(9L).getChatrooms().toString());
         LOGGER.info(chatroomRepository.findOne(27L).getMembers().toString());
     }
@@ -171,9 +171,18 @@ public class DBUnitChatroomServiceTest {
     @DatabaseSetup("/DBUnit/JoinChatroomResultData.xml")
     @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void leaveChatroom() throws Exception {
-        chatroomService.leaveChatroom(new ChatroomId(27L),new UserId(9L));
+        chatroomService.leaveChatroom(new ChatroomId(27L), new UserId(9L));
         LOGGER.info(userRepository.findOne(9L).getChatrooms().toString());
         LOGGER.info(chatroomRepository.findOne(27L).getMembers().toString());
+    }
+
+    @Test
+    @DatabaseSetup("/DBUnit/InitialData.xml")
+    @ExpectedDatabase("/DBUnit/RenameChatroomTest.xml")
+    public void renameChatroom() throws Exception {
+        chatroomService.renameChatroom(new ChatroomId(27L), new ChatroomName("Renamed Chatroom 27"));
+        LOGGER.info(chatroomRepository.findOne(27L).toString());
+        LOGGER.info(userRepository.findOne(4L).getChatrooms().toString());
     }
 
 

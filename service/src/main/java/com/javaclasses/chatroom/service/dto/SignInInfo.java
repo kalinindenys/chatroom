@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.service.DTO;
+package com.javaclasses.chatroom.service.dto;
 
 public class SignInInfo {
 

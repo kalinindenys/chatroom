@@ -7,13 +7,13 @@ import com.javaclasses.chatroom.persistence.entity.AvatarData;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.AvatarNotFoundException;
-import com.javaclasses.chatroom.service.DTO.SecurityTokenDTO;
-import com.javaclasses.chatroom.service.DTO.UserDTO;
+import com.javaclasses.chatroom.service.dto.SecurityTokenDTO;
+import com.javaclasses.chatroom.service.dto.UserDTO;
 import com.javaclasses.chatroom.service.InvalidSecurityTokenException;
 import com.javaclasses.chatroom.service.UserService;
 import com.javaclasses.chatroom.service.impl.UserServiceImpl;
-import com.javaclasses.chatroom.service.tinytypes.FileExtension;
-import com.javaclasses.chatroom.service.tinytypes.UserId;
+import com.javaclasses.chatroom.service.dto.FileExtension;
+import com.javaclasses.chatroom.service.dto.UserId;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,7 +30,6 @@ import org.springframework.util.StreamUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
