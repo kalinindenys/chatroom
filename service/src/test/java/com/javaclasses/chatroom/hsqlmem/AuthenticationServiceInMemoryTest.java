@@ -6,10 +6,10 @@ import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.*;
-import com.javaclasses.chatroom.service.dto.SecurityTokenDTO;
-import com.javaclasses.chatroom.service.dto.UserDTO;
 import com.javaclasses.chatroom.service.dto.Login;
 import com.javaclasses.chatroom.service.dto.Password;
+import com.javaclasses.chatroom.service.dto.SecurityTokenDTO;
+import com.javaclasses.chatroom.service.dto.UserDTO;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,7 +26,6 @@ import java.time.LocalDateTime;
 import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { SpringDataTestConfig.class })

@@ -5,10 +5,13 @@ import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.AvatarData;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
 import com.javaclasses.chatroom.persistence.entity.User;
-import com.javaclasses.chatroom.service.*;
+import com.javaclasses.chatroom.service.AvatarNotFoundException;
+import com.javaclasses.chatroom.service.AvatarNotUpdatedException;
+import com.javaclasses.chatroom.service.InvalidSecurityTokenException;
+import com.javaclasses.chatroom.service.UserService;
+import com.javaclasses.chatroom.service.dto.FileExtension;
 import com.javaclasses.chatroom.service.dto.SecurityTokenDTO;
 import com.javaclasses.chatroom.service.dto.UserDTO;
-import com.javaclasses.chatroom.service.dto.FileExtension;
 import com.javaclasses.chatroom.service.dto.UserId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StreamUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 @Service
 public class UserServiceImpl implements UserService {

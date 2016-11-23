@@ -7,11 +7,11 @@ import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.ChatroomService;
+import com.javaclasses.chatroom.service.EmptyMessageException;
 import com.javaclasses.chatroom.service.dto.ChatroomName;
 import com.javaclasses.chatroom.service.dto.MessageDTO;
-import com.javaclasses.chatroom.service.EmptyMessageException;
-import com.javaclasses.chatroom.service.impl.ChatroomServiceImpl;
 import com.javaclasses.chatroom.service.dto.UserId;
+import com.javaclasses.chatroom.service.impl.ChatroomServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +24,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.slf4j.LoggerFactory.getLogger;

@@ -5,12 +5,14 @@ import com.javaclasses.chatroom.persistence.UserRepository;
 import com.javaclasses.chatroom.persistence.entity.SecurityToken;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.*;
+import com.javaclasses.chatroom.service.dto.Login;
+import com.javaclasses.chatroom.service.dto.Password;
 import com.javaclasses.chatroom.service.dto.SecurityTokenDTO;
 import com.javaclasses.chatroom.service.dto.UserDTO;
 import com.javaclasses.chatroom.service.impl.AuthenticationServiceImpl;
-import com.javaclasses.chatroom.service.dto.Login;
-import com.javaclasses.chatroom.service.dto.Password;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -23,7 +25,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringJUnit4ClassRunner.class)

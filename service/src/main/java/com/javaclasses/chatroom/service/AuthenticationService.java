@@ -1,9 +1,9 @@
 package com.javaclasses.chatroom.service;
 
-import com.javaclasses.chatroom.service.dto.SecurityTokenDTO;
-import com.javaclasses.chatroom.service.dto.UserDTO;
 import com.javaclasses.chatroom.service.dto.Login;
 import com.javaclasses.chatroom.service.dto.Password;
+import com.javaclasses.chatroom.service.dto.SecurityTokenDTO;
+import com.javaclasses.chatroom.service.dto.UserDTO;
 
 public interface AuthenticationService {
 

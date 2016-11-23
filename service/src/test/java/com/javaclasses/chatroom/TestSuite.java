@@ -1,8 +1,8 @@
 package com.javaclasses.chatroom;
 
+import com.javaclasses.chatroom.DBUnit.DBUnitChatroomServiceTest;
 import com.javaclasses.chatroom.hsqlmem.InMemoryTestSuite;
 import com.javaclasses.chatroom.mock.MockTestSuite;
-import com.javaclasses.chatroom.DBUnit.DBUnitChatroomServiceTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
