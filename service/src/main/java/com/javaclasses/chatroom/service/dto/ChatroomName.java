@@ -1,4 +1,4 @@
-package com.javaclasses.chatroom.service.tinytypes;
+package com.javaclasses.chatroom.service.dto;
 
 public class ChatroomName {
     private String name;

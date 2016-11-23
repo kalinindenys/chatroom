@@ -1,9 +1,6 @@
-package com.javaclasses.chatroom.service.tinytypes;
+package com.javaclasses.chatroom.service.dto;
 
-import com.javaclasses.chatroom.persistence.entity.Chatroom;
 import com.javaclasses.chatroom.persistence.entity.User;
-
-import java.time.LocalDateTime;
 
 public class MessageDTO {
     private User author;

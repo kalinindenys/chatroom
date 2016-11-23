@@ -1,10 +1,10 @@
 package com.javaclasses.chatroom.service.client.controllers;
 
 import com.javaclasses.chatroom.service.AvatarNotUpdatedException;
-import com.javaclasses.chatroom.service.tinytypes.SecurityTokenDTO;
+import com.javaclasses.chatroom.service.dto.SecurityTokenDTO;
 import com.javaclasses.chatroom.service.InvalidSecurityTokenException;
 import com.javaclasses.chatroom.service.UserService;
-import com.javaclasses.chatroom.service.tinytypes.FileExtension;
+import com.javaclasses.chatroom.service.dto.FileExtension;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
