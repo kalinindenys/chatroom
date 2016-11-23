@@ -1,10 +1,10 @@
 package com.javaclasses.chatroom.service;
 
 import com.javaclasses.chatroom.persistence.entity.AvatarData;
-import com.javaclasses.chatroom.service.tinytypes.SecurityTokenDTO;
-import com.javaclasses.chatroom.service.tinytypes.UserDTO;
-import com.javaclasses.chatroom.service.tinytypes.FileExtension;
-import com.javaclasses.chatroom.service.tinytypes.UserId;
+import com.javaclasses.chatroom.service.dto.SecurityTokenDTO;
+import com.javaclasses.chatroom.service.dto.UserDTO;
+import com.javaclasses.chatroom.service.dto.FileExtension;
+import com.javaclasses.chatroom.service.dto.UserId;
 
 import java.io.InputStream;
 
