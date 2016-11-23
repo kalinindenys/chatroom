@@ -1,6 +1,7 @@
 package com.javaclasses.chatroom.mock;
 
 import com.javaclasses.chatroom.persistence.UserRepository;
+import com.javaclasses.chatroom.persistence.entity.AvatarContentType;
 import com.javaclasses.chatroom.persistence.entity.AvatarData;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.AvatarNotFoundException;
@@ -81,11 +82,11 @@ public class UserServiceMockTest {
         final File uploadedFile = new File("src/test/resources/images/uploaded.jpg");
         final byte[] bytesFromUploadedImage = StreamUtils.copyToByteArray(new FileInputStream(uploadedFile));
 
-        userService.updateAvatar(USER_ID, new FileInputStream(uploadedFile), new FileExtension("jpg"));
+        userService.updateAvatar(USER_ID, new FileInputStream(uploadedFile), AvatarContentType.JPEG);
 
         Mockito.verify(userRepository).save(argumentCaptor.capture());
         assertTrue(Arrays.equals(bytesFromUploadedImage, argumentCaptor.getValue().getAvatarData().getAvatar()));
-        assertEquals("jpg", argumentCaptor.getValue().getAvatarData().getFileExtension());
+        assertEquals(AvatarContentType.JPEG, argumentCaptor.getValue().getAvatarData().getContentType());
     }
 
     @Test
@@ -99,7 +100,7 @@ public class UserServiceMockTest {
     public void receiveAvatar() throws Exception {
         final User userWithAvatar = new User("log", "pass");
         final File avatar = new File("src/test/resources/images/uploaded.jpg");
-        final AvatarData expectedAvatarData = new AvatarData(StreamUtils.copyToByteArray(new FileInputStream(avatar)), "jpg");
+        final AvatarData expectedAvatarData = new AvatarData(StreamUtils.copyToByteArray(new FileInputStream(avatar)), AvatarContentType.JPEG);
         userWithAvatar.setAvatarData(expectedAvatarData);
         userWithAvatar.setId(111L);
 
@@ -108,7 +109,7 @@ public class UserServiceMockTest {
         final AvatarData actualAvatarData = userService.receiveAvatar(new UserId(userWithAvatar.getId()));
 
         assertTrue(Arrays.equals(expectedAvatarData.getAvatar(), actualAvatarData.getAvatar()));
-        assertEquals(expectedAvatarData.getFileExtension(), actualAvatarData.getFileExtension());
+        assertEquals(expectedAvatarData.getContentType(), actualAvatarData.getContentType());
     }
 
 }

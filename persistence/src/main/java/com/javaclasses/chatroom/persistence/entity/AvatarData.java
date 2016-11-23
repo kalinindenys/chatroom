@@ -11,14 +11,14 @@ public class AvatarData {
 
     @Column(columnDefinition = "BLOB")
     private byte[] avatar;
-    private String fileExtension;
+    private AvatarContentType contentType;
 
     public AvatarData() {
     }
 
-    public AvatarData(byte[] avatar, String fileExtension) {
+    public AvatarData(byte[] avatar, AvatarContentType contentType) {
         this.avatar = avatar;
-        this.fileExtension = fileExtension;
+        this.contentType = contentType;
     }
 
     public Long getId() {
@@ -37,11 +37,11 @@ public class AvatarData {
         this.avatar = avatar;
     }
 
-    public String getFileExtension() {
-        return fileExtension;
+    public AvatarContentType getContentType() {
+        return contentType;
     }
 
-    public void setFileExtension(String fileExtension) {
-        this.fileExtension = fileExtension;
+    public void setContentType(AvatarContentType contentType) {
+        this.contentType = contentType;
     }
 }

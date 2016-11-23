@@ -1,6 +1,7 @@
 package com.javaclasses.chatroom.service.impl;
 
 import com.javaclasses.chatroom.persistence.UserRepository;
+import com.javaclasses.chatroom.persistence.entity.AvatarContentType;
 import com.javaclasses.chatroom.persistence.entity.AvatarData;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.AvatarNotFoundException;
@@ -43,10 +44,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateAvatar(UserId userId, InputStream avatarData, FileExtension fileExtension) throws AvatarNotUpdatedException {
+    public void updateAvatar(UserId userId, InputStream avatarData, AvatarContentType contentType) throws AvatarNotUpdatedException {
         final User user = userRepository.findOne(userId.getUserId());
         try {
-            user.setAvatarData(new AvatarData(StreamUtils.copyToByteArray(avatarData), fileExtension.getFileExtension()));
+            user.setAvatarData(new AvatarData(StreamUtils.copyToByteArray(avatarData), contentType));
         } catch (IOException e) {
             if (LOG.isErrorEnabled()) {
                 LOG.error(e.getMessage());
