@@ -35,20 +35,20 @@ public class UserController {
         return null;
     }
 
-    @PostMapping("/updateAvatar")
-    public ResponseEntity<?> updateAvatar(@RequestBody MultipartFile multipartFile, SecurityTokenDTO securityToken) {
-
-        try {
-            userService.updateAvatar(securityToken, multipartFile.getInputStream(), new FileExtension(multipartFile.getContentType()));
-        } catch (InvalidSecurityTokenException e) {
-            e.printStackTrace();
-        } catch (AvatarNotUpdatedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
+//    @PostMapping("/updateAvatar")
+//    public ResponseEntity<?> updateAvatar(@RequestBody MultipartFile multipartFile, SecurityTokenDTO securityToken) {
+//
+//        try {
+//            userService.updateAvatar(, multipartFile.getInputStream(), new FileExtension(multipartFile.getContentType()));
+//        } catch (InvalidSecurityTokenException e) {
+//            e.printStackTrace();
+//        } catch (AvatarNotUpdatedException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return null;
+//    }
 
 }
