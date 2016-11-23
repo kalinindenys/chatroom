@@ -1,6 +1,7 @@
 package com.javaclasses.chatroom.persistence.entity;
 
 import javax.persistence.*;
+import java.util.Arrays;
 
 @Entity
 public class AvatarData {
@@ -43,5 +44,23 @@ public class AvatarData {
 
     public void setContentType(AvatarContentType contentType) {
         this.contentType = contentType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AvatarData that = (AvatarData) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (!Arrays.equals(avatar, that.avatar)) return false;
+        return contentType == that.contentType;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }
