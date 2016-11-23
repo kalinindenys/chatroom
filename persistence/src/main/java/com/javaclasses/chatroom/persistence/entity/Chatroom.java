@@ -66,6 +66,25 @@ public class Chatroom {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Chatroom chatroom = (Chatroom) o;
+
+        if (id != null ? !id.equals(chatroom.id) : chatroom.id != null) return false;
+        if (!name.equals(chatroom.name)) return false;
+        if (members != null ? !members.equals(chatroom.members) : chatroom.members != null) return false;
+        return messages != null ? messages.equals(chatroom.messages) : chatroom.messages == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
     public String toString() {
         return "Chatroom[ id: '" + id + "' name: '" + name + "']";
     }

@@ -8,11 +8,12 @@ import com.javaclasses.chatroom.persistence.entity.Message;
 import com.javaclasses.chatroom.persistence.entity.User;
 import com.javaclasses.chatroom.service.ChatroomNotFoundException;
 import com.javaclasses.chatroom.service.ChatroomService;
-import com.javaclasses.chatroom.service.dto.ChatroomName;
-import com.javaclasses.chatroom.service.dto.MessageDTO;
 import com.javaclasses.chatroom.service.EmptyMessageException;
 import com.javaclasses.chatroom.service.dto.ChatroomId;
+import com.javaclasses.chatroom.service.dto.ChatroomName;
+import com.javaclasses.chatroom.service.dto.MessageDTO;
 import com.javaclasses.chatroom.service.dto.UserId;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 @Service
 public class ChatroomServiceImpl implements ChatroomService {
+    private static final Logger LOGGER = getLogger(ChatroomServiceImpl.class);
     @Autowired
     ChatroomRepository chatroomRepository;
 
@@ -57,6 +61,7 @@ public class ChatroomServiceImpl implements ChatroomService {
 
     public Iterable<Message> getMessages(Long chatroomId) {
         List<Message> messages = chatroomRepository.findOne(chatroomId).getMessages();
+        LOGGER.info("getMessages = " + messages.toString());
         return messages;
     }
 

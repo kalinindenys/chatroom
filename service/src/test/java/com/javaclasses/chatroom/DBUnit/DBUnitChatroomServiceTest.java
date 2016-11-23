@@ -57,13 +57,6 @@ public class DBUnitChatroomServiceTest {
     @Test
     @DatabaseSetup("/DBUnit/InitialData.xml")
     @ExpectedDatabase("/DBUnit/InitialData.xml")
-    public void test() throws Exception {
-        LOGGER.info(userRepository.findByLogin("login1").toString());
-    }
-
-    @Test
-    @DatabaseSetup("/DBUnit/InitialData.xml")
-    @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void getChatroomList() throws Exception {
         Iterable<Chatroom> chatroomList = chatroomService.getUserChatroomList(1L);
         LOGGER.info(chatroomList.toString());
@@ -84,7 +77,6 @@ public class DBUnitChatroomServiceTest {
     @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void getMessages() throws Exception {
         Iterable<Message> messages = chatroomService.getMessages(20L);
-        LOGGER.info(messages.toString());
         // TODO: 11/16/2016 check date
     }
 
