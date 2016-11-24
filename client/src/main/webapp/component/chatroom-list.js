@@ -1,11 +1,13 @@
 var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
 
     var containerId = rootElementId + "_container";
+    var popupId = containerId + "_popup";
     var chatroomStorage = new ChatroomStorage();
 
     $("#" + rootElementId).html(
         '<h3>Chatrooms</h3>' +
-        '<div id="' + containerId + '">Yo</div>'
+        '<div id="' + containerId + '"></div>' +
+        '<div id="' + popupId + '"></div>'
     );
 
     var container = $("#" + containerId);
@@ -20,19 +22,36 @@ var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
             container.append('<ul class="list-group">');
 
             for (i = 0; i < chatrooms.length; i++) {
-                container.append(
-                    '<li class="list-group-item">' +
-                    chatrooms[i].name +
-                    '<span class="badge">' + chatrooms[i].creationDate + '</span>' +
-                    '</li>'
-                );
+                renderListItem(chatrooms[i]);
             }
 
             container.append("</ul>");
-            $("#" + containerId + " li").hover(liEnter, liLeave);
         } else {
             container.append("No chatrooms yet");
         }
+    };
+
+    var renderListItem = function (chatroom) {
+        var liId = containerId + "_" + chatroom.name;
+
+        container.append(
+            '<li id="' + liId + '" class="list-group-item">' +
+            chatroom.name +
+            '<span class="badge">' + chatroom.creationDate + '</span>' +
+            '</li>'
+        );
+
+        $("#" + liId).hover(
+            function () {
+                $(this).append('<button class="btn btn-default">Join</button>');
+                $(this).find("button").click(function () {
+                    new JoinChatComponent(chatroom, popupId, commandBus, eventBus);
+                });
+            },
+            function () {
+                $(this).find("button").remove();
+            }
+        );
     };
 
     var sortByCreationDateDescending = function (chatrooms) {
@@ -44,18 +63,6 @@ var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
     var formatDate = function (date) {
         return date.getDay() + "-" + date.getMonth() + "-" + date.getYear() + " " + date.getHours() + ":" + date.getMinutes();
     };
-
-    var liEnter = function () {
-        $(this).append('<button class="btn btn-default">Join</button>');
-        $(this).last().click(function () {
-            alert("!");
-        })
-    };
-
-    var liLeave = function () {
-        $(this).find("button").remove();
-    };
-
 
     eventBus.subscribe(Events.CHATROOM_LIST_UPDATED, renderChatroomList);
 

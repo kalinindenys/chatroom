@@ -8,7 +8,7 @@ var ChatroomService = function (commandBus, eventBus) {
 
 
         if (chatroomName.length < 3 || chatroomName.length > 50) {
-            resultingEvent = new ChatroomCreationFailed("Chatroom name length is less than 3 or more than 50 symbols");
+            resultingEvent = new ChatroomCreationFailed("Length is less than 3 or more than 50 symbols");
             eventBus.emitMessage(resultingEvent.toMessage());
             throw new Error("Chatroom name length is less than 3 or more than 50 symbols");
         }

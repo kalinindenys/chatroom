@@ -3,7 +3,6 @@ var Events = function () {
 };
 
 Events.CHATROOM_CREATION_FAILED = "Chatroom creation failed";
-// Events.CHATROOM_CREATED_SUCCESSFULLY = "Chatroom created successfully";
 Events.CHATROOM_LIST_UPDATED = "Chatroom list updated";
 
 var ChatroomCreationFailed = function (reason) {
