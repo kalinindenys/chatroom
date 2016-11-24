@@ -127,7 +127,7 @@ public class MockitoChatroomServiceTest {
         Mockito.when(chatroomRepository.findAll()).thenReturn(chatrooms);
         Mockito.when(chatroomRepository.findOne(2114L)).thenReturn(motoChat);
         Mockito.when(chatroomRepository.exists(2114L)).thenReturn(true);
-        Mockito.when(chatroomRepository.findAllByName("Motoclub")).thenReturn(foundByNameChatrooms);
+        Mockito.when(chatroomRepository.findByName("Motoclub")).thenReturn(motoChat);
 
         Mockito.when(messageRepository.findAll(messageIds)).thenReturn(messages);
     }
@@ -199,14 +199,15 @@ public class MockitoChatroomServiceTest {
 
     @Test
     public void findChatroom() throws Exception {
-        Iterable<Chatroom> chatroom = chatroomService.findChatroomsByName("Motoclub");
+        Chatroom chatroom = chatroomService.findChatroomByName("Motoclub");
         LOGGER.info(chatroom.toString());
-        assertEquals(foundByNameChatrooms, chatroom);
+        assertEquals(motoChat, chatroom);
     }
 
     @Test
     public void createChatroom() {
-        chatroomService.createChatroom(new ChatroomName("Rock"), new UserId(1L));
+        chatroomService.createChatroom(new ChatroomName("Rock"));
+        //// TODO: 11/23/2016
     }
 
 }

@@ -47,8 +47,8 @@ public class ChatroomListController {
 
     @GetMapping("/findChatroom/{chatroomName}")
     public ResponseEntity<?> findChatroom(@PathVariable String name) {
-        Iterable<Chatroom> chatroomsByName = chatroomService.findChatroomsByName(name);
-        return ResponseEntity.ok(chatroomsByName);
+        Chatroom chatroomByName = chatroomService.findChatroomByName(name);
+        return ResponseEntity.ok(chatroomByName);
     }
 
     @GetMapping("/showAllChatrooms")

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,8 +56,8 @@ public class ChatroomServiceImpl implements ChatroomService {
         return chatroomRepository.findOne(chatroomId);
     }
 
-    public Iterable<Chatroom> findChatroomsByName(String name) {
-        return chatroomRepository.findAllByName(name);
+    public Chatroom findChatroomByName(String name) {
+        return chatroomRepository.findByName(name);
     }
 
     public Iterable<Message> getMessages(Long chatroomId) {
@@ -83,17 +84,25 @@ public class ChatroomServiceImpl implements ChatroomService {
     }
 
     @Transactional
-    public void createChatroom(ChatroomName chatroomName, UserId ownerId) {
+    public void createChatroom(ChatroomName chatroomName) {
         Chatroom chatroom = chatroomRepository.save(new Chatroom(chatroomName.getName()));
         chatroomRepository.save(chatroom);
+        // TODO: 11/24/2016 remake
         // TODO: 11/17/2016 add owner role
     }
 
     @Transactional
     public void joinChatroom(ChatroomId chatroomId, UserId userId) {
         User user = userRepository.findOne(userId.getUserId());
-        Chatroom room = chatroomRepository.findOne(chatroomId.getId());
-        user.getChatrooms().add(room);
+        Chatroom chatroom = chatroomRepository.findOne(chatroomId.getId());
+        if (null == user.getChatrooms()) {
+            ArrayList<Chatroom> chatrooms = new ArrayList<>();
+            chatrooms.add(chatroom);
+            user.setChatrooms(chatrooms);
+        }else {
+            user.getChatrooms().add(chatroom);
+        }
+
         userRepository.saveAndFlush(user);
     }
 

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChatroomRepository extends JpaRepository<Chatroom, Long> {
-    Iterable<Chatroom> findAllByName(String name);
+    Chatroom findByName(String name);
 }

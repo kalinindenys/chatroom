@@ -23,9 +23,9 @@ public class Message {
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm a z")
     private Date date;
 
-    public Message(User author, Chatroom chatroomId, String content, Date date) {
+    public Message(User author, Chatroom chatroom, String content, Date date) {
         this.author = author;
-        this.chatroom = chatroomId;
+        this.chatroom = chatroom;
         this.content = content;
         this.date = date;
     }

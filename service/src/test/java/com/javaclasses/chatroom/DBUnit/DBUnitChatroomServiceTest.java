@@ -93,7 +93,7 @@ public class DBUnitChatroomServiceTest {
     @DatabaseSetup("/DBUnit/InitialData.xml")
     @ExpectedDatabase("/DBUnit/PostMessageResultData.xml")
     public void postMessage() throws Exception {
-        chatroomService.postMessage(new MessageDTO(userRepository.findOne(0L), "Added message from test"), 20L, setDefaultDate());
+        chatroomService.postMessage(new MessageDTO(userRepository.findOne(0L), "Added message from test"), 20L, getDefaultDate());
 
     }
 
@@ -114,7 +114,7 @@ public class DBUnitChatroomServiceTest {
     @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void postEmptyMessage() throws Exception {
         try {
-            chatroomService.postMessage(new MessageDTO(userRepository.findOne(2L), null), 20L, setDefaultDate());
+            chatroomService.postMessage(new MessageDTO(userRepository.findOne(2L), null), 20L, getDefaultDate());
         } catch (EmptyMessageException eme) {
             LOGGER.info("EmptyMessageException has been caught");
         }
@@ -132,14 +132,12 @@ public class DBUnitChatroomServiceTest {
     @DatabaseSetup("/DBUnit/InitialData.xml")
     @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void findChatroomTest() throws Exception {
-        Iterable<Chatroom> chatroom = chatroomService.findChatroomsByName("chatroom20");
+        Chatroom chatroom = chatroomService.findChatroomByName("chatroom20");
         LOGGER.info("findChatroomTest: " + chatroom.toString());
-        chatroom = chatroomService.findChatroomsByName("chatroom21");
+        chatroom = chatroomService.findChatroomByName("chatroom21");
         LOGGER.info("findChatroomTest: " + chatroom.toString());
-        chatroom = chatroomService.findChatroomsByName("chatroom25");
+        chatroom = chatroomService.findChatroomByName("chatroom25");
         LOGGER.info("findChatroomTest: " + chatroom.toString());
-        chatroom = chatroomService.findChatroomsByName("chatroom");
-        LOGGER.info("findChatroomTest:  by 'chatroom'" + chatroom.toString());
 
     }
 
@@ -147,7 +145,7 @@ public class DBUnitChatroomServiceTest {
     @DatabaseSetup("/DBUnit/InitialData.xml")
     @ExpectedDatabase("/DBUnit/CreateChatroomResultData.xml")
     public void createChatroom() throws Exception {
-        chatroomService.createChatroom(new ChatroomName("created Chatroom"), new UserId(0L));
+        chatroomService.createChatroom(new ChatroomName("created Chatroom"));
     }
 
     @Test
@@ -178,7 +176,7 @@ public class DBUnitChatroomServiceTest {
     }
 
 
-    private Date setDefaultDate() {
+    private Date getDefaultDate() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
         try {
             Date date = formatter.parse("11-November-2008 13:23:10");

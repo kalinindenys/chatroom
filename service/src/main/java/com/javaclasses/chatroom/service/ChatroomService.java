@@ -10,7 +10,9 @@ import com.javaclasses.chatroom.service.dto.UserId;
 
 import java.util.Date;
 
-
+/**
+ *
+ */
 public interface ChatroomService {
     Iterable<Chatroom> getAllChatrooms();
 
@@ -18,7 +20,7 @@ public interface ChatroomService {
 
     Chatroom getChatroom(Long chatroomId) throws ChatroomNotFoundException;
 
-    Iterable<Chatroom> findChatroomsByName(String name);
+    Chatroom findChatroomByName(String name);
 
     Iterable<Message> getMessages(Long chatroomId);
 
@@ -26,7 +28,7 @@ public interface ChatroomService {
 
     Iterable<User> getChatroomMemberList(Long chatroomId);
 
-    void createChatroom(ChatroomName chatroomName, UserId ownerId);
+    void createChatroom(ChatroomName chatroomName);
 
     void joinChatroom(ChatroomId chatroomId, UserId userId);
 
