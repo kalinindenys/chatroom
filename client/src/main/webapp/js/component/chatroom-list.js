@@ -1,6 +1,7 @@
 var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
 
     var containerId = rootElementId + "_container";
+    var ulId = containerId + "_ul";
     var popupId = containerId + "_popup";
 
     $("#" + rootElementId).html(
@@ -20,10 +21,10 @@ var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
             chatrooms = sortByCreationDateDescending(chatrooms);
 
             container.attr("class", "pre-scrollable");
-            container.append('<ul class="list-group">');
+            container.append('<ul class="list-group" id="' + ulId + '">');
 
             for (i = 0; i < chatrooms.length; i++) {
-                renderListItem(chatrooms[i]);
+                new ChatroomListItem(ulId, popupId, chatrooms[i], commandBus, eventBus);
             }
 
             container.append("</ul>");
@@ -32,38 +33,10 @@ var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
         }
     };
 
-    var renderListItem = function (chatroom) {
-        var liId = containerId + "_" + chatroom.name.split(" ").join("_");
-
-        container.append(
-            '<li id="' + liId + '" class="list-group-item">' +
-            chatroom.name +
-            '<span class="badge">' + formatDate(chatroom.creationDate) + '</span>' +
-            '</li>'
-        );
-
-        $("#" + liId).hover(
-            function () {
-                $(this).append('<button class="btn btn-default btn-sm">Join</button>');
-                $(this).find("button").click(function () {
-                    new JoinChatComponent(chatroom, popupId, commandBus, eventBus);
-                });
-            },
-            function () {
-                $(this).find("button").remove();
-            }
-        );
-    };
-
     var sortByCreationDateDescending = function (chatrooms) {
         return chatrooms.sort(function (first, second) {
             return second.creationDate - first.creationDate;
         });
-    };
-
-    var formatDate = function (date) {
-        return date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
-        // return date.toLocaleDateString() + " " + date.toLocaleTimeString();
     };
 
     commandBus.subscribe(Commands.INIT_CHATROOM_LIST, renderChatroomList);
