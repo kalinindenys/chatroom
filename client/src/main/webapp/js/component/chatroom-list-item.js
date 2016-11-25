@@ -7,7 +7,7 @@ var ChatroomListItem = function (rootElementId, popupId, chatroom, commandBus, e
         '<li id="' + itemId + '" class="list-group-item clearfix">' +
         chatroom.name +
         '<button class="btn btn-default btn-sm" style="visibility: hidden" id="' + joinBtnId + '">Join</button>' +
-        '<span class="badge">' + formatDate(chatroom.creationDate) + '</span>' +
+        '<span class="badge">' + chatroom.creationDate.toString("dd-MM-yy HH:mm") + '</span>' +
         '</li>'
     );
 
@@ -25,10 +25,5 @@ var ChatroomListItem = function (rootElementId, popupId, chatroom, commandBus, e
     item.mouseout(function () {
         joinBtn.css("visibility", "hidden");
     });
-
-    function formatDate(date) {
-        return date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
-        // return date.toLocaleDateString() + " " + date.toLocaleTimeString();
-    }
 
 };
