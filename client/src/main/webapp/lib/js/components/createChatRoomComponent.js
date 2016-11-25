@@ -4,8 +4,7 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
     var createChatRoomBtnId = rootDivId + "_createChatRoomBtn";
     var validationId = rootDivId + "_validation";
 
-    $("#" + rootDivId).html("").append('<div class="add-chat-room">' +
-        '<div class="panel panel-info">' +
+    $("#" + rootDivId).html("").append('<div class="panel panel-info">' +
         '<div class="panel-heading"> <h3 class="panel-title">Add new chat room?</h3> </div>' +
         '<div class="input-group">' +
         '<input type="text" class="form-control" placeholder="Create" id=' + inputId + '>' +
@@ -19,12 +18,23 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
         inputElement.val("");
     }
 
-    var _onCreateChatRoom = function (evt) {
-        $('#createChatRoomBtnId').animateCss('jello');
-        /*  var chatRoomDescription = inputElement.val();
-         var command = new CreateChatRoomCommand(chatRoomDescription);
+    var _onCreateChatRoom = function (evt) { // CLEAN CODE
+        var chatRoomName = inputElement.val().trim();
+        if (chatRoomName.length > 2 && chatRoomName.length <= 50) {
+            var item = localStorage.getItem(chatRoomName);
+            if (item) {
+                //CHECK AND THROW EXCEPTION
+            } else {
+                var length = localStorage.length;
+                var chatroomDto = new ChatroomDto(length, chatRoomName, new Date()); //THINK ABOUT DATE REPRESENTITION
+                localStorage.setItem(chatRoomName, JSON.stringify(chatroomDto))
 
-         commandBus.emit(command.toMessage());*/
+                command = new CreateChatRoomCommand(JSON.stringify(chatroomDto));
+                commandBus.emit(command.toMessage());
+
+                inputElement.val('');
+            }
+        }
     };
 
     var _onError = function (evt) {
@@ -33,12 +43,6 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
 
         $("#" + validationId).html(reason);
     }
-
-    inputElement.keydown(function (evt) {
-        if (evt.ctrlKey && evt.keyCode == "13") {
-            _onCreateChatRoom();
-        }
-    });
 
     $("#" + createChatRoomBtnId).click(_onCreateChatRoom);
 

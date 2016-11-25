@@ -19,6 +19,7 @@
     <script type="text/javascript" src="lib/js/components/createChatRoomComponent.js"></script>
     <script type="text/javascript" src="lib/js/components/chatRoomListComponent.js"></script>
     <script type="text/javascript" src="lib/js/components/chatRoomListItemComponent.js"></script>
+    <script type="text/javascript" src="lib/js/dto/chatrooms.js"></script>
 
 
     <script type="text/javascript">
@@ -27,11 +28,11 @@
             var externalEventBus = new MessageBus("External event bus");
             var widget = new ChatRoomListWidget("chatroom", externalEventBus);
 
-/*            var taskList = [
-             new Task("Wash my car"),
-             new Task("Conquer the world"),
+            var taskList = [
+             new ChatroomDto(100, "TestOne"),
+             new ChatroomDto(1001, "TestOne1")
              ];
-             var event = new ChatRoomListUpdatedEvent(taskList);*/
+             var event = new ChatRoomListUpdatedEvent(taskList);
             externalEventBus.emit(event.toMessage());
         });
     </script>
