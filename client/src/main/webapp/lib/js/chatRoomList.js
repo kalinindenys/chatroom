@@ -12,8 +12,8 @@ var ChatRoomListWidget = function(rootElementId, externalEventBus) {
     var createChatRoomDivId = rootElementId + "_createChatRoom";
     var chatRoomListDivId = rootElementId + "_chatRoomList";
 
-    $("#" + rootElementId)	.append("<div class='input-group' id=" + createChatRoomDivId + "> Create chat room component placeholder </div>")
-        .append("<div id=" + chatRoomListDivId + "> Chat room List component placeholder </div>");
+    $("#" + rootElementId)	.append("<div class='add-chat-room' id=" + createChatRoomDivId + "> Create chat room component placeholder </div>")
+        .append("<div class='chat-room-list' id=" + chatRoomListDivId + "> Chat room list component placeholder </div>");
 
     var createChatRoomComponent = new CreateChatroomComponent(eventBus, commandBus, createChatRoomDivId);
     var chatRoomListComponent = new ChatRoomListComponent(eventBus, chatRoomListDivId);

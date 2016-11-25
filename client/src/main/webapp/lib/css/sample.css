@@ -3,5 +3,13 @@ h1{
     font-size: 48px;
 }
 body{
-    background: linear-gradient(white, slategray);
+    background: linear-gradient(white, lightskyblue);
+}
+
+div.chat-room-list{
+    width: 440px;
+}
+
+div.add-chat-room{
+    width: 340px;
 }

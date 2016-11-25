@@ -4,13 +4,14 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
     var createChatRoomBtnId = rootDivId + "_createChatRoomBtn";
     var validationId = rootDivId + "_validation";
 
-    $("#" + rootDivId).html("").append('<div class="panel panel-info">' +
+    $("#" + rootDivId).html("").append('<div class="add-chat-room">' +
+        '<div class="panel panel-info">' +
         '<div class="panel-heading"> <h3 class="panel-title">Add new chat room?</h3> </div>' +
-        ' <div class="input-group">' +
-        ' <input type="text" class="form-control" placeholder="Create" id=' + inputId + '>' +
-        ' <span class="input-group-btn"> ' +
+        '<div class="input-group">' +
+        '<input type="text" class="form-control" placeholder="Create" id=' + inputId + '>' +
+        '<span class="input-group-btn"> ' +
         '<button class="btn btn-info" type="button" id=' + createChatRoomBtnId + '>Create</button> </span> </div>' +
-        '<div style="color: red" id=' + validationId + '></div></div>');
+        '<div style="color: red" id=' + validationId + '></div></div></div>');
 
 
     var inputElement = $("#" + inputId);
@@ -20,10 +21,10 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
 
     var _onCreateChatRoom = function (evt) {
         $('#createChatRoomBtnId').animateCss('jello');
-      /*  var chatRoomDescription = inputElement.val();
-        var command = new CreateChatRoomCommand(chatRoomDescription);
+        /*  var chatRoomDescription = inputElement.val();
+         var command = new CreateChatRoomCommand(chatRoomDescription);
 
-        commandBus.emit(command.toMessage());*/
+         commandBus.emit(command.toMessage());*/
     };
 
     var _onError = function (evt) {
