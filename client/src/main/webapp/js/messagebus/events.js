@@ -4,6 +4,7 @@ var Events = function () {
 
 Events.CHATROOM_CREATION_FAILED = "Chatroom creation failed";
 Events.CHATROOM_LIST_UPDATED = "Chatroom list updated";
+Events.CHATROOM_UPDATED = "Chatroom updated";
 
 var ChatroomCreationFailed = function (reason) {
     var toMessage = function () {
@@ -21,9 +22,10 @@ var ChatroomListUpdated = function (chatrooms) {
     return { toMessage: toMessage };
 };
 
+var ChatroomUpdated = function (chatroom) {
+    var toMessage = function () {
+        return new Message(Events.CHATROOM_LIST_UPDATED, chatroom);
+    };
 
-Events.PAGE_LOADED = "Page loaded";
-Events.SIGNED_UP = "Signed up";
-Events.SIGN_UP_FAILED = "Sign up failed";
-Events.LOGGED_IN = "Logged in";
-Events.ENTER_CHAT_ROOM = "entered chat room";
+    return { toMessage: toMessage };
+};

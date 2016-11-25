@@ -27,17 +27,26 @@ var ChatroomService = function (commandBus, eventBus) {
     var findByName = function (chatroomName) {
         var chatrooms = chatroomStorage.getChatrooms();
 
-        var chatroom = chatrooms.find(function (chatroom) {
+        return chatrooms.find(function (chatroom) {
             return chatroom.name === chatroomName;
         });
-
-        return chatroom;
     };
 
     var findAll = function () {
         return chatroomStorage.getChatrooms();
     };
 
+    var join = function (nickname, chatroom) {
+        chatroom.guests.push(nickname);
+        chatroomStorage.updateItem(chatroom);
+        eventBus.emitMessage(new ChatroomUpdated(chatroom).toMessage());
+    };
+
     commandBus.subscribe(Commands.CREATE_CHATROOM, createChatroom);
+    commandBus.subscribe(Commands.ENTER_TO_CHATROOM, join);
+
+    return {
+        findAll: findAll
+    }
 
 };

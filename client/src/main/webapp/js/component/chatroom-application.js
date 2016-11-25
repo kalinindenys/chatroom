@@ -9,6 +9,7 @@ var ChatroomApplication = function (rootElementId, commandBus, eventBus) {
         '<div class="row">' +
         '<div id="' + createChatroomComponentId + '" class="col-md-4">Create chatroom component placeholder</div>' +
         '</div>' +
+        '<br>' +
         '<div class="row">' +
         '<div id="' + chatroomListComponentId + '" class="col-md-6">ChatroomListComponent placeholder</div>' +
         '</div>' +
@@ -17,5 +18,7 @@ var ChatroomApplication = function (rootElementId, commandBus, eventBus) {
 
     var createChatroomComponent = new CreateChatroomComponent(createChatroomComponentId, commandBus, eventBus);
     var chatroomListComponent = new ChatroomListComponent(chatroomListComponentId, commandBus, eventBus);
+
+    commandBus.emitMessage(new InitChatroomList(chatroomService.findAll()).toMessage());
 
 };
