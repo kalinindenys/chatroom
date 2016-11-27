@@ -61,7 +61,7 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
     // };
 
     var show = function (chatroom) {
-        nickname.val();
+        nickname.val('');
         chatroomName.html(chatroom.name);
         panel.toggle();
     };
