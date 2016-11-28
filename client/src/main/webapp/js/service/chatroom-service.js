@@ -1,6 +1,4 @@
-var ChatroomService = function (commandBus, eventBus) {
-
-    var chatroomStorage = new ChatroomStorage();
+var ChatroomService = function (chatroomStorage, commandBus, eventBus) {
 
     var createChatroom = function (chatroomName) {
         var resultingEvent;
@@ -48,6 +46,23 @@ var ChatroomService = function (commandBus, eventBus) {
         eventBus.emitMessage(new ChatroomUpdated(chatroom).toMessage());
     };
 
+    var leave = function (enterChatroomInfo) {
+        var chatroomName = enterChatroomInfo.getChatroomName();
+        var nickname = enterChatroomInfo.getNickname();
+
+        var chatroom = findByName(chatroomName);
+
+        var guestIndexForRemove = chatroom.guests.indexOf(nickname);
+
+        if (guestIndexForRemove === -1) {
+            throw new Error("Illegal state. Trying to remove not existing nickname");
+        }
+        chatroom.guests.splice(guestIndexForRemove, 1);
+        chatroomStorage.updateItem(chatroom);
+
+        eventBus.emitMessage(new ChatroomUpdated(chatroom).toMessage());
+    };
+
     var validateNickname = function (nicknameValidationInfo) {
         var nickname = nicknameValidationInfo.getNickname();
         var chatroomName = nicknameValidationInfo.getChatroomName();
@@ -78,11 +93,13 @@ var ChatroomService = function (commandBus, eventBus) {
     };
 
     commandBus.subscribe(Commands.CREATE_CHATROOM, createChatroom);
-    commandBus.subscribe(Commands.ENTER_TO_CHATROOM, join);
     commandBus.subscribe(Commands.VALIDATE_NICKNAME, validateNickname);
+    commandBus.subscribe(Commands.ENTER_TO_CHATROOM, join);
+    commandBus.subscribe(Commands.LEAVE_FROM_CHATROOM, leave);
 
     return {
-        findAll: findAll
+        findAll: findAll,
+        findByName: findByName
     }
 
 };

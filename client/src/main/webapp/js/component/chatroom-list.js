@@ -1,18 +1,15 @@
 var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
 
     var containerId = rootElementId + "_container";
-    var popupId = containerId + "_popup";
 
     $("#" + rootElementId).html(
         '<div class="panel panel-default">' +
         '<div class="panel-heading">Chatrooms</div>' +
         '<ul class="panel-body" id="' + containerId + '"></ul>' +
-        '</div>' +
-        '<div id="' + popupId + '"></div>'
+        '</div>'
     );
 
     var container = $("#" + containerId);
-    var joinChatComponent = new JoinChatComponent(popupId, commandBus, eventBus);
 
     var renderChatroomList = function (chatrooms) {
         container.html("");

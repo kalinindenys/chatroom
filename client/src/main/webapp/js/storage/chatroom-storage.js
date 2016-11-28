@@ -29,7 +29,7 @@ var ChatroomStorage = function () {
     };
 
     function creationDateReviver(key, value) {
-        if (key === "creationDate") {
+        if (key === "creationDate" || key === "postTime") {
             return new Date(value);
         }
 

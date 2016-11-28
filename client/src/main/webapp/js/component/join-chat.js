@@ -29,7 +29,7 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
 
     nickname.keyup(function () {
         var trimmedNickname = nickname.val().trim();
-        var nicknameValidationInfo = new NicknameValidationInfo(trimmedNickname, chatroomName.html());
+        var nicknameValidationInfo = new EnterChatroomInfo(trimmedNickname, chatroomName.html());
 
         commandBus.emitMessage(new ValidateNickname(nicknameValidationInfo).toMessage());
     });
