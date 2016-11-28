@@ -41,29 +41,17 @@ var ShowJoinChatPopup = function (chatroom) {
 //     return { toMessage: toMessage };
 // };
 
-var ValidateNickname = function (nickname, chatroomName) {
+var ValidateNickname = function (nicknameValidationInfo) {
     var toMessage = function () {
-        return new Message(
-            Commands.VALIDATE_NICKNAME,
-            {
-                nickname: nickname,
-                chatroomName: chatroomName
-            }
-        );
+        return new Message(Commands.VALIDATE_NICKNAME, nicknameValidationInfo);
     };
 
     return { toMessage: toMessage };
 };
 
-var EnterToChatroom = function (nickname, chatroom) {
+var EnterToChatroom = function (enterChatroomInfo) {
     var toMessage = function () {
-        return new Message(
-            Commands.ENTER_TO_CHATROOM,
-            {
-                nickname: nickname,
-                chatroom: chatroom
-            }
-        )
+        return new Message(Commands.ENTER_TO_CHATROOM, enterChatroomInfo);
     };
 
     return { toMessage: toMessage };

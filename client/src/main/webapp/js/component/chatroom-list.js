@@ -1,7 +1,6 @@
 var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
 
     var containerId = rootElementId + "_container";
-    var ulId = containerId + "_ul";
     var popupId = containerId + "_popup";
 
     $("#" + rootElementId).html(
@@ -21,14 +20,11 @@ var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
         if (chatrooms && chatrooms.length > 0) {
             chatrooms = sortByCreationDateDescending(chatrooms);
 
-            // container.attr("class", "pre-scrollable");
-            container.append('<ul class="pre-scrollable" id="' + ulId + '">');
+            container.attr("class", "panel-body list-group pre-scrollable");
 
             for (i = 0; i < chatrooms.length; i++) {
-                new ChatroomListItem(ulId, chatrooms[i], commandBus);
+                new ChatroomListItem(containerId, chatrooms[i], commandBus);
             }
-
-            container.append("</ul>");
         } else {
             container.append("No chatrooms yet");
         }

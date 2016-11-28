@@ -26,23 +26,23 @@ var ChatroomListUpdated = function (chatrooms) {
 
 var ChatroomUpdated = function (chatroom) {
     var toMessage = function () {
-        return new Message(Events.CHATROOM_LIST_UPDATED, chatroom);
+        return new Message(Events.CHATROOM_UPDATED, chatroom);
     };
 
     return { toMessage: toMessage };
 };
 
-var NicknameValidationSuccess = function (validationInfo) {
+var NicknameValidationSuccess = function () {
     var toMessage = function () {
-        return new Message(Events.NICKNAME_VALIDATION_SUCCESS, validationInfo);
+        return new Message(Events.NICKNAME_VALIDATION_SUCCESS, null);
     };
 
     return { toMessage: toMessage };
 };
 
-var NicknameValidationFail = function (validationInfo) {
+var NicknameValidationFail = function () {
     var toMessage = function () {
-        return new Message(Events.NICKNAME_VALIDATION_FAIL, validationInfo);
+        return new Message(Events.NICKNAME_VALIDATION_FAIL, null);
     };
 
     return { toMessage: toMessage };

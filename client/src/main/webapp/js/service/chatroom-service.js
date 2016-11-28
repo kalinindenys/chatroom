@@ -36,23 +36,21 @@ var ChatroomService = function (commandBus, eventBus) {
         return chatroomStorage.getChatrooms();
     };
 
-    var join = function (nickname, chatroom) {
+    var join = function (enterChatroomInfo) {
+        var chatroomName = enterChatroomInfo.getChatroomName();
+        var nickname = enterChatroomInfo.getNickname();
+
+        var chatroom = findByName(chatroomName);
+
         chatroom.guests.push(nickname);
         chatroomStorage.updateItem(chatroom);
+
         eventBus.emitMessage(new ChatroomUpdated(chatroom).toMessage());
     };
 
-    var validateNickname = function (validationInfo) {
-        var nickname = validationInfo.nickname;
-        var chatroomName = validationInfo.chatroomName;
-
-        if (nickname === undefined) {
-            throw new Error("Nickname must be specified");
-        }
-
-        if (!chatroomName) {
-            throw new Error("Chatroom name must be specified");
-        }
+    var validateNickname = function (nicknameValidationInfo) {
+        var nickname = nicknameValidationInfo.getNickname();
+        var chatroomName = nicknameValidationInfo.getChatroomName();
 
         var resultingEvent;
         var chatroom = findByName(chatroomName);
@@ -62,18 +60,18 @@ var ChatroomService = function (commandBus, eventBus) {
         }
 
         if (nickname.length === 0) {
-            resultingEvent = new NicknameValidationFail(validationInfo);
+            resultingEvent = new NicknameValidationFail(nicknameValidationInfo);
         }
 
         for (i = 0; i < chatroom.guests.length; i++) {
             if (chatroom.guests[i] === nickname) {
-                resultingEvent = new NicknameValidationFail(validationInfo);
+                resultingEvent = new NicknameValidationFail(nicknameValidationInfo);
                 break;
             }
         }
 
         if (!resultingEvent) {
-            resultingEvent = new NicknameValidationSuccess(validationInfo);
+            resultingEvent = new NicknameValidationSuccess(nicknameValidationInfo);
         }
 
         eventBus.emitMessage(resultingEvent.toMessage());

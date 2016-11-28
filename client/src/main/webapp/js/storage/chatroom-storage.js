@@ -15,7 +15,7 @@ var ChatroomStorage = function () {
     var updateItem = function (chatroom) {
         for (i = 0; i < chatrooms.length; i++) {
             if (chatrooms[i].name === chatroom.name) {
-                chatroom[i] = chatroom;
+                chatrooms[i] = chatroom;
                 localStorage.setItem(chatroomsKey, JSON.stringify(chatrooms));
                 return;
             }
