@@ -23,13 +23,13 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
         if (chatRoomName.length > 2 && chatRoomName.length <= 50) {
             var item = localStorage.getItem(chatRoomName);
             if (item) {
-                //CHECK AND THROW EXCEPTION
+                //todo: CHECK AND THROW EXCEPTION
             } else {
                 var length = localStorage.length;
                 var chatroomDto = new ChatroomDto(length, chatRoomName, new Date()); //THINK ABOUT DATE REPRESENTITION
                 localStorage.setItem(chatRoomName, JSON.stringify(chatroomDto))
 
-                command = new CreateChatRoomCommand(JSON.stringify(chatroomDto));
+                command = new CreateChatRoomCommand(localStorage.getItem(chatRoomName));
                 commandBus.emit(command.toMessage());
 
                 inputElement.val('');

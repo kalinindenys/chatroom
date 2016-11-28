@@ -13,3 +13,8 @@ div.chat-room-list{
 div.add-chat-room{
     width: 340px;
 }
+
+span.chat-date-span{
+    font-family: "Courier New";
+    color: silver;
+}

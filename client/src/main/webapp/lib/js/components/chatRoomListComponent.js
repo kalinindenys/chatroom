@@ -2,14 +2,14 @@ var ChatRoomListComponent = function (eventBus, rootDivId) {
 
     var chatRoomListContainerId = rootDivId + "_chatRoomListContainer";
 
-    $("#" + rootDivId).html("").append('<div class="panel panel-info">' +
+    $("#" + rootDivId).html('').append('<div class="panel panel-info">' +
         '<div class="panel-heading"> <h3 class="panel-title">Chat Rooms:</h3> </div>' +
-        '<div  id=" + chatRoomListContainerId + "></div></div>');
+        '<div  id=' + chatRoomListContainerId + '></div></div>');
 
 
     var _onListUpdated = function (evt) {
-        var tasks = evt.data;
-        _renderChatRooms(tasks);
+        var chatRooms = evt.data;
+        _renderChatRooms(chatRooms);
     };
 
     var _renderChatRooms = function (chatRooms) {
@@ -20,19 +20,19 @@ var ChatRoomListComponent = function (eventBus, rootDivId) {
 
         if (chatRooms && chatRooms.length > 0) {
 
-            containerElement.append("<ul>");
+            containerElement.append('<ul class="list-group">');
 
-            for (var chatRoomIndex = 0; taskIndex < chatRooms.length; chatRoomIndex++) {
+            for (var chatRoomIndex = 0; chatRoomIndex < chatRooms.length; chatRoomIndex++) {
                 var aChatRoom = chatRooms[chatRoomIndex];
 
                 var name = aChatRoom.name;
-                containerElement.append("<li>" + name + "</li>");
-                // UPDATE LI!!==================================================================================
+                containerElement.append(new ChatRoomListItemComponent(chatRoomListContainerId, aChatRoom));
+                //todo: UPDATE LI
             }
 
-            containerElement.append("</ul>");
+            containerElement.append('</ul>');
         } else {
-            containerElement.append(" --- No Chat Rooms yet ---");
+            containerElement.append(' --- No Chat Rooms yet ---');
         }
     };
 

@@ -17,6 +17,6 @@ var ChatRoomListWidget = function(rootElementId, externalEventBus) {
 
     var createChatRoomComponent = new CreateChatroomComponent(eventBus, commandBus, createChatRoomDivId);
     var chatRoomListComponent = new ChatRoomListComponent(eventBus, chatRoomListDivId);
-    var taskModel = new TasksDomain(commandBus, eventBus, new MockServer());
+    var chatRoomModel = new ChatRoomsDomain(commandBus, eventBus, new ChatRoomEventHandler());
 
 };

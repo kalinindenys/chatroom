@@ -1,28 +1,37 @@
-var ChatRoomListItemComponent = function (eventBus, rootDivId, chatRoomDto) {
+var ChatRoomListItemComponent = function (rootDivId, chatRoomDto) {
+    var chatRoom = JSON.parse(chatRoomDto);
+    var chatRoomListItemContainerId = rootDivId + "_chatRoomListItemContainer_" + chatRoom.id;
+    //todo: change date format
 
-    var chatRoomListItemContainerId = rootDivId + "_chatRoomListItemContainer" + "_" + chatRoomDto.id;
-    var joinId = rootDivId + "_joinId";
+    $("#" + rootDivId).append('<li id=' + chatRoomListItemContainerId + ' class="list-group-item" style="height: 50px">' +
+        ' <div class="animated bounceIn">'
+        + chatRoom.name + '<span class="chat-date-span"> ' + chatRoom.date + '</span>' +
+        '<button style="visibility: hidden; float: right" class="btn btn-info">Join</button> ' +
+        '</div></li>'
+    );
 
-    $("#" + rootDivId).html("").append('<div id=' + chatRoomListItemContainerId + ' class="animated jello" ' +
-        '<li class="list-group-item">' + chatRoomDto.name +
-        '<button id="' + joinId + '" style="visibility: hidden" class="btn btn-info">Join</button> ' +
-        '</li></div>');
 
-
-    var joinButton = $('#' + joinId);
     var chatRoomListItem = $("#" + chatRoomListItemContainerId);
+    var joinButton = chatRoomListItem.find("button")
 
     joinButton.keydown(function (event) {
-        //JOIN
+        //todo: JOIN
     });
 
     chatRoomListItem.mouseover(function (event) {
-        joinButton.css('visibility', 'visible');
+        _changeButtonVisibility(true);
     });
 
     chatRoomListItem.mouseout(function (event) {
-        joinButton.css('visibility', 'hidden');
+        _changeButtonVisibility(false);
     });
 
-    eventBus.subscribe(Events.CHAT_ROOM_LIST_UPDATED, _cleanComponent);
+    var _changeButtonVisibility = function (isMouseOver) {
+        if (isMouseOver) {
+            joinButton.css('visibility', 'visible');
+        } else {
+            joinButton.css('visibility', 'hidden');
+        }
+    }
+
 };

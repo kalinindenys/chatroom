@@ -12,6 +12,7 @@
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 
     <!-- Application libraries -->
+    <script type="text/javascript" src="lib/js/chatRoomEventHandler.js"></script>
     <script type="text/javascript" src="lib/js/events.js"></script>
     <script type="text/javascript" src="lib/js/commands.js"></script>
     <script type="text/javascript" src="lib/js/chatRoomList.js"></script>
@@ -20,6 +21,7 @@
     <script type="text/javascript" src="lib/js/components/chatRoomListComponent.js"></script>
     <script type="text/javascript" src="lib/js/components/chatRoomListItemComponent.js"></script>
     <script type="text/javascript" src="lib/js/dto/chatrooms.js"></script>
+    <script type="text/javascript" src="lib/js/domain/chatRoomsDomain.js"></script>
 
 
     <script type="text/javascript">
@@ -28,12 +30,12 @@
             var externalEventBus = new MessageBus("External event bus");
             var widget = new ChatRoomListWidget("chatroom", externalEventBus);
 
-            var taskList = [
-             new ChatroomDto(100, "TestOne"),
-             new ChatroomDto(1001, "TestOne1")
-             ];
-             var event = new ChatRoomListUpdatedEvent(taskList);
-            externalEventBus.emit(event.toMessage());
+      /*      var taskList = [
+                new ChatroomDto(100, "TestOne"),
+                new ChatroomDto(1001, "TestOne1")
+            ];
+            var event = new ChatRoomListUpdatedEvent(taskList);
+            externalEventBus.emit(event.toMessage());*/
         });
     </script>
 </head>
