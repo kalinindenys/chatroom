@@ -5,7 +5,8 @@ var Commands = function () {
 Commands.INIT_CHATROOM_LIST = "Init chatroom list";
 Commands.CREATE_CHATROOM = "Create chatroom";
 Commands.SHOW_JOIN_CHAT_POPUP = "Show join chat popup";
-Commands.HIDE_JOIN_CHAT_POPUP = "Hide join chat popup";
+// Commands.HIDE_JOIN_CHAT_POPUP = "Hide join chat popup";
+Commands.VALIDATE_NICKNAME = "Validate nickname";
 Commands.ENTER_TO_CHATROOM = "Enter to chatroom";
 
 var CreateChatroom = function (chatroomName) {
@@ -32,9 +33,23 @@ var ShowJoinChatPopup = function (chatroom) {
     return { toMessage: toMessage };
 };
 
-var HideJoinChatPopup = function () {
+// var HideJoinChatPopup = function () {
+//     var toMessage = function () {
+//         return new Message(Commands.HIDE_JOIN_CHAT_POPUP);
+//     };
+//
+//     return { toMessage: toMessage };
+// };
+
+var ValidateNickname = function (nickname, chatroomName) {
     var toMessage = function () {
-        return new Message(Commands.HIDE_JOIN_CHAT_POPUP);
+        return new Message(
+            Commands.VALIDATE_NICKNAME,
+            {
+                nickname: nickname,
+                chatroomName: chatroomName
+            }
+        );
     };
 
     return { toMessage: toMessage };

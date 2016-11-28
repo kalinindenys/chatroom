@@ -25,51 +25,45 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
     var panel = $("#" + panelId);
     var chatroomName = $("#" + chatroomNameId);
     var nickname = $("#" + nicknameId);
+    var enterBtn = $("#" + enterBtnId);
 
-    // nickname.keyup(function () {
-    //    var trimmedNickname = nickname.val().trim();
-    //
-    //     if (validNickname(trimmedNickname, chatroom)) {
-    //         $("#" + enterBtnId).css("visibility", "visible");
-    //     } else {
-    //         $("#" + enterBtnId).css("visibility", "hidden");
-    //     }
-    // });
+    nickname.keyup(function () {
+        var trimmedNickname = nickname.val().trim();
 
-    $("#" + cancelBtnId).click(function () {
-        hide();
+        commandBus.emitMessage(new ValidateNickname(trimmedNickname, chatroomName.html()).toMessage());
     });
 
-    $("#" + enterBtnId).click(function () {
-        hide();
+    $("#" + cancelBtnId).click(function () {
+        hidePopup();
+    });
+
+    enterBtn.click(function () {
+        hidePopup();
         new ChatroomComponent(commandBus, eventBus);
         // commandBus.emitMessage(new EnterToChatroom(nickname.val().trim(), chatroom).toMessage());
     });
-    
-    // var validNickname = function (nickname, chatroom) {
-    //     if (nickname.length === 0) {
-    //         return false;
-    //     }
-    //
-    //     for (i = 0; i < chatroom.guests.length; i++) {
-    //         if (chatroom.guests[i] === nickname) {
-    //             return false;
-    //         }
-    //     }
-    //
-    //     return true;
-    // };
 
-    var show = function (chatroom) {
+    var showPopup = function (chatroom) {
         nickname.val('');
         chatroomName.html(chatroom.name);
-        panel.toggle();
+        panel.show();
     };
 
-    var hide = function () {
-        panel.toggle();
+    var hidePopup = function () {
+        panel.hide();
     };
 
-    commandBus.subscribe(Commands.SHOW_JOIN_CHAT_POPUP, show);
+    var showEnterBtn = function () {
+        enterBtn.css("visibility", "visible");
+    };
+
+    var hideEnterBtn = function () {
+        enterBtn.css("visibility", "hidden");
+    };
+
+    commandBus.subscribe(Commands.SHOW_JOIN_CHAT_POPUP, showPopup);
+
+    eventBus.subscribe(Events.NICKNAME_VALIDATION_SUCCESS, showEnterBtn);
+    eventBus.subscribe(Events.NICKNAME_VALIDATION_FAIL, hideEnterBtn);
 
 };

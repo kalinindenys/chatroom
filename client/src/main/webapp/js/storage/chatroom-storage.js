@@ -1,7 +1,7 @@
 var ChatroomStorage = function () {
 
     var chatroomsKey = "Chatrooms";
-    var chatrooms = JSON.parse(localStorage.getItem(chatroomsKey), dateTimeReviver);
+    var chatrooms = JSON.parse(localStorage.getItem(chatroomsKey), creationDateReviver);
 
     if (!chatrooms) {
         chatrooms = [];
@@ -28,7 +28,7 @@ var ChatroomStorage = function () {
         return chatrooms;
     };
 
-    function dateTimeReviver(key, value) {
+    function creationDateReviver(key, value) {
         if (key === "creationDate") {
             return new Date(value);
         }

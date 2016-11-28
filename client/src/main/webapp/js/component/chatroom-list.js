@@ -25,7 +25,7 @@ var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
             container.append('<ul class="pre-scrollable" id="' + ulId + '">');
 
             for (i = 0; i < chatrooms.length; i++) {
-                new ChatroomListItem(ulId, chatrooms[i], commandBus, eventBus);
+                new ChatroomListItem(ulId, chatrooms[i], commandBus);
             }
 
             container.append("</ul>");

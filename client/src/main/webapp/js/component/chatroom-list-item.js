@@ -1,4 +1,4 @@
-var ChatroomListItem = function (rootElementId, chatroom, commandBus, eventBus) {
+var ChatroomListItem = function (rootElementId, chatroom, commandBus) {
 
     var itemId = rootElementId + "_" + $("#" + rootElementId + " li").length;
     var joinBtnId = itemId + "_joinBtnId";
