@@ -34,6 +34,9 @@ var ChatRoomListComponent = function (eventBus, rootDivId) {
         } else {
             containerElement.append(' --- No Chat Rooms yet ---');
         }
+
+        //todo: CLEAN
+
     };
 
     var _onError = function (evt) {

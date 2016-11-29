@@ -30,12 +30,12 @@
             var externalEventBus = new MessageBus("External event bus");
             var widget = new ChatRoomListWidget("chatroom", externalEventBus);
 
-      /*      var taskList = [
-                new ChatroomDto(100, "TestOne"),
-                new ChatroomDto(1001, "TestOne1")
-            ];
-            var event = new ChatRoomListUpdatedEvent(taskList);
-            externalEventBus.emit(event.toMessage());*/
+            var loadedChatRoomList = [];
+            for (var key in localStorage) {
+                loadedChatRoomList.push(localStorage.getItem(key));
+            }
+            var event = new ChatRoomListUpdatedEvent(loadedChatRoomList);
+            externalEventBus.emit(event.toMessage());
         });
     </script>
 </head>

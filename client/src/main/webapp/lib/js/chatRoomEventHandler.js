@@ -1,22 +1,24 @@
-var ChatRoomEventHandler = function() {
+var ChatRoomEventHandler = function () {
 
     var allChatRooms = [];
 
-    var _addChatRoom = function(chatRoom) {
+    var _addChatRoom = function (chatRoom) {
 
-/*        if(chatRoom.name.length > 0) {*/
-            allChatRooms.push(chatRoom);
-/*        } else {
-            throw new Error("Empty chatRoom cannot be added!");
-        }*/
+        /*        if(chatRoom.name.length > 0) {*/
+        allChatRooms = [];
+        for (key in localStorage)
+            allChatRooms.push(localStorage.getItem(key));
+        /*        } else {
+         throw new Error("Empty chatRoom cannot be added!");
+         }*/
     }
 
 
-    var _readAllChatRooms = function() {
+    var _readAllChatRooms = function () {
         return allChatRooms;		//todo: RETURN A COPY!
     }
 
-    var _createChatRoom = function(chatRoom) {
+    var _createChatRoom = function (chatRoom) {
 
         _addChatRoom(chatRoom);
 
