@@ -64,11 +64,13 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
 
                 messagesList.html('');
                 for (i = 0; i < sortedMessages.length; i++) {
+                    var formattedMessage = skipHtmlTags(sortedMessages[i].message.split("\n").join("<br>"));
+
                     messagesList.append(
                         '<li class="list-group-item">' +
                         '<span>[' + sortedMessages[i].postTime.toString("dd-MM-yy HH:mm") + '] </span>' +
                         '<span><b>' + sortedMessages[i].authorNickname + '</b> said: </span>' +
-                        '<span>' + sortedMessages[i].message.split("\n").join("<br>") + '</span>' +
+                        '<span>' + formattedMessage + '</span>' +
                         '</li>'
                     );
                 }
@@ -80,6 +82,12 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
         return messages.sort(function (first, second) {
             return first.postTime - second.postTime;
         });
+    }
+
+    function skipHtmlTags(string) {
+        var tmp = document.createElement("DIV");
+        tmp.innerHTML = string;
+        return tmp.textContent||tmp.innerText;
     }
 
     eventBus.subscribe(Events.CHATROOM_UPDATED, updateView);
