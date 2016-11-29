@@ -1,4 +1,4 @@
-var ChatroomWidget = function (rootElementId, chatroomService, commandBus, eventBus) {
+var ChatroomsController = function (rootElementId, chatroomService, commandBus, eventBus) {
 
     var rootElement = $("#" + rootElementId);
 

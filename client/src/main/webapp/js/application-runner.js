@@ -1,6 +1,4 @@
 $(function () {
-    var commandBus = new MessageBus();
-    var eventBus = new MessageBus();
 
     var chatroomAppId = "chatroomApp";
 
@@ -15,5 +13,5 @@ $(function () {
         '</div>'
     );
 
-    new ChatroomApplication(chatroomAppId, commandBus, eventBus);
+    new ChatroomApplication(chatroomAppId);
 });

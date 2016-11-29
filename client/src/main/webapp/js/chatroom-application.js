@@ -1,4 +1,7 @@
-var ChatroomApplication = function (rootElementId, commandBus, eventBus) {
+var ChatroomApplication = function (rootElementId) {
+
+    var commandBus = new MessageBus();
+    var eventBus = new MessageBus();
 
     var createChatroomComponentId = rootElementId + "_createChatroomComponent";
     var chatroomListComponentId = rootElementId + "_chatroomList";
@@ -6,8 +9,9 @@ var ChatroomApplication = function (rootElementId, commandBus, eventBus) {
     var chatroomWidgetId = rootElementId + "_chatroomWidget";
 
     var chatroomStorage = new ChatroomStorage();
-    var chatroomService = new ChatroomService(chatroomStorage, commandBus, eventBus);
+    var chatroomService = new ChatroomService(chatroomStorage, eventBus);
     var messageService = new MessageService(chatroomStorage, chatroomService, commandBus, eventBus);
+    var asyncChatServiceFacade = new AsyncChatServiceFacade(chatroomService, commandBus);
 
     $("#" + rootElementId).append(
         '<div class="container"' +
@@ -25,7 +29,7 @@ var ChatroomApplication = function (rootElementId, commandBus, eventBus) {
     var createChatroomComponent = new CreateChatroomComponent(createChatroomComponentId, commandBus, eventBus);
     var chatroomListComponent = new ChatroomListComponent(chatroomListComponentId, commandBus, eventBus);
     var joinChatComponent = new JoinChatComponent(popupId, commandBus, eventBus);
-    var chatroomWidget = new ChatroomWidget(chatroomWidgetId, chatroomService, commandBus, eventBus);
+    var chatroomsController = new ChatroomsController(chatroomWidgetId, chatroomService, commandBus, eventBus);
 
     commandBus.emitMessage(new InitChatroomList(chatroomService.findAll()).toMessage());
 

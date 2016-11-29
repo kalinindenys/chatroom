@@ -1,15 +1,12 @@
-var Commands = function () {
-
+var Commands = {
+    INIT_CHATROOM_LIST: "Init chatroom list",
+    CREATE_CHATROOM: "Create chatroom",
+    SHOW_JOIN_CHAT_POPUP: "Show join chat popup",
+    VALIDATE_NICKNAME: "Validate nickname",
+    ENTER_TO_CHATROOM: "Enter to chatroom",
+    LEAVE_FROM_CHATROOM: "Leave from chatroom",
+    POST_MESSAGE: "Post message"
 };
-
-Commands.INIT_CHATROOM_LIST = "Init chatroom list";
-Commands.CREATE_CHATROOM = "Create chatroom";
-Commands.SHOW_JOIN_CHAT_POPUP = "Show join chat popup";
-// Commands.HIDE_JOIN_CHAT_POPUP = "Hide join chat popup";
-Commands.VALIDATE_NICKNAME = "Validate nickname";
-Commands.ENTER_TO_CHATROOM = "Enter to chatroom";
-Commands.LEAVE_FROM_CHATROOM = "Leave from chatroom";
-Commands.POST_MESSAGE = "Post message";
 
 var CreateChatroom = function (chatroomName) {
     var toMessage = function () {

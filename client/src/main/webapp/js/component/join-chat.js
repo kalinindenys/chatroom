@@ -15,7 +15,7 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
         '</div>' +
         '<div class="panel-footer clearfix">' +
         '<div class="btn-group pull-right">' +
-        '<button id="' + enterBtnId + '" class="btn btn-default btn-sm" type="button" style="visibility: hidden">Enter</button>' +
+        '<button id="' + enterBtnId + '" class="btn btn-default btn-sm" type="button" style="display: none">Enter</button>' +
         '<button id="' + cancelBtnId + '" class="btn btn-default btn-sm" type="button">Cancel</button>' +
         '</div>' +
         '</div>' +
@@ -59,11 +59,11 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
     };
 
     var showEnterBtn = function () {
-        enterBtn.css("visibility", "visible");
+        enterBtn.show();
     };
 
     var hideEnterBtn = function () {
-        enterBtn.css("visibility", "hidden");
+        enterBtn.hide();
     };
 
     commandBus.subscribe(Commands.SHOW_JOIN_CHAT_POPUP, showPopup);

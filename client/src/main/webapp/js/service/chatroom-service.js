@@ -1,9 +1,8 @@
-var ChatroomService = function (chatroomStorage, commandBus, eventBus) {
+var ChatroomService = function (chatroomStorage, eventBus) {
 
     var createChatroom = function (chatroomName) {
         var resultingEvent;
         chatroomName = chatroomName.trim();
-
 
         if (chatroomName.length < 3 || chatroomName.length > 50) {
             resultingEvent = new ChatroomCreationFailed("Length is less than 3 or more than 50 symbols");
@@ -17,7 +16,7 @@ var ChatroomService = function (chatroomStorage, commandBus, eventBus) {
             throw new Error("Chatroom with specified name exists");
         }
 
-        chatroomStorage.addItem(new Chatroom(chatroomName));
+        chatroomStorage.addItem(new Chatroom(chatroomName, new Date()));
         resultingEvent = new ChatroomListUpdated(chatroomStorage.getChatrooms());
         eventBus.emitMessage(resultingEvent.toMessage());
     };
@@ -92,14 +91,13 @@ var ChatroomService = function (chatroomStorage, commandBus, eventBus) {
         eventBus.emitMessage(resultingEvent.toMessage());
     };
 
-    commandBus.subscribe(Commands.CREATE_CHATROOM, createChatroom);
-    commandBus.subscribe(Commands.VALIDATE_NICKNAME, validateNickname);
-    commandBus.subscribe(Commands.ENTER_TO_CHATROOM, join);
-    commandBus.subscribe(Commands.LEAVE_FROM_CHATROOM, leave);
-
     return {
         findAll: findAll,
-        findByName: findByName
+        findByName: findByName,
+        createChatroom: createChatroom,
+        join: join,
+        leave: leave,
+        validateNickname: validateNickname
     }
 
 };

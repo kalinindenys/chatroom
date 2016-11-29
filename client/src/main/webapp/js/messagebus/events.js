@@ -1,12 +1,10 @@
-var Events = function () {
-
+var Events = {
+    CHATROOM_CREATION_FAILED: "Chatroom creation failed",
+    CHATROOM_LIST_UPDATED: "Chatroom list updated",
+    CHATROOM_UPDATED: "Chatroom updated",
+    NICKNAME_VALIDATION_SUCCESS: "Nickname validation success",
+    NICKNAME_VALIDATION_FAIL: "Nickname validation fail"
 };
-
-Events.CHATROOM_CREATION_FAILED = "Chatroom creation failed";
-Events.CHATROOM_LIST_UPDATED = "Chatroom list updated";
-Events.CHATROOM_UPDATED = "Chatroom updated";
-Events.NICKNAME_VALIDATION_SUCCESS = "Nickname validation success";
-Events.NICKNAME_VALIDATION_FAIL = "Nickname validation fail";
 
 var ChatroomCreationFailed = function (reason) {
     var toMessage = function () {
