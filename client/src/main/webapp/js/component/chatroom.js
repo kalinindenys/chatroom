@@ -64,7 +64,7 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
 
                 messagesList.html('');
                 for (i = 0; i < sortedMessages.length; i++) {
-                    var formattedMessage = skipHtmlTags(sortedMessages[i].message.split("\n").join("<br>"));
+                    var formattedMessage = sortedMessages[i].message.split("\n").join("<br>");
 
                     messagesList.append(
                         '<li class="list-group-item">' +
@@ -82,12 +82,6 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
         return messages.sort(function (first, second) {
             return first.postTime - second.postTime;
         });
-    }
-
-    function skipHtmlTags(string) {
-        var tmp = document.createElement("DIV");
-        tmp.innerHTML = string;
-        return tmp.textContent||tmp.innerText;
     }
 
     eventBus.subscribe(Events.CHATROOM_UPDATED, updateView);
