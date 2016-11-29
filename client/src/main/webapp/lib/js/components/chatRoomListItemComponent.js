@@ -6,18 +6,17 @@ var ChatRoomListItemComponent = function (rootDivId, chatRoomDto) {
     //todo: change date format
 
     $("#" + rootDivId).append('<li id=' + chatRoomListItemComponentId + ' class="list-group-item" style="height: 70px">' +
-        ' <div class="animated bounceIn">'
-        + chatRoom.name + '<span class="chat-date-span"> ' + date + '</span>' +
-        '<button style="visibility: hidden; float: right" class="btn btn-info">Join</button> ' +
+        ' <div class="animated bounceIn">' +
+        '<span style="font-style: oblique">' + chatRoom.name + '<br/>' + '</span>' + '<span class="chat-date"> ' + date + '</span>' +
+        '<button id="joinButton" style="visibility: hidden; float: right" class="btn btn-info"><i class="glyphicon glyphicon-comment"></i> Join</button> ' +
         '</div></li>'
     );
-
 
     var chatRoomListItem = $("#" + chatRoomListItemComponentId);
     var joinButton = chatRoomListItem.find("button");
 
-    joinButton.keydown(function (event) {
-        //todo: JOIN
+    $("#joinButton").on("click", function () {
+        $("#dialog").dialog("open");
     });
 
     chatRoomListItem.mouseover(function (event) {
@@ -42,7 +41,7 @@ var ChatRoomListItemComponent = function (rootDivId, chatRoomDto) {
         var month = chatRoomDate.getMonth() + 1;
         var year = chatRoomDate.getFullYear();
         var hours = chatRoomDate.getHours();
-        var minutes = chatRoomDate.getMinutes();
+        var minutes = ("0" + chatRoomDate.getMinutes()).slice(-2);
         var formatedDate = day + "-" + month + "-" + year + " " + hours + ":" + minutes;
         return formatedDate;
     }

@@ -7,9 +7,10 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
     $("#" + rootDivId).html("").append('<div class="panel panel-info">' +
         '<div class="panel-heading"> <h3 class="panel-title">Add new chat room?</h3> </div>' +
         '<div class="input-group">' +
-        '<input type="text" class="form-control" placeholder="Create" id=' + inputId + '>' +
+        '<input type="text" class="form-control" placeholder="Chat room name" id=' + inputId + '>' +
         '<span class="input-group-btn"> ' +
-        '<button class="btn btn-info" type="button" id=' + createChatRoomBtnId + '>Create</button> </span> </div>' +
+        '<button class="btn btn-info" type="button" id=' + createChatRoomBtnId + '>' +
+        '<i class="glyphicon glyphicon-plus"></i> Add </button></span></div>' +
         '<div style="color: red" id=' + validationId + '></div></div></div>');
 
 
@@ -26,7 +27,7 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
                 //todo: CHECK AND THROW EXCEPTION
             } else {
                 var length = localStorage.length;
-                var chatroomDto = new ChatroomDto(length, chatRoomName, new Date()); //THINK ABOUT DATE REPRESENTITION
+                var chatroomDto = new ChatroomDto(length, chatRoomName, new Date());
                 localStorage.setItem(chatRoomName, JSON.stringify(chatroomDto))
 
                 command = new CreateChatRoomCommand(localStorage.getItem(chatRoomName));

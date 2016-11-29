@@ -4,7 +4,6 @@ var ChatRoomEventHandler = function () {
 
     var _addChatRoom = function (chatRoom) {
 
-        /*        if(chatRoom.name.length > 0) {*/
         allChatRooms = [];
         for (key in localStorage)
             allChatRooms.push(localStorage.getItem(key));
@@ -15,7 +14,7 @@ var ChatRoomEventHandler = function () {
 
 
     var _readAllChatRooms = function () {
-        return allChatRooms;		//todo: RETURN A COPY!
+        return allChatRooms;
     }
 
     var _createChatRoom = function (chatRoom) {

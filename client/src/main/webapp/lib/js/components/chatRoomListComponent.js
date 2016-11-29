@@ -17,6 +17,9 @@ var ChatRoomListComponent = function (eventBus, rootDivId) {
         var containerElement = $("#" + chatRoomListContainerId);
 
         containerElement.html("");
+        chatRooms.sort(function (a, b) {
+            return new Date(JSON.parse(b).date) - new Date(JSON.parse(a).date);
+        });
 
         if (chatRooms && chatRooms.length > 0) {
 
