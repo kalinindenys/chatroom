@@ -17,11 +17,8 @@ var ChatroomApplication = function (rootElementId, commandBus, eventBus) {
         '<br>' +
         '<div class="row">' +
         '<div id="' + chatroomListComponentId + '" class="col-md-4">ChatroomListComponent placeholder</div>' +
-        '<div id="' + chatroomWidgetId + '" class="col-md-8"></div>' +
-        '</div>' +
-        '<div class="row">' +
         '<div id="' + popupId + '" class="col-md-4"></div>' +
-        '</div>' +
+        '<div id="' + chatroomWidgetId + '" class="col-md-8"></div>' +
         '</div>'
     );
 

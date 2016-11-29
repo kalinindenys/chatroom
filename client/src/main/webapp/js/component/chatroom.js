@@ -17,7 +17,7 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
         '<button class="btn btn-default btn-sm" id="' + leaveBtnId + '">Leave</button>' +
         '</div>' +
         '</div>' +
-        '<ul class="panel-body list-group pre-scrollable" style="height: 350px" id="' + messagesId + '"></ul>' +
+        '<ul class="panel-body list-group scrollable" style="height: 340px" id="' + messagesId + '"></ul>' +
         '<div class="panel-footer input-group">' +
         '<textarea class="form-control" placeholder="Your message..." style="resize: none" id="' + messageInputId + '"></textarea>' +
         '<span class="input-group-btn">' +
@@ -68,7 +68,7 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
                         '<li class="list-group-item">' +
                         '<span>[' + sortedMessages[i].postTime.toString("dd-MM-yy HH:mm") + '] </span>' +
                         '<span><b>' + sortedMessages[i].authorNickname + '</b> said: </span>' +
-                        '<span>' + sortedMessages[i].message + '</span>' +
+                        '<span>' + sortedMessages[i].message.split("\n").join("<br>") + '</span>' +
                         '</li>'
                     );
                 }

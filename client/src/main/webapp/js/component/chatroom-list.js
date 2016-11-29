@@ -5,7 +5,7 @@ var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
     $("#" + rootElementId).html(
         '<div class="panel panel-default">' +
         '<div class="panel-heading">Chatrooms</div>' +
-        '<ul class="panel-body" id="' + containerId + '"></ul>' +
+        '<ul class="panel-body list-group scrollable" id="' + containerId + '"></ul>' +
         '</div>'
     );
 
@@ -16,8 +16,6 @@ var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
 
         if (chatrooms && chatrooms.length > 0) {
             chatrooms = sortByCreationDateDescending(chatrooms);
-
-            container.attr("class", "panel-body list-group pre-scrollable");
 
             for (i = 0; i < chatrooms.length; i++) {
                 new ChatroomListItem(containerId, chatrooms[i], commandBus);
