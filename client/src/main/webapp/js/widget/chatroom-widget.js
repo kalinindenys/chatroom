@@ -17,7 +17,7 @@ var ChatroomWidget = function (rootElementId, chatroomService, commandBus, event
     };
 
     var generateComponentId = function (nickname) {
-        return rootElementId + "_" + nickname;
+        return rootElementId + "_" + nickname.split(' ').join('_');
     };
 
     commandBus.subscribe(Commands.ENTER_TO_CHATROOM, createChatroomComponent);

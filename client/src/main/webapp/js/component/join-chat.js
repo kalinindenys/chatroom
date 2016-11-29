@@ -42,6 +42,7 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
         hidePopup();
         hideEnterBtn();
 
+        var nick = nickname.val().trim();
         var enterChatroomInfo = new EnterChatroomInfo(nickname.val().trim(), chatroomName.html());
 
         commandBus.emitMessage(new EnterToChatroom(enterChatroomInfo).toMessage());

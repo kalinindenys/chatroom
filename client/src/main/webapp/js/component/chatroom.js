@@ -19,7 +19,7 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
         '</div>' +
         '<ul class="panel-body list-group pre-scrollable" style="height: 350px" id="' + messagesId + '"></ul>' +
         '<div class="panel-footer input-group">' +
-        '<input type="text" class="form-control" placeholder="Your message..." id="' + messageInputId + '">' +
+        '<textarea class="form-control" placeholder="Your message..." style="resize: none" id="' + messageInputId + '"></textarea>' +
         '<span class="input-group-btn">' +
         '<button class="btn btn-default disabled" type="button" id="' + postMessageBtnId + '">Post</button>' +
         '</span>' +
@@ -50,6 +50,7 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
         commandBus.emitMessage(new PostMessage(new MessageDTO(chatroom.name, message)).toMessage());
 
         messageInput.val('');
+        postMessageBtn.addClass("disabled");
     });
 
     function updateView(updatedChatroom) {
