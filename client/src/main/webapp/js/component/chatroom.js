@@ -39,7 +39,7 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
     });
 
     $("#" + leaveBtnId).click(function () {
-        var enterChatroomInfo = new EnterChatroomInfo(nickname, chatroom.name);
+        var enterChatroomInfo = new EnterChatroomInfo(nickname, chatroom.id);
         commandBus.emitMessage(new LeaveFromChatroom(enterChatroomInfo).toMessage());
     });
 
@@ -47,14 +47,14 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
         var formattedMessage = messageInput.val();
         var message = new ChatroomMessage(nickname, formattedMessage);
 
-        commandBus.emitMessage(new PostMessage(new MessageDTO(chatroom.name, message)).toMessage());
+        commandBus.emitMessage(new PostMessage(new MessageDTO(chatroom.id, message)).toMessage());
 
         messageInput.val('');
         postMessageBtn.addClass("disabled");
     });
 
     function updateView(updatedChatroom) {
-        if (chatroom.name === updatedChatroom.name) {
+        if (chatroom.id === updatedChatroom.id) {
             $("#" + guestsNumberId).html(chatroom.guests.length);
 
             if (updatedChatroom.messages.length === 0) {

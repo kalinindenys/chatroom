@@ -1,16 +1,16 @@
-var EnterChatroomInfo = function (nickname, chatroomName) {
+var EnterChatroomInfo = function (nickname, chatroomId) {
 
     var getNickname = function () {
         return nickname;
     };
 
-    var getChatroomName = function () {
-        return chatroomName;
+    var getChatroomId = function () {
+        return chatroomId;
     };
 
     return {
         getNickname: getNickname,
-        getChatroomName: getChatroomName
+        getChatroomId: getChatroomId
     };
 
 };

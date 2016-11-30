@@ -3,7 +3,7 @@ var ChatroomsController = function (rootElementId, chatroomService, commandBus, 
     var rootElement = $("#" + rootElementId);
 
     var createChatroomComponent = function (enterChatroomInfo) {
-        var chatroom = chatroomService.findByName(enterChatroomInfo.getChatroomName());
+        var chatroom = chatroomService.findById(enterChatroomInfo.getChatroomId());
         var nickname = enterChatroomInfo.getNickname();
         var newComponentId = generateComponentId(nickname);
 

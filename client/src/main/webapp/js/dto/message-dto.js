@@ -1,7 +1,7 @@
-var MessageDTO = function (chatroomName, message) {
+var MessageDTO = function (chatroomId, message) {
 
-    var getChatroomName = function () {
-        return chatroomName;
+    var getChatroomId = function () {
+        return chatroomId;
     };
 
     var getMessage = function () {
@@ -9,7 +9,7 @@ var MessageDTO = function (chatroomName, message) {
     };
 
     return {
-        getChatroomName: getChatroomName,
+        getChatroomId: getChatroomId,
         getMessage: getMessage
     };
 

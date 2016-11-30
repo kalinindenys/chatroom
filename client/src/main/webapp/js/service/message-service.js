@@ -1,10 +1,10 @@
 var MessageService = function (chatroomStorage, chatroomService, commandBus, eventBus) {
 
     var postMessage = function (messageDTO) {
-        var chatroom = chatroomService.findByName(messageDTO.getChatroomName());
+        var chatroom = chatroomService.findById(messageDTO.getChatroomId());
 
         chatroom.messages.push(messageDTO.getMessage());
-        chatroomStorage.updateItem(chatroom);
+        chatroomStorage.update(chatroom);
 
         eventBus.emitMessage(new ChatroomUpdated(chatroom).toMessage());
     };

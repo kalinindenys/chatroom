@@ -16,13 +16,23 @@ var ChatroomService = function (chatroomStorage, eventBus) {
             throw new Error("Chatroom with specified name exists");
         }
 
-        chatroomStorage.addItem(new Chatroom(chatroomName, new Date()));
-        resultingEvent = new ChatroomListUpdated(chatroomStorage.getChatrooms());
+        chatroomStorage.add(new Chatroom(chatroomName, new Date()));
+        resultingEvent = new ChatroomListUpdated(chatroomStorage.findAll());
         eventBus.emitMessage(resultingEvent.toMessage());
     };
 
+    var findById = function (chatroomId) {
+        var chatrooms = chatroomStorage.findAll();
+
+        for (i = 0; i < chatrooms.length; i++) {
+            if (chatrooms[i].id === chatroomId) {
+                return chatrooms[i];
+            }
+        }
+    };
+
     var findByName = function (chatroomName) {
-        var chatrooms = chatroomStorage.getChatrooms();
+        var chatrooms = chatroomStorage.findAll();
 
         return chatrooms.find(function (chatroom) {
             return chatroom.name === chatroomName;
@@ -30,26 +40,26 @@ var ChatroomService = function (chatroomStorage, eventBus) {
     };
 
     var findAll = function () {
-        return chatroomStorage.getChatrooms();
+        return chatroomStorage.findAll();
     };
 
     var join = function (enterChatroomInfo) {
-        var chatroomName = enterChatroomInfo.getChatroomName();
+        var chatroomId = enterChatroomInfo.getChatroomId();
         var nickname = enterChatroomInfo.getNickname();
 
-        var chatroom = findByName(chatroomName);
+        var chatroom = findById(chatroomId);
 
         chatroom.guests.push(nickname);
-        chatroomStorage.updateItem(chatroom);
+        chatroomStorage.update(chatroom);
 
         eventBus.emitMessage(new ChatroomUpdated(chatroom).toMessage());
     };
 
     var leave = function (enterChatroomInfo) {
-        var chatroomName = enterChatroomInfo.getChatroomName();
+        var chatroomId = enterChatroomInfo.getChatroomId();
         var nickname = enterChatroomInfo.getNickname();
 
-        var chatroom = findByName(chatroomName);
+        var chatroom = findById(chatroomId);
 
         var guestIndexForRemove = chatroom.guests.indexOf(nickname);
 
@@ -57,17 +67,17 @@ var ChatroomService = function (chatroomStorage, eventBus) {
             throw new Error("Illegal state. Trying to remove not existing nickname");
         }
         chatroom.guests.splice(guestIndexForRemove, 1);
-        chatroomStorage.updateItem(chatroom);
+        chatroomStorage.update(chatroom);
 
         eventBus.emitMessage(new ChatroomUpdated(chatroom).toMessage());
     };
 
     var validateNickname = function (nicknameValidationInfo) {
         var nickname = nicknameValidationInfo.getNickname();
-        var chatroomName = nicknameValidationInfo.getChatroomName();
+        var chatroomId = nicknameValidationInfo.getChatroomId();
 
         var resultingEvent;
-        var chatroom = findByName(chatroomName);
+        var chatroom = findById(chatroomId);
 
         if (!chatroom) {
             throw new Error("Illegal state");
@@ -93,6 +103,7 @@ var ChatroomService = function (chatroomStorage, eventBus) {
 
     return {
         findAll: findAll,
+        findById: findById,
         findByName: findByName,
         createChatroom: createChatroom,
         join: join,
