@@ -1,5 +1,6 @@
 var Events = {
     CHATROOM_CREATION_FAILED: "Chatroom creation failed",
+    CHATROOM_LIST_INITIALIZED: "Chatroom list initialized",
     CHATROOM_LIST_UPDATED: "Chatroom list updated",
     CHATROOM_UPDATED: "Chatroom updated",
     NICKNAME_VALIDATION_SUCCESS: "Nickname validation success",
@@ -9,6 +10,14 @@ var Events = {
 var ChatroomCreationFailed = function (reason) {
     var toMessage = function () {
         return new Message(Events.CHATROOM_CREATION_FAILED, reason);
+    };
+
+    return { toMessage: toMessage };
+};
+
+var ChatroomListInitialized = function () {
+    var toMessage = function () {
+        return new Message(Events.CHATROOM_LIST_INITIALIZED, null);
     };
 
     return { toMessage: toMessage };

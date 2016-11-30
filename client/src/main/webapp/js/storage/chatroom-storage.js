@@ -1,7 +1,16 @@
 var ChatroomStorage = function () {
 
+    var update = function (chatroom) {
+        localStorage.setItem("chatroom" + chatroom.id, JSON.stringify(chatroom));
+    };
+
+    var read = function (chatroomId) {
+        return JSON.parse(localStorage.getItem("chatroom" + chatroomId), dateReviver);
+    };
+
+
     var chatroomsKey = "Chatrooms";
-    var chatrooms = JSON.parse(localStorage.getItem(chatroomsKey), creationDateReviver);
+    var chatrooms = JSON.parse(localStorage.getItem(chatroomsKey), dateReviver);
 
     if (!chatrooms) {
         chatrooms = [];
@@ -28,7 +37,7 @@ var ChatroomStorage = function () {
         return chatrooms;
     };
 
-    function creationDateReviver(key, value) {
+    function dateReviver(key, value) {
         if (key === "creationDate" || key === "postTime") {
             return new Date(value);
         }
@@ -37,6 +46,8 @@ var ChatroomStorage = function () {
     }
 
     return {
+        update: update,
+        read: read,
         addItem: addItem,
         updateItem: updateItem,
         getChatrooms: getChatrooms

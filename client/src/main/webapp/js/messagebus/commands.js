@@ -1,5 +1,4 @@
 var Commands = {
-    INIT_CHATROOM_LIST: "Init chatroom list",
     CREATE_CHATROOM: "Create chatroom",
     SHOW_JOIN_CHAT_POPUP: "Show join chat popup",
     VALIDATE_NICKNAME: "Validate nickname",

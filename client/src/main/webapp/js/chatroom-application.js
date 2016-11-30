@@ -11,7 +11,7 @@ var ChatroomApplication = function (rootElementId) {
     var chatroomStorage = new ChatroomStorage();
     var chatroomService = new ChatroomService(chatroomStorage, eventBus);
     var messageService = new MessageService(chatroomStorage, chatroomService, commandBus, eventBus);
-    var asyncChatServiceFacade = new AsyncChatServiceFacade(chatroomService, commandBus);
+    var asyncChatServiceFacade = new AsyncChatServiceFacade(chatroomService, commandBus, eventBus);
 
     $("#" + rootElementId).append(
         '<div class="container"' +
@@ -30,7 +30,5 @@ var ChatroomApplication = function (rootElementId) {
     var chatroomListComponent = new ChatroomListComponent(chatroomListComponentId, commandBus, eventBus);
     var joinChatComponent = new JoinChatComponent(popupId, commandBus, eventBus);
     var chatroomsController = new ChatroomsController(chatroomWidgetId, chatroomService, commandBus, eventBus);
-
-    commandBus.emitMessage(new InitChatroomList(chatroomService.findAll()).toMessage());
 
 };

@@ -5,7 +5,7 @@ var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
     $("#" + rootElementId).html(
         '<div class="panel panel-default">' +
         '<div class="panel-heading">Chatrooms</div>' +
-        '<ul class="panel-body list-group scrollable" id="' + containerId + '"></ul>' +
+        '<ul class="panel-body list-group scrollable" id="' + containerId + '">No chatrooms yet</ul>' +
         '</div>'
     );
 
@@ -31,7 +31,8 @@ var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
         });
     };
 
-    commandBus.subscribe(Commands.INIT_CHATROOM_LIST, renderChatroomList);
     eventBus.subscribe(Events.CHATROOM_LIST_UPDATED, renderChatroomList);
+
+    eventBus.emitMessage(new ChatroomListInitialized().toMessage());
 
 };
