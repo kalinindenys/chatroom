@@ -27,7 +27,7 @@ var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
 
     var sortByCreationDateDescending = function (chatrooms) {
         return chatrooms.sort(function (first, second) {
-            return second.creationDate - first.creationDate;
+            return second.getCreationDate() - first.getCreationDate();
         });
     };
 

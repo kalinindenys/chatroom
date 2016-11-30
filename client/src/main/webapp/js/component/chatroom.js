@@ -11,7 +11,7 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
     rootElement.append(
         '<div class="panel panel-default">' +
         '<div class="panel-heading clearfix">' +
-        '<h4 class="panel-title pull-left" style="padding-top: 7px;">' + chatroom.name + '</h4>' +
+        '<h4 class="panel-title pull-left" style="padding-top: 7px;">' + chatroom.getName() + '</h4>' +
         '<div class="pull-right">' +
         '<span style="padding-right: 10px">guests: <span id="' + guestsNumberId + '" ></span></span>' +
         '<button class="btn btn-default btn-sm" id="' + leaveBtnId + '">Leave</button>' +
@@ -39,7 +39,7 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
     });
 
     $("#" + leaveBtnId).click(function () {
-        var enterChatroomInfo = new EnterChatroomInfo(nickname, chatroom.id);
+        var enterChatroomInfo = new EnterChatroomInfo(nickname, chatroom.getId());
         commandBus.emitMessage(new LeaveFromChatroom(enterChatroomInfo).toMessage());
     });
 
@@ -47,20 +47,20 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
         var formattedMessage = messageInput.val();
         var message = new ChatroomMessage(nickname, formattedMessage, new Date());
 
-        commandBus.emitMessage(new PostMessage(new MessageDTO(chatroom.id, message)).toMessage());
+        commandBus.emitMessage(new PostMessage(new MessageDTO(chatroom.getId(), message)).toMessage());
 
         messageInput.val('');
         postMessageBtn.addClass("disabled");
     });
 
     function updateView(updatedChatroom) {
-        if (chatroom.id === updatedChatroom.id) {
-            $("#" + guestsNumberId).html(chatroom.guests.length);
+        if (chatroom.getId() === updatedChatroom.getId()) {
+            $("#" + guestsNumberId).html(chatroom.getGuests().length);
 
-            if (updatedChatroom.messages.length === 0) {
+            if (updatedChatroom.getMessages().length === 0) {
                 messagesList.html('No messages yet');
             } else {
-                var sortedMessages = sortMessages(updatedChatroom.messages);
+                var sortedMessages = sortMessages(updatedChatroom.getMessages());
 
                 messagesList.html('');
                 for (i = 0; i < sortedMessages.length; i++) {

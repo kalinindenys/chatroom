@@ -51,8 +51,8 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
     });
 
     var showPopup = function (chatroom) {
-        chatroomId = chatroom.id;
-        chatroomName.html(chatroom.name);
+        chatroomId = chatroom.getId();
+        chatroomName.html(chatroom.getName());
         nickname.val('');
         panel.show();
     };

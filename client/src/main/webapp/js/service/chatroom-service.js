@@ -1,46 +1,42 @@
-var ChatroomService = function (chatroomStorage, eventBus) {
-
-    var createChatroom = function (chatroomName) {
-        var resultingEvent;
-        chatroomName = chatroomName.trim();
-
-        if (chatroomName.length < 3 || chatroomName.length > 50) {
-            resultingEvent = new ChatroomCreationFailed("Length is less than 3 or more than 50 symbols");
-            eventBus.emitMessage(resultingEvent.toMessage());
-            throw new Error("Chatroom name length is less than 3 or more than 50 symbols");
-        }
-
-        if (findByName(chatroomName)) {
-            resultingEvent = new ChatroomCreationFailed("Chatroom with specified name already exists");
-            eventBus.emitMessage(resultingEvent.toMessage());
-            throw new Error("Chatroom with specified name exists");
-        }
-
-        chatroomStorage.add(new Chatroom(chatroomName, new Date()));
-        resultingEvent = new ChatroomListUpdated(chatroomStorage.findAll());
-        eventBus.emitMessage(resultingEvent.toMessage());
-    };
+var ChatroomService = function (chatroomStorage) {
 
     var findById = function (chatroomId) {
         var chatrooms = chatroomStorage.findAll();
 
         for (i = 0; i < chatrooms.length; i++) {
             if (chatrooms[i].id === chatroomId) {
-                return chatrooms[i];
+                return DTOConverter.toChatroomDTO(chatrooms[i]);
             }
         }
     };
 
     var findByName = function (chatroomName) {
-        var chatrooms = chatroomStorage.findAll();
+        var chatrooms = DTOConverter.toChatroomDTOs(chatroomStorage.findAll());
 
         return chatrooms.find(function (chatroom) {
-            return chatroom.name === chatroomName;
+            return chatroom.getName() === chatroomName;
         });
     };
 
     var findAll = function () {
-        return chatroomStorage.findAll();
+        return DTOConverter.toChatroomDTOs(chatroomStorage.findAll());
+    };
+
+    var createChatroom = function (chatroomName) {
+        chatroomName = chatroomName.trim();
+
+        if (chatroomName.length < 3 || chatroomName.length > 50) {
+            throw new Error("Chatroom name length is less than 3 or more than 50 symbols");
+        }
+
+        if (findByName(chatroomName)) {
+            throw new Error("Chatroom with specified name exists");
+        }
+
+        var createdChatroom = new Chatroom(chatroomName, new Date());
+        chatroomStorage.add(createdChatroom);
+
+        return DTOConverter.toChatroomDTOs(chatroomStorage.findAll());
     };
 
     var join = function (enterChatroomInfo) {
@@ -49,11 +45,10 @@ var ChatroomService = function (chatroomStorage, eventBus) {
 
         var chatroom = findById(chatroomId);
 
-        chatroom.guests.push(nickname);
-        chatroomStorage.update(chatroom);
+        chatroom.getGuests().push(nickname);
+        chatroomStorage.update(DTOConverter.toChatroomEntity(chatroom));
 
-        eventBus.emitMessage(new EnteredToChat(enterChatroomInfo).toMessage());
-        eventBus.emitMessage(new ChatroomUpdated(chatroom).toMessage());
+        return chatroom;
     };
 
     var leave = function (enterChatroomInfo) {
@@ -62,19 +57,18 @@ var ChatroomService = function (chatroomStorage, eventBus) {
 
         var chatroom = findById(chatroomId);
 
-        var guestIndexForRemove = chatroom.guests.indexOf(nickname);
+        var guestIndexForRemove = chatroom.getGuests().indexOf(nickname);
 
         if (guestIndexForRemove === -1) {
             throw new Error("Illegal state. Trying to remove not existing nickname");
         }
-        chatroom.guests.splice(guestIndexForRemove, 1);
-        chatroomStorage.update(chatroom);
+        chatroom.getGuests().splice(guestIndexForRemove, 1);
+        chatroomStorage.update(DTOConverter.toChatroomEntity(chatroom));
 
-        eventBus.emitMessage(new LeftChat(enterChatroomInfo).toMessage())
-        eventBus.emitMessage(new ChatroomUpdated(chatroom).toMessage());
+        return chatroom;
     };
 
-    var validateNickname = function (nicknameValidationInfo) {
+    var isValidNickname = function (nicknameValidationInfo) {
         var nickname = nicknameValidationInfo.getNickname();
         var chatroomId = nicknameValidationInfo.getChatroomId();
 
@@ -86,21 +80,16 @@ var ChatroomService = function (chatroomStorage, eventBus) {
         }
 
         if (nickname.length === 0) {
-            resultingEvent = new NicknameValidationFail(nicknameValidationInfo);
+            return false;
         }
 
-        for (i = 0; i < chatroom.guests.length; i++) {
-            if (chatroom.guests[i] === nickname) {
-                resultingEvent = new NicknameValidationFail(nicknameValidationInfo);
-                break;
+        for (i = 0; i < chatroom.getGuests().length; i++) {
+            if (chatroom.getGuests()[i] === nickname) {
+                return false;
             }
         }
 
-        if (!resultingEvent) {
-            resultingEvent = new NicknameValidationSuccess(nicknameValidationInfo);
-        }
-
-        eventBus.emitMessage(resultingEvent.toMessage());
+        return true;
     };
 
     return {
@@ -110,7 +99,7 @@ var ChatroomService = function (chatroomStorage, eventBus) {
         createChatroom: createChatroom,
         join: join,
         leave: leave,
-        validateNickname: validateNickname
+        isValidNickname: isValidNickname
     }
 
 };

@@ -1,12 +1,12 @@
-var MessageService = function (chatroomStorage, chatroomService, eventBus) {
+var MessageService = function (chatroomStorage, chatroomService) {
 
     var postMessage = function (messageDTO) {
         var chatroom = chatroomService.findById(messageDTO.getChatroomId());
 
-        chatroom.messages.push(messageDTO.getMessage());
-        chatroomStorage.update(chatroom);
+        chatroom.getMessages().push(messageDTO.getMessage());
+        chatroomStorage.update(DTOConverter.toChatroomEntity(chatroom));
 
-        eventBus.emitMessage(new ChatroomUpdated(chatroom).toMessage());
+        return chatroom;
     };
 
     return {
