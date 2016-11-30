@@ -1,31 +1,28 @@
 var ChatroomStorage = function () {
 
-    var storageKey = "Chatrooms";
-    var chatrooms = JSON.parse(localStorage.getItem(storageKey), dateReviver);
+    var key = "Chatrooms";
+    var items = JSON.parse(localStorage.getItem(key), dateReviver);
 
-    if (!chatrooms) {
-        chatrooms = [];
+    if (!items) {
+        items = [];
     }
 
-    var add = function (chatroom) {
-        chatrooms.push(chatroom);
-        localStorage.setItem(storageKey, JSON.stringify(chatrooms));
-    };
-
     var update = function (chatroom) {
-        for (i = 0; i < chatrooms.length; i++) {
-            if (chatrooms[i].name === chatroom.name) {
-                chatrooms[i] = chatroom;
-                localStorage.setItem(storageKey, JSON.stringify(chatrooms));
+        for (i = 0; i < items.length; i++) {
+            if (items[i].id === chatroom.id) {
+                items[i] = chatroom;
+                localStorage.setItem(key, JSON.stringify(items));
                 return;
             }
         }
 
-        throw new Error("Cannot update chatroom. Specified name not found");
+        //create if not exists
+        items.push(chatroom);
+        localStorage.setItem(key, JSON.stringify(items));
     };
 
     var findAll = function () {
-        return chatrooms;
+        return items;
     };
 
     function dateReviver(key, value) {
@@ -37,7 +34,6 @@ var ChatroomStorage = function () {
     }
 
     return {
-        add: add,
         update: update,
         findAll: findAll
     };

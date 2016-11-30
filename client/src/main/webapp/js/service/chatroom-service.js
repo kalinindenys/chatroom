@@ -34,7 +34,7 @@ var ChatroomService = function (chatroomStorage) {
         }
 
         var createdChatroom = new Chatroom(chatroomName, new Date());
-        chatroomStorage.add(createdChatroom);
+        chatroomStorage.update(createdChatroom);
 
         return DTOConverter.toChatroomDTOs(chatroomStorage.findAll());
     };
