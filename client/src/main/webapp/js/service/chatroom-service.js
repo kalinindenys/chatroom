@@ -52,6 +52,7 @@ var ChatroomService = function (chatroomStorage, eventBus) {
         chatroom.guests.push(nickname);
         chatroomStorage.update(chatroom);
 
+        eventBus.emitMessage(new EnteredToChat(enterChatroomInfo).toMessage());
         eventBus.emitMessage(new ChatroomUpdated(chatroom).toMessage());
     };
 
@@ -69,6 +70,7 @@ var ChatroomService = function (chatroomStorage, eventBus) {
         chatroom.guests.splice(guestIndexForRemove, 1);
         chatroomStorage.update(chatroom);
 
+        eventBus.emitMessage(new LeftChat(enterChatroomInfo).toMessage());
         eventBus.emitMessage(new ChatroomUpdated(chatroom).toMessage());
     };
 

@@ -45,7 +45,7 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
 
     postMessageBtn.click(function () {
         var formattedMessage = messageInput.val();
-        var message = new ChatroomMessage(nickname, formattedMessage);
+        var message = new ChatroomMessage(nickname, formattedMessage, new Date());
 
         commandBus.emitMessage(new PostMessage(new MessageDTO(chatroom.id, message)).toMessage());
 

@@ -69,8 +69,7 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
         enterBtn.hide();
     };
 
-    commandBus.subscribe(Commands.SHOW_JOIN_CHAT_POPUP, showPopup);
-
+    eventBus.subscribe(Events.ATTEMPTED_TO_ENTER_CHAT, showPopup);
     eventBus.subscribe(Events.NICKNAME_VALIDATION_SUCCESS, showEnterBtn);
     eventBus.subscribe(Events.NICKNAME_VALIDATION_FAIL, hideEnterBtn);
 

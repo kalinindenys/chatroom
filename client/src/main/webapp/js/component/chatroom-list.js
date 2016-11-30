@@ -18,7 +18,7 @@ var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
             chatrooms = sortByCreationDateDescending(chatrooms);
 
             for (i = 0; i < chatrooms.length; i++) {
-                new ChatroomListItem(containerId, chatrooms[i], commandBus);
+                new ChatroomListItem(containerId, chatrooms[i], eventBus);
             }
         } else {
             container.append("No chatrooms yet");

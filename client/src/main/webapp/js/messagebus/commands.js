@@ -1,6 +1,5 @@
 var Commands = {
     CREATE_CHATROOM: "Create chatroom",
-    SHOW_JOIN_CHAT_POPUP: "Show join chat popup",
     VALIDATE_NICKNAME: "Validate nickname",
     ENTER_TO_CHATROOM: "Enter to chatroom",
     LEAVE_FROM_CHATROOM: "Leave from chatroom",
@@ -14,30 +13,6 @@ var CreateChatroom = function (chatroomName) {
 
     return { toMessage: toMessage };
 };
-
-var InitChatroomList = function (chatrooms) {
-    var toMessage = function () {
-        return new Message(Commands.INIT_CHATROOM_LIST, chatrooms);
-    };
-
-    return { toMessage: toMessage };
-};
-
-var ShowJoinChatPopup = function (chatroom) {
-    var toMessage = function () {
-        return new Message(Commands.SHOW_JOIN_CHAT_POPUP, chatroom);
-    };
-
-    return { toMessage: toMessage };
-};
-
-// var HideJoinChatPopup = function () {
-//     var toMessage = function () {
-//         return new Message(Commands.HIDE_JOIN_CHAT_POPUP);
-//     };
-//
-//     return { toMessage: toMessage };
-// };
 
 var ValidateNickname = function (nicknameValidationInfo) {
     var toMessage = function () {

@@ -20,7 +20,7 @@ var ChatroomsController = function (rootElementId, chatroomService, commandBus, 
         return rootElementId + "_" + nickname.split(' ').join('_');
     };
 
-    commandBus.subscribe(Commands.ENTER_TO_CHATROOM, createChatroomComponent);
-    commandBus.subscribe(Commands.LEAVE_FROM_CHATROOM, destroyChatroomComponent);
+    eventBus.subscribe(Events.ENTERED_TO_CHAT, createChatroomComponent);
+    eventBus.subscribe(Events.LEFT_CHAT, destroyChatroomComponent);
 
 };
