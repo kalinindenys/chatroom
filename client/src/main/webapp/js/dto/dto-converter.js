@@ -12,20 +12,6 @@ var DTOConverter = {
         }
 
         return chatroomDTOs;
-    },
-
-    toChatroomEntity: function (chatroom) {
-        var entity = new Chatroom(chatroom.getName(), chatroom.getCreationDate());
-
-        entity.id = chatroom.getId();
-        entity.guests = chatroom.getGuests();
-        entity.messages = chatroom.getMessages();
-
-        return entity;
-    },
-
-    toMessageEntity: function (messageDTO) {
-        return new ChatroomMessage(messageDTO.getChatroomId(), messageDTO.getAuthorNickname(), messageDTO.getMessage(), messageDTO.getPostTime());
     }
 
 };

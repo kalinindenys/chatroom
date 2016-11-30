@@ -21,6 +21,14 @@ var ChatroomStorage = function () {
         localStorage.setItem(key, JSON.stringify(items));
     };
 
+    var findOne = function (itemId) {
+        for (i = 0; i < items.length; i++) {
+            if (items[i].id === itemId) {
+                return items[i];
+            }
+        }
+    };
+
     var findAll = function () {
         return items;
     };
@@ -35,6 +43,7 @@ var ChatroomStorage = function () {
 
     return {
         update: update,
+        findOne: findOne,
         findAll: findAll
     };
 

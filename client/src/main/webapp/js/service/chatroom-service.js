@@ -46,7 +46,11 @@ var ChatroomService = function (chatroomStorage) {
         var chatroom = findById(chatroomId);
 
         chatroom.getGuests().push(nickname);
-        chatroomStorage.update(DTOConverter.toChatroomEntity(chatroom));
+
+        var chatroomEntity = chatroomStorage.findOne(chatroom.getId());
+        chatroomEntity.guests = chatroom.getGuests();
+        chatroomEntity.messages = chatroom.getMessages();
+        chatroomStorage.update(chatroomEntity);
 
         return chatroom;
     };
@@ -63,7 +67,11 @@ var ChatroomService = function (chatroomStorage) {
             throw new Error("Illegal state. Trying to remove not existing nickname");
         }
         chatroom.getGuests().splice(guestIndexForRemove, 1);
-        chatroomStorage.update(DTOConverter.toChatroomEntity(chatroom));
+
+        var chatroomEntity = chatroomStorage.findOne(chatroom.getId());
+        chatroomEntity.guests = chatroom.getGuests();
+        chatroomEntity.messages = chatroom.getMessages();
+        chatroomStorage.update(chatroomEntity);
 
         return chatroom;
     };
