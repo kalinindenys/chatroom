@@ -1,9 +1,10 @@
-var ChatroomMessage = function (authorNickname, message, postTime) {
+var ChatroomMessage = function (chatroomId, authorNickname, message, postTime) {
 
     this.id = generateMessageId();
+    this.chatroomId = chatroomId;
     this.authorNickname = authorNickname;
     this.message = message;
-    this.postTime = postTime ? postTime : new Date();
+    this.postTime = postTime;
 
 };
 

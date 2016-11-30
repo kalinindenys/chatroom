@@ -44,10 +44,9 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
     });
 
     postMessageBtn.click(function () {
-        var formattedMessage = messageInput.val();
-        var message = new ChatroomMessage(nickname, formattedMessage, new Date());
+        var message = new ChatroomMessageDTO(chatroom.getId(), nickname, messageInput.val(), new Date());
 
-        commandBus.emitMessage(new PostMessage(new MessageDTO(chatroom.getId(), message)).toMessage());
+        commandBus.emitMessage(new PostMessage(message).toMessage());
 
         messageInput.val('');
         postMessageBtn.addClass("disabled");

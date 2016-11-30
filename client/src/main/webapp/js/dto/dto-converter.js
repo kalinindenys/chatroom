@@ -22,6 +22,10 @@ var DTOConverter = {
         entity.messages = chatroom.getMessages();
 
         return entity;
+    },
+
+    toMessageEntity: function (messageDTO) {
+        return new ChatroomMessage(messageDTO.getChatroomId(), messageDTO.getAuthorNickname(), messageDTO.getMessage(), messageDTO.getPostTime());
     }
 
 };
