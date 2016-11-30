@@ -70,7 +70,7 @@ var ChatroomService = function (chatroomStorage, eventBus) {
         chatroom.guests.splice(guestIndexForRemove, 1);
         chatroomStorage.update(chatroom);
 
-        eventBus.emitMessage(new LeftChat(enterChatroomInfo).toMessage());
+        eventBus.emitMessage(new LeftChat(enterChatroomInfo).toMessage())
         eventBus.emitMessage(new ChatroomUpdated(chatroom).toMessage());
     };
 
