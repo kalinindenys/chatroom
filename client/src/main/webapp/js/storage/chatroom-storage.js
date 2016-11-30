@@ -16,7 +16,7 @@ var ChatroomStorage = function () {
             }
         }
 
-        //create if not exists
+        //create item if not exists
         items.push(chatroom);
         localStorage.setItem(key, JSON.stringify(items));
     };

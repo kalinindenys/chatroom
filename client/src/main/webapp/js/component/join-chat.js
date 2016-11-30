@@ -43,13 +43,13 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
     enterBtn.click(function () {
         hidePopup();
 
-        var nick = nickname.val().trim();
         var enterChatroomInfo = new EnterChatroomInfo(nickname.val().trim(), chatroomId);
 
         commandBus.emitMessage(new EnterToChatroom(enterChatroomInfo).toMessage());
     });
 
     var showPopup = function (chatroom) {
+        nickname.val('');
         chatroomId = chatroom.getId();
         chatroomName.html(chatroom.getName());
         panel.show();
@@ -58,7 +58,6 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
     var hidePopup = function () {
         panel.hide();
         hideEnterBtn();
-        nickname.val('');
     };
 
     var showEnterBtn = function () {
