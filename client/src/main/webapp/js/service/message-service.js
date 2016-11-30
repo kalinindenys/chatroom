@@ -1,4 +1,4 @@
-var MessageService = function (chatroomStorage, chatroomService, commandBus, eventBus) {
+var MessageService = function (chatroomStorage, chatroomService, eventBus) {
 
     var postMessage = function (messageDTO) {
         var chatroom = chatroomService.findById(messageDTO.getChatroomId());
@@ -9,7 +9,8 @@ var MessageService = function (chatroomStorage, chatroomService, commandBus, eve
         eventBus.emitMessage(new ChatroomUpdated(chatroom).toMessage());
     };
 
-
-    commandBus.subscribe(Commands.POST_MESSAGE, postMessage);
+    return {
+        postMessage: postMessage
+    }
 
 };

@@ -10,8 +10,9 @@ var ChatroomApplication = function (rootElementId) {
 
     var chatroomStorage = new ChatroomStorage();
     var chatroomService = new ChatroomService(chatroomStorage, eventBus);
-    var messageService = new MessageService(chatroomStorage, chatroomService, commandBus, eventBus);
+    var messageService = new MessageService(chatroomStorage, chatroomService, eventBus);
     var asyncChatServiceFacade = new AsyncChatServiceFacade(chatroomService, commandBus, eventBus);
+    var asyncMessageServiceFacade = new AsyncMessageServiceFacade(messageService, commandBus);
 
     $("#" + rootElementId).append(
         '<div class="container"' +
