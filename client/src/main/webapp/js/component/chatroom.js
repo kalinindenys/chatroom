@@ -21,7 +21,7 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
         '<div class="panel-footer input-group">' +
         '<textarea class="form-control" placeholder="Your message..." style="resize: none" id="' + messageInputId + '"></textarea>' +
         '<span class="input-group-btn">' +
-        '<button class="btn btn-default disabled" type="button" id="' + postMessageBtnId + '">Post</button>' +
+        '<button class="btn btn-default disabled" disabled type="button" id="' + postMessageBtnId + '">Post</button>' +
         '</span>' +
         '</div>' +
         '</div>'
@@ -35,6 +35,7 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
 
     messageInput.keyup(function () {
         var messageIsEmpty = (messageInput.val().trim().length === 0);
+        postMessageBtn.prop("disabled", messageIsEmpty);
         postMessageBtn.toggleClass("disabled", messageIsEmpty);
     });
 
