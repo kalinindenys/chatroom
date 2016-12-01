@@ -8,10 +8,10 @@ var DTOConverter = {
         var chatroomDTOs = [];
 
         for (i = 0; i < chatrooms.length; i++) {
-            chatroomDTOs.push(new ChatroomDTO(chatrooms[i].id, chatrooms[i].name, chatrooms[i].creationDate, chatrooms[i].guests, chatrooms[i].messages));
+            chatroomDTOs.push(this.toChatroomDTO(chatrooms[i]));
         }
 
         return chatroomDTOs;
-    }
+    },
 
 };

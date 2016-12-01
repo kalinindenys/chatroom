@@ -51,6 +51,7 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
 
         messageInput.val('');
         postMessageBtn.addClass("disabled");
+        postMessageBtn.prop("disabled", true);
     });
 
     function updateView(updatedChatroom) {
@@ -64,15 +65,19 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
 
                 messagesList.html('');
                 for (i = 0; i < sortedMessages.length; i++) {
-                    var formattedMessage = sortedMessages[i].message.split("\n").join("<br>");
+                    var messageItemId = rootElementId + "_" + i;
 
                     messagesList.append(
                         '<li class="list-group-item">' +
                         '<span>[' + sortedMessages[i].postTime.toString("dd-MM-yy HH:mm") + '] </span>' +
                         '<span><b>' + sortedMessages[i].authorNickname + '</b> said: </span>' +
-                        '<span>' + formattedMessage + '</span>' +
+                        '<span id="' + messageItemId + '"></span>' +
                         '</li>'
                     );
+
+                    var messageItem = $("#" + messageItemId);
+                    messageItem.text(sortedMessages[i].message);
+                    messageItem.html(messageItem.html().split("\n").join("<br>"));
                 }
             }
         }

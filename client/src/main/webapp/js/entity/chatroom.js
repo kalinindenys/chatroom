@@ -2,7 +2,7 @@ var Chatroom = function (chatroomName, creationDate) {
 
     this.id = generateChatroomId();
     this.name = chatroomName;
-    this.creationDate = creationDate ? creationDate : new Date();
+    this.creationDate = creationDate;
     this.guests = [];
     this.messages = [];
 
