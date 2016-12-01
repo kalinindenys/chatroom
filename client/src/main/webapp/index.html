@@ -13,30 +13,24 @@
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 
     <!-- Application libraries -->
-    <script type="text/javascript" src="lib/js/chatRoomEventHandler.js"></script>
+    <script type="text/javascript" src="lib/js/services/chatRoomService.js"></script>
     <script type="text/javascript" src="lib/js/events.js"></script>
     <script type="text/javascript" src="lib/js/commands.js"></script>
-    <script type="text/javascript" src="lib/js/chatRoomList.js"></script>
+    <script type="text/javascript" src="lib/js/chatRoomApp.js"></script>
     <script type="text/javascript" src="lib/js/message-bus.js"></script>
     <script type="text/javascript" src="lib/js/components/createChatRoomComponent.js"></script>
     <script type="text/javascript" src="lib/js/components/chatRoomListComponent.js"></script>
     <script type="text/javascript" src="lib/js/components/chatRoomListItemComponent.js"></script>
     <script type="text/javascript" src="lib/js/dto/chatrooms.js"></script>
-    <script type="text/javascript" src="lib/js/domain/chatRoomsDomain.js"></script>
+    <script type="text/javascript" src="lib/js/facade.js"></script>
 
 
     <script type="text/javascript">
         $(function () {
 
             var externalEventBus = new MessageBus("External event bus");
-            var widget = new ChatRoomListWidget("chatroom", externalEventBus);
+            var widget = new ChatRoomApp("chatroom", externalEventBus);
 
-            var loadedChatRoomList = [];
-            for (var key in localStorage) {
-                loadedChatRoomList.push(localStorage.getItem(key));
-            }
-            var event = new ChatRoomListUpdatedEvent(loadedChatRoomList);
-            externalEventBus.emit(event.toMessage());
         });
     </script>
 </head>

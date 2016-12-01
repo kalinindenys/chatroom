@@ -1,9 +1,7 @@
-var ChatRoomListItemComponent = function (rootDivId, chatRoomDto) {
-    var chatRoom = JSON.parse(chatRoomDto);
+var ChatRoomListItemComponent = function (rootDivId, chatRoom) {
     var chatRoomListItemComponentId = rootDivId + "_chatRoomListItemContainer_" + chatRoom.id;
 
     var date = _formatDate();
-    //todo: change date format
 
     $("#" + rootDivId).append('<li id=' + chatRoomListItemComponentId + ' class="list-group-item" style="height: 70px">' +
         ' <div class="animated bounceIn">' +

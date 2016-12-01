@@ -19,23 +19,12 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
         inputElement.val("");
     }
 
-    var _onCreateChatRoom = function (evt) { // CLEAN CODE
+    var _onCreateChatRoom = function (evt) {
         var chatRoomName = inputElement.val().trim();
-        if (chatRoomName.length > 2 && chatRoomName.length <= 50) {
-            var item = localStorage.getItem(chatRoomName);
-            if (item) {
-                //todo: CHECK AND THROW EXCEPTION
-            } else {
-                var length = localStorage.length;
-                var chatroomDto = new ChatroomDto(length, chatRoomName, new Date());
-                localStorage.setItem(chatRoomName, JSON.stringify(chatroomDto))
 
-                command = new CreateChatRoomCommand(localStorage.getItem(chatRoomName));
-                commandBus.emit(command.toMessage());
+        command = new CreateChatRoomCommand(chatRoomName);
+        commandBus.emit(command.toMessage());
 
-                inputElement.val('');
-            }
-        }
     };
 
     var _onError = function (evt) {

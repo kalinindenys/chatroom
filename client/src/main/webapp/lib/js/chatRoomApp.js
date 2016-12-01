@@ -1,4 +1,4 @@
-var ChatRoomListWidget = function(rootElementId, externalEventBus) {
+var ChatRoomApp = function(rootElementId, externalEventBus) {
 
     var eventBus;
     if(externalEventBus) {
@@ -17,6 +17,9 @@ var ChatRoomListWidget = function(rootElementId, externalEventBus) {
 
     var createChatRoomComponent = new CreateChatroomComponent(eventBus, commandBus, createChatRoomDivId);
     var chatRoomListComponent = new ChatRoomListComponent(eventBus, chatRoomListDivId);
-    var chatRoomModel = new ChatRoomsDomain(commandBus, eventBus, new ChatRoomEventHandler());
+    var chatRoomModel = new ChatRoomsFacade(commandBus, eventBus);
+
+    var command = new ReadChatRoomsCommand();
+    commandBus.emit(command.toMessage());
 
 };
