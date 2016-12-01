@@ -19,24 +19,7 @@ span.chat-date {
     color: silver;
 }
 
-div.popup{
-    position: fixed;
-    top:0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-div.wrapper{
-    position: fixed;
-    width: 200px;
-    height: 100px;
-    margin: 70px auto;
-    background-color: bisque;
-    opacity: 0.5;
-}
-div.popup-container{
-    padding: 20px;
-    border-radius: 2px;
-    background-color: silver;
+div.join-popup{
+width: 480px;
 }
 

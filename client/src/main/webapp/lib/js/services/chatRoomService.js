@@ -16,12 +16,12 @@ var ChatRoomService = function () {
         } else {
             throw new Error("Empty chat room cannot be added")
         }
-    }
+    };
 
 
     var _readAllChatRooms = function () {
         allChatRooms = [];
-        for (key in localStorage) {
+        for (var key in localStorage) {
             allChatRooms.push(JSON.parse(localStorage.getItem(key)));
         }
         allChatRooms.sort(function (a, b) {
@@ -30,15 +30,20 @@ var ChatRoomService = function () {
         return allChatRooms;
     };
 
-    var _createChatRoom = function (chatRoom) {
+    var _createChatRoom = function (chatRoomName) {
 
-        _addChatRoom(chatRoom);
+        _addChatRoom(chatRoomName);
 
         return _readAllChatRooms();
     };
 
+    var _getChatRoom = function (chatRoomName) {
+        return JSON.parse(localStorage.getItem(chatRoomName));
+    };
+
     return {
         "createChatRoom": _createChatRoom,
-        "readAllChatRooms": _readAllChatRooms
+        "readAllChatRooms": _readAllChatRooms,
+        "getChatRoom": _getChatRoom
     };
 };

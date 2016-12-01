@@ -1,21 +1,30 @@
-var ChatRoomListItemComponent = function (rootDivId, chatRoom) {
+var ChatRoomListItemComponent = function (eventBus, commandBus, rootDivId, chatRoom) {
     var chatRoomListItemComponentId = rootDivId + "_chatRoomListItemContainer_" + chatRoom.id;
 
     var date = _formatDate();
+    var chatRoomName = chatRoom.name;
 
     $("#" + rootDivId).append('<li id=' + chatRoomListItemComponentId + ' class="list-group-item" style="height: 70px">' +
         ' <div class="animated bounceIn">' +
-        '<span style="font-style: oblique">' + chatRoom.name + '<br/>' + '</span>' + '<span class="chat-date"> ' + date + '</span>' +
-        '<button id="joinButton" style="visibility: hidden; float: right" class="btn btn-info"><i class="glyphicon glyphicon-comment"></i> Join</button> ' +
+        '<span style="font-style: oblique">' + chatRoomName + '<br/>' + '</span>' + '<span class="chat-date"> ' + date + '</span>' +
+        '<button style="visibility: hidden; float: right" class="btn btn-info"><i class="glyphicon glyphicon-comment"></i> Join</button> ' +
         '</div></li>'
     );
 
     var chatRoomListItem = $("#" + chatRoomListItemComponentId);
     var joinButton = chatRoomListItem.find("button");
 
-    $("#joinButton").on("click", function () {
-        $("#dialog").dialog("open");
+    $(joinButton).on("click", function () {
+        command = new GetChatRoomCommand(chatRoomName);
+        commandBus.emit(command.toMessage());
     });
+
+    var _openJoinDialogComponent = function (evt) {
+        var chatRoom = evt.data;
+        new JoinDialogComponent(eventBus, rootDivId, chatRoom);
+        $('#myModal').modal();
+
+    };
 
     chatRoomListItem.mouseover(function (event) {
         _changeButtonVisibility(true);
@@ -40,7 +49,9 @@ var ChatRoomListItemComponent = function (rootDivId, chatRoom) {
         var year = chatRoomDate.getFullYear();
         var hours = chatRoomDate.getHours();
         var minutes = ("0" + chatRoomDate.getMinutes()).slice(-2);
-        var formatedDate = day + "-" + month + "-" + year + " " + hours + ":" + minutes;
-        return formatedDate;
+        var formattedDate = day + "-" + month + "-" + year + " " + hours + ":" + minutes;
+        return formattedDate;
     }
+
+    eventBus.subscribe(Events.OPEN_JOIN_DIALOG, _openJoinDialogComponent);
 };

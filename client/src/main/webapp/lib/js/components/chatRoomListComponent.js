@@ -1,4 +1,4 @@
-var ChatRoomListComponent = function (eventBus, rootDivId) {
+var ChatRoomListComponent = function (eventBus, commandBus, rootDivId) {
 
     var chatRoomListContainerId = rootDivId + "_chatRoomListContainer";
 
@@ -26,8 +26,7 @@ var ChatRoomListComponent = function (eventBus, rootDivId) {
                 var aChatRoom = chatRooms[chatRoomIndex];
 
                 var name = aChatRoom.name;
-                containerElement.append(new ChatRoomListItemComponent(chatRoomListContainerId, aChatRoom));
-                //todo: UPDATE LI
+                new ChatRoomListItemComponent(eventBus, commandBus, chatRoomListContainerId, aChatRoom);
             }
 
             containerElement.append('</ul>');

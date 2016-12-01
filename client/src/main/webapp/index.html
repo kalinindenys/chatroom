@@ -10,9 +10,10 @@
 
     <!-- 3rd-party libraries -->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
-            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 
     <!-- Application libraries -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="lib/js/services/chatRoomService.js"></script>
     <script type="text/javascript" src="lib/js/events.js"></script>
     <script type="text/javascript" src="lib/js/commands.js"></script>
@@ -21,6 +22,7 @@
     <script type="text/javascript" src="lib/js/components/createChatRoomComponent.js"></script>
     <script type="text/javascript" src="lib/js/components/chatRoomListComponent.js"></script>
     <script type="text/javascript" src="lib/js/components/chatRoomListItemComponent.js"></script>
+    <script type="text/javascript" src="lib/js/components/joinDialogComponent.js"></script>
     <script type="text/javascript" src="lib/js/dto/chatrooms.js"></script>
     <script type="text/javascript" src="lib/js/facade.js"></script>
 
@@ -30,8 +32,8 @@
 
             var externalEventBus = new MessageBus("External event bus");
             var widget = new ChatRoomApp("chatroom", externalEventBus);
-
         });
+
     </script>
 </head>
 
@@ -47,13 +49,7 @@
 
     <div class="animated bounceInUp" id="chatroom"></div>
 
-    <div id="dialog" class="Basic dialog">
-        <div id="1" class="wrapper">
-            <div id="2" class="popup-container">
-                <label> Hello! I'm popup box!</label>
-            </div>
-        </div>
-    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
 
 
 </div>

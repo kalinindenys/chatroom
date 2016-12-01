@@ -16,7 +16,7 @@ var ChatRoomApp = function(rootElementId, externalEventBus) {
         .append("<div class='chat-room-list' id=" + chatRoomListDivId + "> Chat room list component placeholder </div>");
 
     var createChatRoomComponent = new CreateChatroomComponent(eventBus, commandBus, createChatRoomDivId);
-    var chatRoomListComponent = new ChatRoomListComponent(eventBus, chatRoomListDivId);
+    var chatRoomListComponent = new ChatRoomListComponent(eventBus,commandBus, chatRoomListDivId);
     var chatRoomModel = new ChatRoomsFacade(commandBus, eventBus);
 
     var command = new ReadChatRoomsCommand();
