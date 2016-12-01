@@ -40,8 +40,8 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
     });
 
     $("#" + leaveBtnId).click(function () {
-        var enterChatroomInfo = new EnterChatroomInfo(nickname, chatroom.getId());
-        commandBus.emitMessage(new LeaveFromChatroom(enterChatroomInfo).toMessage());
+        var joinChatroomInfo = new JoinChatroomInfo(nickname, chatroom.getId());
+        commandBus.emitMessage(new LeaveFromChatroom(joinChatroomInfo).toMessage());
     });
 
     postMessageBtn.click(function () {
@@ -64,7 +64,7 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
                 var sortedMessages = sortMessages(updatedChatroom.getMessages());
 
                 messagesList.html('');
-                for (i = 0; i < sortedMessages.length; i++) {
+                for (var i = 0; i < sortedMessages.length; i++) {
                     var messageItemId = rootElementId + "_" + i;
 
                     messagesList.append(
@@ -91,4 +91,14 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
 
     eventBus.subscribe(Events.CHATROOM_UPDATED, updateView);
 
+    eventBus.subscribe(Events.USER_LEFT_CHAT, function (enterChatroomInfo) {
+        if (enterChatroomInfo.getNickname() === nickname) {
+            eventBus.unsubscribe(Events.CHATROOM_UPDATED, updateView);
+        }
+    });
+
+};
+
+ChatroomComponent.createFor = function (rootElementId, chatroom, nickname, commandBus, eventBus) {
+    return new ChatroomComponent(newComponentId, chatroom, nickname, commandBus, eventBus);
 };

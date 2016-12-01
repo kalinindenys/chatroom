@@ -7,7 +7,7 @@ var DTOConverter = {
     toChatroomDTOs: function (chatrooms) {
         var chatroomDTOs = [];
 
-        for (i = 0; i < chatrooms.length; i++) {
+        for (var i = 0; i < chatrooms.length; i++) {
             chatroomDTOs.push(this.toChatroomDTO(chatrooms[i]));
         }
 

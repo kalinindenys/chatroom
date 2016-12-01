@@ -17,7 +17,7 @@ var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
         if (chatrooms && chatrooms.length > 0) {
             chatrooms = sortByCreationDateDescending(chatrooms);
 
-            for (i = 0; i < chatrooms.length; i++) {
+            for (var i = 0; i < chatrooms.length; i++) {
                 new ChatroomListItem(containerId, chatrooms[i], eventBus);
             }
         } else {
@@ -35,4 +35,8 @@ var ChatroomListComponent = function (rootElementId, commandBus, eventBus) {
 
     eventBus.emitMessage(new ChatroomListInitialized().toMessage());
 
+};
+
+ChatroomListComponent.createFor = function (chatroomListComponentId, commandBus, eventBus) {
+    new ChatroomListComponent(chatroomListComponentId, commandBus, eventBus);
 };

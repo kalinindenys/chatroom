@@ -27,9 +27,9 @@ var ChatroomApplication = function (rootElementId) {
         '</div>'
     );
 
-    var createChatroomComponent = new CreateChatroomComponent(createChatroomComponentId, commandBus, eventBus);
-    var chatroomListComponent = new ChatroomListComponent(chatroomListComponentId, commandBus, eventBus);
-    var joinChatComponent = new JoinChatComponent(popupId, commandBus, eventBus);
-    var chatroomsController = new ChatroomsController(chatroomComponentsId, chatroomService, commandBus, eventBus);
+    CreateChatroomComponent.createFor(createChatroomComponentId, commandBus, eventBus);
+    ChatroomListComponent.createFor(chatroomListComponentId, commandBus, eventBus);
+    JoinChatComponent.createFor(popupId, commandBus, eventBus);
+    ChatroomsComponentDirector.createFor(chatroomComponentsId, chatroomService, commandBus, eventBus);
 
 };

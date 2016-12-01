@@ -4,8 +4,8 @@ var Events = {
     CHATROOM_LIST_UPDATED: "Chatroom list updated",
     CHATROOM_UPDATED: "Chatroom updated",
     ATTEMPTED_TO_ENTER_CHAT: "Attempted to enter chat",
-    ENTERED_TO_CHAT: "Entered to chat",
-    LEFT_CHAT: "Left the chat",
+    JOINED_TO_CHAT: "Joined to chat",
+    USER_LEFT_CHAT: "User left the chat",
     NICKNAME_VALIDATION_SUCCESS: "Nickname validation success",
     NICKNAME_VALIDATION_FAIL: "Nickname validation fail"
 };
@@ -50,17 +50,17 @@ var AttemptedToEnterChat = function (chatroom) {
     return { toMessage: toMessage };
 };
 
-var EnteredToChat = function (enterChatroomInfo) {
+var JoinedToChat = function (joinChatroomInfo) {
     var toMessage = function () {
-        return new Message(Events.ENTERED_TO_CHAT, enterChatroomInfo);
+        return new Message(Events.JOINED_TO_CHAT, joinChatroomInfo);
     };
 
     return { toMessage: toMessage };
 };
 
-var LeftChat = function (enterChatroomInfo) {
+var UserLeftChat = function (joinChatroomInfo) {
     var toMessage = function () {
-        return new Message(Events.LEFT_CHAT, enterChatroomInfo);
+        return new Message(Events.USER_LEFT_CHAT, joinChatroomInfo);
     };
 
     return { toMessage: toMessage };

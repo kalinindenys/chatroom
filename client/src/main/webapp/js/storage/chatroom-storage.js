@@ -8,7 +8,7 @@ var ChatroomStorage = function () {
     }
 
     var update = function (chatroom) {
-        for (i = 0; i < items.length; i++) {
+        for (var i = 0; i < items.length; i++) {
             if (items[i].id === chatroom.id) {
                 items[i] = chatroom;
                 localStorage.setItem(key, JSON.stringify(items));
@@ -22,7 +22,7 @@ var ChatroomStorage = function () {
     };
 
     var findOne = function (itemId) {
-        for (i = 0; i < items.length; i++) {
+        for (var i = 0; i < items.length; i++) {
             if (items[i].id === itemId) {
                 return items[i];
             }

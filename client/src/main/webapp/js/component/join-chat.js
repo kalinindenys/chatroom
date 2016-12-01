@@ -30,8 +30,7 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
     var enterBtn = $("#" + enterBtnId);
 
     nickname.keyup(function () {
-        var trimmedNickname = nickname.val().trim();
-        var nicknameValidationInfo = new EnterChatroomInfo(trimmedNickname, chatroomId);
+        var nicknameValidationInfo = new JoinChatroomInfo(nickname.val(), chatroomId);
 
         commandBus.emitMessage(new ValidateNickname(nicknameValidationInfo).toMessage());
     });
@@ -43,9 +42,9 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
     enterBtn.click(function () {
         hidePopup();
 
-        var enterChatroomInfo = new EnterChatroomInfo(nickname.val().trim(), chatroomId);
+        var joinChatroomInfo = new JoinChatroomInfo(nickname.val().trim(), chatroomId);
 
-        commandBus.emitMessage(new EnterToChatroom(enterChatroomInfo).toMessage());
+        commandBus.emitMessage(new EnterToChatroom(joinChatroomInfo).toMessage());
     });
 
     var showPopup = function (chatroom) {
@@ -72,4 +71,8 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
     eventBus.subscribe(Events.NICKNAME_VALIDATION_SUCCESS, showEnterBtn);
     eventBus.subscribe(Events.NICKNAME_VALIDATION_FAIL, hideEnterBtn);
 
+};
+
+JoinChatComponent.createFor = function (popupId, commandBus, eventBus) {
+    new JoinChatComponent(popupId, commandBus, eventBus);
 };

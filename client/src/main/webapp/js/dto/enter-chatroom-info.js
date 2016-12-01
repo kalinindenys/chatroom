@@ -1,4 +1,4 @@
-var EnterChatroomInfo = function (nickname, chatroomId) {
+var JoinChatroomInfo = function (nickname, chatroomId) {
 
     var getNickname = function () {
         return nickname;

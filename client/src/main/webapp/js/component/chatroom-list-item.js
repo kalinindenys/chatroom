@@ -21,7 +21,7 @@ var ChatroomListItem = function (rootElementId, chatroom, eventBus) {
     });
 
     item.mouseover(function () {
-        joinBtn.show()
+        joinBtn.show();
     });
 
     item.mouseout(function () {

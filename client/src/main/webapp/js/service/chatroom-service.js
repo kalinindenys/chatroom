@@ -3,7 +3,7 @@ var ChatroomService = function (chatroomStorage) {
     var findById = function (chatroomId) {
         var chatrooms = chatroomStorage.findAll();
 
-        for (i = 0; i < chatrooms.length; i++) {
+        for (var i = 0; i < chatrooms.length; i++) {
             if (chatrooms[i].id === chatroomId) {
                 return DTOConverter.toChatroomDTO(chatrooms[i]);
             }
@@ -41,7 +41,7 @@ var ChatroomService = function (chatroomStorage) {
 
     var join = function (enterChatroomInfo) {
         var chatroomId = enterChatroomInfo.getChatroomId();
-        var nickname = enterChatroomInfo.getNickname();
+        var nickname = enterChatroomInfo.getNickname().trim();
 
         var chatroom = findById(chatroomId);
 
@@ -91,7 +91,7 @@ var ChatroomService = function (chatroomStorage) {
             return false;
         }
 
-        for (i = 0; i < chatroom.getGuests().length; i++) {
+        for (var i = 0; i < chatroom.getGuests().length; i++) {
             if (chatroom.getGuests()[i] === nickname) {
                 return false;
             }

@@ -3,7 +3,9 @@ var MessageService = function (chatroomStorage, chatroomService) {
     var postMessage = function (messageDTO) {
         var chatroom = chatroomService.findById(messageDTO.getChatroomId());
 
-        var messageEntity = new ChatroomMessage(messageDTO.getChatroomId(), messageDTO.getAuthorNickname(), messageDTO.getMessage(), messageDTO.getPostTime());
+        var messageEntity = new ChatroomMessage( messageDTO.getChatroomId(), messageDTO.getAuthorNickname(),
+                                                 messageDTO.getMessage(), messageDTO.getPostTime()
+                                               );
         chatroom.getMessages().push(messageEntity);
 
         var chatroomEntity = chatroomStorage.findOne(chatroom.getId());

@@ -21,6 +21,14 @@ var MessageBus = function () {
         subscribers[topic].push(callback);
     };
 
+    var unsubscribe = function (topic, callback) {
+        var callbackIndex = subscribers[topic].indexOf(callback);
+
+        if (callbackIndex !== -1) {
+            subscribers[topic].splice(callbackIndex, 1);
+        }
+    };
+
     var emitMessage = function (message) {
         if (!message.topic) {
             throw new Error("Message must specify topic")
@@ -37,6 +45,7 @@ var MessageBus = function () {
 
     return {
         "subscribe": subscribe,
+        "unsubscribe": unsubscribe,
         "emitMessage": emitMessage
     };
 

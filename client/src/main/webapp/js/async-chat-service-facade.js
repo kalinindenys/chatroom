@@ -31,17 +31,17 @@ var AsyncChatServiceFacade = function (chatroomService, commandBus, eventBus) {
         eventBus.emitMessage(resultingEvent.toMessage());
     };
 
-    var onJoin = function (enterChatroomInfo) {
-        var updatedChatroom = chatroomService.join(enterChatroomInfo);
+    var onJoin = function (joinChatroomInfo) {
+        var updatedChatroom = chatroomService.join(joinChatroomInfo);
 
-        eventBus.emitMessage(new EnteredToChat(enterChatroomInfo).toMessage());
+        eventBus.emitMessage(new JoinedToChat(joinChatroomInfo).toMessage());
         eventBus.emitMessage(new ChatroomUpdated(updatedChatroom).toMessage());
     };
 
-    var onLeave = function (enterChatroomInfo) {
-        var updatedChatroom = chatroomService.leave(enterChatroomInfo);
+    var onLeave = function (joinChatroomInfo) {
+        var updatedChatroom = chatroomService.leave(joinChatroomInfo);
 
-        eventBus.emitMessage(new LeftChat(enterChatroomInfo).toMessage());
+        eventBus.emitMessage(new UserLeftChat(joinChatroomInfo).toMessage());
         eventBus.emitMessage(new ChatroomUpdated(updatedChatroom).toMessage());
     };
 
