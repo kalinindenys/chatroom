@@ -39,14 +39,16 @@ var ChatRoomService = function () {
     var _validateNickname = function (chatRoomName, nickname) {
         var chatRoom = JSON.parse(localStorage.getItem(chatRoomName));
         var users = chatRoom.users;
+        var foundUser;
 
         var isValid;
-
         if (users) {
-            foundUser = jQuery.grep(users, function (n) {
-                return ( n == nickname);
-            });
+            for (var i = 0; i < users.size; i++) {
+                if (users[i] == nickname) {
+                    foundUser = users[i];
 
+                }
+            }
             if (foundUser || nickname.length < 1) {
                 isValid = false
             }
@@ -55,19 +57,31 @@ var ChatRoomService = function () {
             }
             return isValid;
         } else {
-            if (nickname.length > 0) {
-                return isValid = true;
-            } else {
-                return isValid = false;
-            }
+            return isValid = true;
         }
 
         //todo: CLEAN
     };
 
+    var _joinChatRoom = function (chatRoomName, nickname) {
+        var chatRoom = JSON.parse(localStorage.getItem(chatRoomName));
+        var users = chatRoom.users;
+
+        if (!(users === undefined)) {
+            users.push(nickname);
+            //todo: FIX!
+        } else {
+            users = nickname;
+        }
+        chatRoom.users = users;
+        localStorage.setItem(chatRoomName, JSON.stringify(chatRoom));
+
+    };
+
     return {
         "createChatRoom": _createChatRoom,
         "readAllChatRooms": _readAllChatRooms,
-        "validateNickname": _validateNickname
+        "validateNickname": _validateNickname,
+        "joinChatRoom": _joinChatRoom
     };
 };
