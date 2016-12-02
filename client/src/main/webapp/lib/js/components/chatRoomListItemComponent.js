@@ -7,12 +7,13 @@ var ChatRoomListItemComponent = function (eventBus, commandBus, rootDivId, chatR
     $("#" + rootDivId).append('<li id=' + chatRoomListItemComponentId + ' class="list-group-item" style="height: 70px">' +
         ' <div class="animated bounceIn">' +
         '<span style="font-style: oblique">' + chatRoomName + '<br/>' + '</span>' + '<span class="chat-date"> ' + date + '</span>' +
-        '<button style="visibility: hidden; float: right" class="btn btn-info"><i class="glyphicon glyphicon-comment"></i> Join</button> ' +
+        '<button style="float: right" class="btn btn-info"><i class="glyphicon glyphicon-comment"></i> Join</button> ' +
         '</div></li>'
     );
 
     var chatRoomListItem = $("#" + chatRoomListItemComponentId);
     var joinButton = chatRoomListItem.find("button");
+    joinButton.hide();
 
     $(joinButton).on("click", function () {
         command = new GetChatRoomCommand(chatRoomName);
@@ -36,9 +37,9 @@ var ChatRoomListItemComponent = function (eventBus, commandBus, rootDivId, chatR
 
     var _changeButtonVisibility = function (isMouseOver) {
         if (isMouseOver) {
-            joinButton.css('visibility', 'visible');
+            joinButton.show();
         } else {
-            joinButton.css('visibility', 'hidden');
+            joinButton.hide();
         }
     }
 
@@ -49,8 +50,7 @@ var ChatRoomListItemComponent = function (eventBus, commandBus, rootDivId, chatR
         var year = chatRoomDate.getFullYear();
         var hours = chatRoomDate.getHours();
         var minutes = ("0" + chatRoomDate.getMinutes()).slice(-2);
-        var formattedDate = day + "-" + month + "-" + year + " " + hours + ":" + minutes;
-        return formattedDate;
+        return day + "-" + month + "-" + year + " " + hours + ":" + minutes;
     }
 
     eventBus.subscribe(Events.OPEN_JOIN_DIALOG, _openJoinDialogComponent);
