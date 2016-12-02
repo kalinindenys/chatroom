@@ -18,7 +18,6 @@ var ChatRoomService = function () {
         }
     };
 
-
     var _readAllChatRooms = function () {
         allChatRooms = [];
         for (var key in localStorage) {
@@ -37,13 +36,38 @@ var ChatRoomService = function () {
         return _readAllChatRooms();
     };
 
-    var _getChatRoom = function (chatRoomName) {
-        return JSON.parse(localStorage.getItem(chatRoomName));
+    var _validateNickname = function (chatRoomName, nickname) {
+        var chatRoom = JSON.parse(localStorage.getItem(chatRoomName));
+        var users = chatRoom.users;
+
+        var isValid;
+
+        if (users) {
+            foundUser = jQuery.grep(users, function (n) {
+                return ( n == nickname);
+            });
+
+            if (foundUser || nickname.length < 1) {
+                isValid = false
+            }
+            else {
+                isValid = true;
+            }
+            return isValid;
+        } else {
+            if (nickname.length > 0) {
+                return isValid = true;
+            } else {
+                return isValid = false;
+            }
+        }
+
+        //todo: CLEAN
     };
 
     return {
         "createChatRoom": _createChatRoom,
         "readAllChatRooms": _readAllChatRooms,
-        "getChatRoom": _getChatRoom
+        "validateNickname": _validateNickname
     };
 };

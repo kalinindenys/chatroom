@@ -24,14 +24,13 @@ var ChatRoomListComponent = function (eventBus, commandBus, rootDivId) {
 
             for (var chatRoomIndex = 0; chatRoomIndex < chatRooms.length; chatRoomIndex++) {
                 var aChatRoom = chatRooms[chatRoomIndex];
-
                 var name = aChatRoom.name;
                 new ChatRoomListItemComponent(eventBus, commandBus, chatRoomListContainerId, aChatRoom);
             }
 
             containerElement.append('</ul>');
         } else {
-            containerElement.append(' --- No Chat Rooms yet ---');
+            containerElement.append('<span class="chat-date"> --- No Chat Rooms yet ---</span>');
         }
 
         //todo: CLEAN

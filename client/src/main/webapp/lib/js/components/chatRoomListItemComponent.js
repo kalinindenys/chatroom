@@ -16,16 +16,9 @@ var ChatRoomListItemComponent = function (eventBus, commandBus, rootDivId, chatR
     joinButton.hide();
 
     $(joinButton).on("click", function () {
-        command = new GetChatRoomCommand(chatRoomName);
-        commandBus.emit(command.toMessage());
-    });
-
-    var _openJoinDialogComponent = function (evt) {
-        var chatRoom = evt.data;
-        new JoinDialogComponent(eventBus, rootDivId, chatRoom);
+        new JoinDialogComponent(commandBus,eventBus, rootDivId, chatRoom);
         $('#myModal').modal();
-
-    };
+    });
 
     chatRoomListItem.mouseover(function (event) {
         _changeButtonVisibility(true);
@@ -41,7 +34,7 @@ var ChatRoomListItemComponent = function (eventBus, commandBus, rootDivId, chatR
         } else {
             joinButton.hide();
         }
-    }
+    };
 
     function _formatDate() {
         var chatRoomDate = new Date(chatRoom.date);
@@ -53,5 +46,4 @@ var ChatRoomListItemComponent = function (eventBus, commandBus, rootDivId, chatR
         return day + "-" + month + "-" + year + " " + hours + ":" + minutes;
     }
 
-    eventBus.subscribe(Events.OPEN_JOIN_DIALOG, _openJoinDialogComponent);
 };

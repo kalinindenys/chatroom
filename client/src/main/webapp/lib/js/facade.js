@@ -29,10 +29,12 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
         eventBus.emit(resultingEvent.toMessage());
     };
 
-    var _onGetChatRoom = function (command) {
+    var _onJoinValidation = function (command) {
+        var chatRoomName = command.data.chatRoomName;
+        var nickname = command.data.nickname;
         var resultingEvent;
-        var chatRoom = chatRoomService.getChatRoom(command.data);
-        resultingEvent = new OpenJoinDialogEvent(chatRoom);
+        var isValidated = chatRoomService.validateNickname(chatRoomName, nickname);
+        resultingEvent = new JoinValidatedEvent(isValidated);
 
         eventBus.emit(resultingEvent.toMessage());
     };
@@ -40,6 +42,6 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
     _onReadChatRoom();
 
     commandBus.subscribe(Commands.CREATE_CHATROOM, _onCreateChatRoom);
-    commandBus.subscribe(Commands.GET_CHATROOM, _onGetChatRoom);
+    commandBus.subscribe(Commands.JOIN_VALIDATION, _onJoinValidation);
 
 };

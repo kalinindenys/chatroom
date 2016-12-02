@@ -1,6 +1,6 @@
 var Commands = {
     CREATE_CHATROOM: "Create chat room",
-    GET_CHATROOM: "Get chat room"
+    JOIN_VALIDATION: "Join validation"
 };
 
 var CreateChatRoomCommand = function (chatroomDto) {
@@ -8,8 +8,8 @@ var CreateChatRoomCommand = function (chatroomDto) {
     return {"toMessage": _toMessage};
 };
 
-var GetChatRoomCommand = function (chatRoomName) {
-    var _toMessage = createMessage(Commands.GET_CHATROOM, chatRoomName);
+var JoinValidationCommand = function (commandData) {
+    var _toMessage = createMessage(Commands.JOIN_VALIDATION, commandData);
     return {"toMessage": _toMessage};
 };
 
