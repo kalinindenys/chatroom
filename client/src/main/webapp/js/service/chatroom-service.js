@@ -34,7 +34,7 @@ var ChatroomService = function (chatroomStorage) {
         }
 
         var createdChatroom = new Chatroom(chatroomName, new Date());
-        chatroomStorage.update(createdChatroom);
+        chatroomStorage.save(createdChatroom);
 
         return DTOConverter.toChatroomDTOs(chatroomStorage.findAll());
     };
@@ -50,7 +50,7 @@ var ChatroomService = function (chatroomStorage) {
         var chatroomEntity = chatroomStorage.findOne(chatroom.getId());
         chatroomEntity.guests = chatroom.getGuests();
         chatroomEntity.messages = chatroom.getMessages();
-        chatroomStorage.update(chatroomEntity);
+        chatroomStorage.save(chatroomEntity);
 
         return new ChatroomSession(nickname, chatroom);
     };
@@ -69,7 +69,7 @@ var ChatroomService = function (chatroomStorage) {
         var chatroomEntity = chatroomStorage.findOne(chatroom.getId());
         chatroomEntity.guests = chatroom.getGuests();
         chatroomEntity.messages = chatroom.getMessages();
-        chatroomStorage.update(chatroomEntity);
+        chatroomStorage.save(chatroomEntity);
 
         return chatroom;
     };

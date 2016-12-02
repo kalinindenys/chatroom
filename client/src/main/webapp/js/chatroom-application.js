@@ -8,7 +8,7 @@ var ChatroomApplication = function (rootElementId) {
     var popupId = rootElementId + "_popup";
     var chatroomComponentsId = rootElementId + "_chatroomComponents";
 
-    var chatroomStorage = new ChatroomStorage();
+    var chatroomStorage = new ChatroomLocalStorage();
     var chatroomService = new ChatroomService(chatroomStorage);
     var messageService = new MessageService(chatroomStorage, chatroomService);
     AsyncChatServiceFacade.createFor(chatroomService, commandBus, eventBus);

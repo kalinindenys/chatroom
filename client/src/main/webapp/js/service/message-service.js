@@ -11,7 +11,7 @@ var MessageService = function (chatroomStorage, chatroomService) {
         var chatroomEntity = chatroomStorage.findOne(chatroom.getId());
         chatroomEntity.guests = chatroom.getGuests();
         chatroomEntity.messages = chatroom.getMessages();
-        chatroomStorage.update(chatroomEntity);
+        chatroomStorage.save(chatroomEntity);
 
         return chatroom;
     };
