@@ -1,4 +1,4 @@
-var ChatroomListItem = function (rootElementId, chatroom, eventBus) {
+var ChatroomListItem = function (rootElementId, chatroom, commandBus) {
 
     var itemId = rootElementId + "_" + $("#" + rootElementId + " li").length;
     var joinBtnId = itemId + "_joinBtnId";
@@ -17,7 +17,7 @@ var ChatroomListItem = function (rootElementId, chatroom, eventBus) {
     var joinBtn = $("#" + joinBtnId);
 
     joinBtn.click(function () {
-        eventBus.emitMessage(new AttemptedToEnterChat(chatroom).toMessage());
+        commandBus.emitMessage(new TryJoinToChatroom(chatroom).toMessage());
     });
 
     item.mouseover(function () {

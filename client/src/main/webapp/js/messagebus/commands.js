@@ -1,7 +1,8 @@
 var Commands = {
     CREATE_CHATROOM: "Create chatroom",
     VALIDATE_NICKNAME: "Validate nickname",
-    ENTER_TO_CHATROOM: "Enter to chatroom",
+    TRY_JOIN_TO_CHATROOM: "Try join to chatroom",
+    JOIN_TO_CHATROOM: "Join to chatroom",
     LEAVE_FROM_CHATROOM: "Leave from chatroom",
     POST_MESSAGE: "Post message"
 };
@@ -22,9 +23,17 @@ var ValidateNickname = function (nicknameValidationInfo) {
     return { toMessage: toMessage };
 };
 
-var EnterToChatroom = function (enterChatroomInfo) {
+var TryJoinToChatroom = function (chatroom) {
     var toMessage = function () {
-        return new Message(Commands.ENTER_TO_CHATROOM, enterChatroomInfo);
+        return new Message(Commands.TRY_JOIN_TO_CHATROOM, chatroom);
+    };
+
+    return { toMessage: toMessage };
+};
+
+var JoinToChatroom = function (joinChatroomInfo) {
+    var toMessage = function () {
+        return new Message(Commands.JOIN_TO_CHATROOM, joinChatroomInfo);
     };
 
     return { toMessage: toMessage };

@@ -1,4 +1,4 @@
-var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus, eventBus) {
+var ChatroomComponent = function (rootElementId, chatroomSession, commandBus, eventBus) {
 
     var guestsNumberId = rootElementId + "_guestsNumber";
     var messagesId = rootElementId + "_messages";
@@ -7,6 +7,7 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
     var postMessageBtnId = rootElementId + "_postMessageBtn";
 
     var rootElement = $("#" + rootElementId);
+    var chatroom = chatroomSession.getChatroom();
 
     rootElement.append(
         '<div class="panel panel-default">' +
@@ -40,12 +41,11 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
     });
 
     $("#" + leaveBtnId).click(function () {
-        var joinChatroomInfo = new JoinChatroomInfo(nickname, chatroom.getId());
-        commandBus.emitMessage(new LeaveFromChatroom(joinChatroomInfo).toMessage());
+        commandBus.emitMessage(new LeaveFromChatroom(chatroomSession).toMessage());
     });
 
     postMessageBtn.click(function () {
-        var message = new ChatroomMessageDTO(chatroom.getId(), nickname, messageInput.val(), new Date());
+        var message = new ChatroomMessageDTO(chatroom.getId(), chatroomSession.getNickname(), messageInput.val(), new Date());
 
         commandBus.emitMessage(new PostMessage(message).toMessage());
 
@@ -89,16 +89,16 @@ var ChatroomComponent = function (rootElementId, chatroom, nickname, commandBus,
         });
     }
 
-    eventBus.subscribe(Events.CHATROOM_UPDATED, updateView);
+    var subscriptionId = eventBus.subscribe(Events.CHATROOM_UPDATED, updateView);
 
-    eventBus.subscribe(Events.USER_LEFT_CHAT, function (enterChatroomInfo) {
-        if (enterChatroomInfo.getNickname() === nickname) {
-            eventBus.unsubscribe(Events.CHATROOM_UPDATED, updateView);
+    eventBus.subscribe(Events.USER_LEFT_CHAT, function (session) {
+        if (chatroomSession.getNickname() === session.getNickname()) {
+            eventBus.unsubscribe(subscriptionId);
         }
     });
 
 };
 
-ChatroomComponent.createFor = function (rootElementId, chatroom, nickname, commandBus, eventBus) {
-    return new ChatroomComponent(newComponentId, chatroom, nickname, commandBus, eventBus);
+ChatroomComponent.createFor = function (rootElementId, chatroomSession, commandBus, eventBus) {
+    return new ChatroomComponent(rootElementId, chatroomSession, commandBus, eventBus);
 };

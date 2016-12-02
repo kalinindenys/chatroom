@@ -9,3 +9,7 @@ var AsyncMessageServiceFacade = function (messageService, commandBus, eventBus) 
     commandBus.subscribe(Commands.POST_MESSAGE, onPostMessage);
 
 };
+
+AsyncMessageServiceFacade.createFor = function (messageService, commandBus, eventBus) {
+    return new AsyncMessageServiceFacade(messageService, commandBus, eventBus);
+};

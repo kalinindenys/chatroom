@@ -39,6 +39,6 @@ var CreateChatroomComponent = function (rootElementId, commandBus, eventBus) {
 
 };
 
-ChatroomComponent.createFor = function (createChatroomComponentId, commandBus, eventBus) {
+CreateChatroomComponent.createFor = function (createChatroomComponentId, commandBus, eventBus) {
     new CreateChatroomComponent(createChatroomComponentId, commandBus, eventBus);
 };

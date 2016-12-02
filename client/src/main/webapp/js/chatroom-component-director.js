@@ -1,23 +1,22 @@
-var ChatroomsComponentDirector = function (rootElementId, chatroomService, commandBus, eventBus) {
+var ChatroomsComponentDirector = function (rootElementId , commandBus, eventBus) {
 
     var rootElement = $("#" + rootElementId);
 
-    var createChatroomComponent = function (enterChatroomInfo) {
-        var chatroom = chatroomService.findById(enterChatroomInfo.getChatroomId());
-        var nickname = enterChatroomInfo.getNickname();
-        var newComponentId = generateComponentId(enterChatroomInfo);
+    var createChatroomComponent = function (chatroomSession) {
+        var newComponentId = generateComponentId(chatroomSession);
 
         rootElement.append('<div id="' + newComponentId + '"></div>');
 
-        ChatroomComponent.createFor(newComponentId, chatroom, nickname, commandBus, eventBus);
+        ChatroomComponent.createFor(newComponentId, chatroomSession, commandBus, eventBus);
     };
 
-    var destroyChatroomComponent = function (enterChatroomInfo) {
-        $("#" + generateComponentId(enterChatroomInfo)).remove();
+    var destroyChatroomComponent = function (chatroomSession) {
+        $("#" + generateComponentId(chatroomSession)).remove();
     };
 
-    var generateComponentId = function (enterChatroomInfo) {
-        return rootElementId + "_" + enterChatroomInfo.getChatroomId() + "_" + enterChatroomInfo.getNickname().split(' ').join('_');
+    var generateComponentId = function (chatroomSession) {
+        return rootElementId + "_" + chatroomSession.getChatroom().getId() + "_" +
+            chatroomSession.getNickname().split(' ').join('_');
     };
 
     eventBus.subscribe(Events.JOINED_TO_CHAT, createChatroomComponent);
@@ -25,6 +24,6 @@ var ChatroomsComponentDirector = function (rootElementId, chatroomService, comma
 
 };
 
-ChatroomsComponentDirector.createFor = function (chatroomComponentsId, chatroomService, commandBus, eventBus) {
-    new ChatroomsComponentDirector(chatroomComponentsId, chatroomService, commandBus, eventBus);
+ChatroomsComponentDirector.createFor = function (chatroomComponentsId, commandBus, eventBus) {
+    new ChatroomsComponentDirector(chatroomComponentsId, commandBus, eventBus);
 };

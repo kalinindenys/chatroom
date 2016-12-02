@@ -44,7 +44,7 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
 
         var joinChatroomInfo = new JoinChatroomInfo(nickname.val().trim(), chatroomId);
 
-        commandBus.emitMessage(new EnterToChatroom(joinChatroomInfo).toMessage());
+        commandBus.emitMessage(new JoinToChatroom(joinChatroomInfo).toMessage());
     });
 
     var showPopup = function (chatroom) {
@@ -67,7 +67,7 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
         enterBtn.hide();
     };
 
-    eventBus.subscribe(Events.ATTEMPTED_TO_ENTER_CHAT, showPopup);
+    eventBus.subscribe(Events.JOIN_CHATROOM_ACCESS_GRANTED, showPopup);
     eventBus.subscribe(Events.NICKNAME_VALIDATION_SUCCESS, showEnterBtn);
     eventBus.subscribe(Events.NICKNAME_VALIDATION_FAIL, hideEnterBtn);
 

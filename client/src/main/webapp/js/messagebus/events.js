@@ -3,6 +3,8 @@ var Events = {
     CHATROOM_LIST_INITIALIZED: "Chatroom list initialized",
     CHATROOM_LIST_UPDATED: "Chatroom list updated",
     CHATROOM_UPDATED: "Chatroom updated",
+    JOIN_CHATROOM_ACCESS_GRANTED: "Join chatroom access granted",
+    JOIN_CHATROOM_ACCESS_DENIED: "Join chatroom acess denied",
     ATTEMPTED_TO_ENTER_CHAT: "Attempted to enter chat",
     JOINED_TO_CHAT: "Joined to chat",
     USER_LEFT_CHAT: "User left the chat",
@@ -42,12 +44,24 @@ var ChatroomUpdated = function (chatroom) {
     return { toMessage: toMessage };
 };
 
-var AttemptedToEnterChat = function (chatroom) {
+var JoinChatroomAccessGranted = function (chatroom) {
     var toMessage = function () {
-        return new Message(Events.ATTEMPTED_TO_ENTER_CHAT, chatroom);
+        return new Message(Events.JOIN_CHATROOM_ACCESS_GRANTED, chatroom);
     };
 
     return { toMessage: toMessage };
+};
+
+var JoinChatroomAccessDenied = function (reason) {
+    var toMessage = function () {
+        return new Message(Events.JOIN_CHATROOM_ACCESS_DENIED, reason);
+    };
+
+    return { toMessage: toMessage };
+};
+
+var AttemptedToEnterChat = function (chatroom) {
+
 };
 
 var JoinedToChat = function (joinChatroomInfo) {

@@ -52,14 +52,12 @@ var ChatroomService = function (chatroomStorage) {
         chatroomEntity.messages = chatroom.getMessages();
         chatroomStorage.update(chatroomEntity);
 
-        return chatroom;
+        return new ChatroomSession(nickname, chatroom);
     };
 
-    var leave = function (enterChatroomInfo) {
-        var chatroomId = enterChatroomInfo.getChatroomId();
-        var nickname = enterChatroomInfo.getNickname();
-
-        var chatroom = findById(chatroomId);
+    var leave = function (chatroomSession) {
+        var chatroom = chatroomSession.getChatroom();
+        var nickname = chatroomSession.getNickname();
 
         var guestIndexForRemove = chatroom.getGuests().indexOf(nickname);
 
