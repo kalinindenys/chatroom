@@ -19,7 +19,4 @@ var ChatRoomApp = function(rootElementId, externalEventBus) {
     var chatRoomListComponent = new ChatRoomListComponent(eventBus,commandBus, chatRoomListDivId);
     var chatRoomModel = new ChatRoomsFacade(commandBus, eventBus);
 
-    var command = new ReadChatRoomsCommand();
-    commandBus.emit(command.toMessage());
-
 };

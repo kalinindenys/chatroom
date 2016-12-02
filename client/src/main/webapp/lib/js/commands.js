@@ -1,31 +1,22 @@
 var Commands = {
     CREATE_CHATROOM: "Create chat room",
-    READ_CHATROOMS: "Read chat room",
     GET_CHATROOM: "Get chat room"
 };
 
 var CreateChatRoomCommand = function (chatroomDto) {
-
-    var _toMessage = function () {
-        return new Message(Commands.CREATE_CHATROOM, chatroomDto);
-    };
-
+    var _toMessage = createMessage(Commands.CREATE_CHATROOM, chatroomDto);
     return {"toMessage": _toMessage};
 };
 
-var ReadChatRoomsCommand = function () {
-
-    var _toMessage = function () {
-        return new Message(Commands.READ_CHATROOMS);
-    };
-
+var GetChatRoomCommand = function (chatRoomName) {
+    var _toMessage = createMessage(Commands.GET_CHATROOM, chatRoomName);
     return {"toMessage": _toMessage};
 };
-var GetChatRoomCommand = function (ChatRoomName) {
 
+function createMessage(type, data) {
     var _toMessage = function () {
-        return new Message(Commands.GET_CHATROOM, ChatRoomName);
+        return new Message(type, data);
     };
+    return _toMessage;
+}
 
-    return {"toMessage": _toMessage};
-};
