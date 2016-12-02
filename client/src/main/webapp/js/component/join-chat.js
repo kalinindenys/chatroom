@@ -42,7 +42,7 @@ var JoinChatComponent = function (rootElementId, commandBus, eventBus) {
     enterBtn.click(function () {
         hidePopup();
 
-        var joinChatroomInfo = new JoinChatroomInfo(nickname.val().trim(), chatroomId);
+        var joinChatroomInfo = new JoinChatroomInfo(nickname.val(), chatroomId);
 
         commandBus.emitMessage(new JoinToChatroom(joinChatroomInfo).toMessage());
     });

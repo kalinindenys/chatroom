@@ -12,6 +12,6 @@ var DTOConverter = {
         }
 
         return chatroomDTOs;
-    },
+    }
 
 };

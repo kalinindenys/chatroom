@@ -39,9 +39,9 @@ var ChatroomService = function (chatroomStorage) {
         return DTOConverter.toChatroomDTOs(chatroomStorage.findAll());
     };
 
-    var join = function (enterChatroomInfo) {
-        var chatroomId = enterChatroomInfo.getChatroomId();
-        var nickname = enterChatroomInfo.getNickname().trim();
+    var join = function (joinChatroomInfo) {
+        var chatroomId = joinChatroomInfo.getChatroomId();
+        var nickname = joinChatroomInfo.getNickname().trim();
 
         var chatroom = findById(chatroomId);
 
@@ -75,7 +75,7 @@ var ChatroomService = function (chatroomStorage) {
     };
 
     var isValidNickname = function (nicknameValidationInfo) {
-        var nickname = nicknameValidationInfo.getNickname();
+        var nickname = nicknameValidationInfo.getNickname().trim();
         var chatroomId = nicknameValidationInfo.getChatroomId();
 
         var resultingEvent;
