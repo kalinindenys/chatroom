@@ -10,7 +10,8 @@ var ChatRoomService = function () {
                 throw new Error("Chat room already exist")
             } else {
                 var length = localStorage.length;
-                var chatroomDto = new ChatroomDto(length, chatRoomName, new Date());
+                var users = [];
+                var chatroomDto = new ChatroomDto(length, chatRoomName, new Date(), users);
                 localStorage.setItem(chatRoomName, JSON.stringify(chatroomDto))
             }
         } else {
@@ -43,22 +44,19 @@ var ChatRoomService = function () {
 
         var isValid;
         if (users) {
-            for (var i = 0; i < users.size; i++) {
-                if (users[i] == nickname) {
-                    foundUser = users[i];
-
-                }
+            if (jQuery.inArray(nickname, users) != -1) {
+                return false;
             }
-            if (foundUser || nickname.length < 1) {
+            else if (nickname.length < 1) {
                 isValid = false
             }
             else {
                 isValid = true;
             }
-            return isValid;
         } else {
-            return isValid = true;
+            isValid = true;
         }
+        return isValid;
 
         //todo: CLEAN
     };
@@ -69,7 +67,6 @@ var ChatRoomService = function () {
 
         if (!(users === undefined)) {
             users.push(nickname);
-            //todo: FIX!
         } else {
             users = nickname;
         }
