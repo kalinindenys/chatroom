@@ -1,9 +1,9 @@
 var DTOConverter = {
 
     toChatroomDTO: function (chatroom) {
-        // var messageDTOs = this.toMessageDTOs(chatroom.messages);
+        var messageDTOs = this.toMessageDTOs(chatroom.messages);
 
-        return new ChatroomDTO(chatroom.id, chatroom.name, chatroom.creationDate, chatroom.guests, chatroom.messages);
+        return new ChatroomDTO(chatroom.id, chatroom.name, chatroom.creationDate, chatroom.guests, messageDTOs);
     },
 
     toChatroomDTOs: function (chatrooms) {
@@ -28,6 +28,40 @@ var DTOConverter = {
         }
 
         return messageDTOs;
+    },
+
+    toChatroomEntity: function (chatroom) {
+        var entity = new Chatroom(chatroom.getName(), chatroom.getCreationDate());
+        entity.id = chatroom.getId();
+        entity.guests = chatroom.getGuests();
+        entity.messages = this.toMessageEntities(chatroom.getMessages());
+
+        return entity;
+    },
+
+    toChatroomEntities: function (chatrooms) {
+        var entities = [];
+
+        for (var i = 0; i < chatrooms.length; i++) {
+            entities.push(this.toChatroomEntity(chatrooms[i]));
+        }
+
+        return entities;
+    },
+
+    toMessageEntity: function (message) {
+        return new ChatroomMessage(
+            message.getChatroomId(), message.getAuthorNickname(), message.getMessage(), message.getPostTime());
+    },
+
+    toMessageEntities: function (messages) {
+        var entities = [];
+
+        for (var i = 0; i < messages.length; i++) {
+            entities.push(this.toMessageEntity(messages[i]));
+        }
+
+        return entities;
     }
 
 };
