@@ -38,7 +38,7 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
         });
 
         $("#" + cancelButtonId).on("click", function () {
-            _closeJoinDialog
+            _closeJoinDialog();
         });
 
         enterButton.on("click", function () {

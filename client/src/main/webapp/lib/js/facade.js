@@ -45,7 +45,7 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
         var nickname = command.data.nickname;
         var resultingEvent;
         var chatRoom = chatRoomService.joinChatRoom(chatRoomName, nickname);
-        resultingEvent = new EnterChatRoomEvent(chatRoom);
+        resultingEvent = new EnterChatRoomEvent(chatRoom, nickname);
 
         eventBus.emit(resultingEvent.toMessage());
     };

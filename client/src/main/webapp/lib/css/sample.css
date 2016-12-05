@@ -1,22 +1,28 @@
-h1{
+h1 {
     font-family: "Comic Sans MS", fantasy;
     font-size: 48px;
 }
-body{
+
+body {
     background: linear-gradient(white, lightskyblue);
 }
 
-div.chat-room-list{
+div.chat-room-list {
     float: left;
     width: 440px;
 }
 
-div.add-chat-room{
+div.add-chat-room {
     width: 340px;
 }
 
-div.widget-director{
+div.widget-director {
     float: right;
+}
+
+div.widget-chat-room {
+    height: 600px;
+    width: 400px;
 }
 
 span.chat-date {
@@ -24,7 +30,7 @@ span.chat-date {
     color: silver;
 }
 
-div.join-popup{
-width: 480px;
+div.join-popup {
+    width: 480px;
 }
 
