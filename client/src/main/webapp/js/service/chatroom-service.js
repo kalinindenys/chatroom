@@ -11,11 +11,13 @@ var ChatroomService = function (chatroomStorage) {
     };
 
     var findByName = function (chatroomName) {
-        var chatrooms = DTOConverter.toChatroomDTOs(chatroomStorage.findAll());
+        var chatrooms = chatroomStorage.findAll();
 
-        return chatrooms.find(function (chatroom) {
-            return chatroom.getName() === chatroomName;
+        var chatroom = chatrooms.find(function (chatroom) {
+            return chatroom.name === chatroomName;
         });
+
+        return chatroom ? DTOConverter.toChatroomDTO(chatroom) : chatroom;
     };
 
     var findAll = function () {
@@ -33,8 +35,7 @@ var ChatroomService = function (chatroomStorage) {
             throw new Error("Chatroom with specified name exists");
         }
 
-        var createdChatroom = new Chatroom(chatroomName, new Date());
-        chatroomStorage.save(createdChatroom);
+        chatroomStorage.save(new Chatroom(chatroomName, new Date()));
 
         return DTOConverter.toChatroomDTOs(chatroomStorage.findAll());
     };
@@ -43,21 +44,17 @@ var ChatroomService = function (chatroomStorage) {
         var chatroomId = joinChatroomInfo.getChatroomId();
         var nickname = joinChatroomInfo.getNickname().trim();
 
-        var chatroom = findById(chatroomId);
+        var chatroomDTO = findById(chatroomId);
+        chatroomDTO.getGuests().push(nickname);
 
-        chatroom.getGuests().push(nickname);
+        var chatroomEntity = chatroomStorage.save(DTOConverter.toChatroomEntity(chatroomDTO));
 
-        var chatroomEntity = chatroomStorage.findOne(chatroom.getId());
-        chatroomEntity.guests = chatroom.getGuests();
-        chatroomEntity.messages = chatroom.getMessages();
-        chatroomStorage.save(chatroomEntity);
-
-        return new ChatroomSession(nickname, chatroom);
+        return new ChatroomSession(nickname, DTOConverter.toChatroomDTO(chatroomEntity));
     };
 
-    var leave = function (chatroomSession) {
-        var chatroom = chatroomSession.getChatroom();
-        var nickname = chatroomSession.getNickname();
+    var leave = function (joinChatroomInfo) {
+        var chatroom = findById(joinChatroomInfo.getChatroomId());
+        var nickname = joinChatroomInfo.getNickname();
 
         var guestIndexForRemove = chatroom.getGuests().indexOf(nickname);
 
@@ -66,19 +63,16 @@ var ChatroomService = function (chatroomStorage) {
         }
         chatroom.getGuests().splice(guestIndexForRemove, 1);
 
-        var chatroomEntity = chatroomStorage.findOne(chatroom.getId());
-        chatroomEntity.guests = chatroom.getGuests();
-        chatroomEntity.messages = chatroom.getMessages();
-        chatroomStorage.save(chatroomEntity);
+        var chatroomEntity = DTOConverter.toChatroomEntity(chatroom);
+        chatroomEntity = chatroomStorage.save(chatroomEntity);
 
-        return chatroom;
+        return DTOConverter.toChatroomDTO(chatroomEntity);
     };
 
     var isValidNickname = function (nicknameValidationInfo) {
         var nickname = nicknameValidationInfo.getNickname().trim();
         var chatroomId = nicknameValidationInfo.getChatroomId();
 
-        var resultingEvent;
         var chatroom = findById(chatroomId);
 
         if (!chatroom) {

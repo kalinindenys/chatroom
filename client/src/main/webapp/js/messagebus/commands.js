@@ -39,9 +39,9 @@ var JoinToChatroom = function (joinChatroomInfo) {
     return { toMessage: toMessage };
 };
 
-var LeaveFromChatroom = function (enterChatroomInfo) {
+var LeaveFromChatroom = function (joinChatroomInfo) {
     var toMessage = function () {
-        return new Message(Commands.LEAVE_FROM_CHATROOM, enterChatroomInfo);
+        return new Message(Commands.LEAVE_FROM_CHATROOM, joinChatroomInfo);
     };
 
     return { toMessage: toMessage };

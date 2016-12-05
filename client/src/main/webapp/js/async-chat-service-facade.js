@@ -42,10 +42,10 @@ var AsyncChatServiceFacade = function (chatroomService, commandBus, eventBus) {
         eventBus.emitMessage(new ChatroomUpdated(chatroomSession.getChatroom()).toMessage());
     };
 
-    var onLeave = function (chatroomSession) {
-        var updatedChatroom = chatroomService.leave(chatroomSession);
+    var onLeave = function (joinChatroomInfo) {
+        var updatedChatroom = chatroomService.leave(joinChatroomInfo);
 
-        eventBus.emitMessage(new UserLeftChat(chatroomSession).toMessage());
+        eventBus.emitMessage(new UserLeftChat(joinChatroomInfo).toMessage());
         eventBus.emitMessage(new ChatroomUpdated(updatedChatroom).toMessage());
     };
 

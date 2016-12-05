@@ -8,13 +8,13 @@ var ChatroomLocalStorage = function () {
     }
 
     var save = function (chatroom) {
-        // chatroom = deepGenerateId(chatroom);
+        chatroom = deepGenerateId(chatroom);
 
         for (i = 0; i < items.length; i++) {
             if (items[i].id === chatroom.id) {
                 items[i] = chatroom;
                 localStorage.setItem(key, JSON.stringify(items));
-                return;
+                return chatroom;
             }
         }
 
@@ -68,6 +68,12 @@ var ChatroomLocalStorage = function () {
                 chatroom.messages[i].id = generateId("message");
             }
         }
+
+        // for (i = 0; i < chatroom.guests.length; i++) {
+        //     if (!chatroom.guests[i].id) {
+        //         chatroom.guests[i].id = generateId("guest");
+        //     }
+        // }
 
         return chatroom;
     };

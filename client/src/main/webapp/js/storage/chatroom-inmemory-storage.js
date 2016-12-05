@@ -1,4 +1,4 @@
-var ChatroomInmemoryStorage = function () {
+var ChatroomInMemoryStorage = function () {
 
     var items = [];
 

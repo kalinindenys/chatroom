@@ -41,7 +41,8 @@ var ChatroomComponent = function (rootElementId, chatroomSession, commandBus, ev
     });
 
     $("#" + leaveBtnId).click(function () {
-        commandBus.emitMessage(new LeaveFromChatroom(chatroomSession).toMessage());
+        var joinChatroomInfo = new JoinChatroomInfo(chatroomSession.getNickname(), chatroomSession.getChatroom().getId());
+        commandBus.emitMessage(new LeaveFromChatroom(joinChatroomInfo).toMessage());
     });
 
     postMessageBtn.click(function () {
@@ -69,14 +70,14 @@ var ChatroomComponent = function (rootElementId, chatroomSession, commandBus, ev
 
                     messagesList.append(
                         '<li class="list-group-item">' +
-                        '<span>[' + sortedMessages[i].postTime.toString("dd-MM-yy HH:mm") + '] </span>' +
-                        '<span><b>' + sortedMessages[i].authorNickname + '</b> said: </span>' +
+                        '<span>[' + sortedMessages[i].getPostTime().toString("dd-MM-yy HH:mm") + '] </span>' +
+                        '<span><b>' + sortedMessages[i].getAuthorNickname() + '</b> said: </span>' +
                         '<span id="' + messageItemId + '"></span>' +
                         '</li>'
                     );
 
                     var messageItem = $("#" + messageItemId);
-                    messageItem.text(sortedMessages[i].message);
+                    messageItem.text(sortedMessages[i].getMessage());
                     messageItem.html(messageItem.html().split("\n").join("<br>"));
                 }
             }
@@ -85,14 +86,14 @@ var ChatroomComponent = function (rootElementId, chatroomSession, commandBus, ev
 
     function sortMessages(messages) {
         return messages.sort(function (first, second) {
-            return first.postTime - second.postTime;
+            return first.getPostTime() - second.getPostTime();
         });
     }
 
     var subscriptionId = eventBus.subscribe(Events.CHATROOM_UPDATED, updateView);
 
-    eventBus.subscribe(Events.USER_LEFT_CHAT, function (session) {
-        if (chatroomSession.getNickname() === session.getNickname()) {
+    eventBus.subscribe(Events.USER_LEFT_CHAT, function (joinChatroomInfo) {
+        if (chatroomSession.getNickname() === joinChatroomInfo.getNickname()) {
             eventBus.unsubscribe(subscriptionId);
         }
     });
