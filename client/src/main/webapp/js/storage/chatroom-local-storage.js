@@ -59,18 +59,18 @@ var ChatroomLocalStorage = function () {
     };
 
     var deepGenerateId = function (chatroom) {
-        if (!chatroom.id) {
+        if (chatroom.id === undefined) {
             chatroom.id = generateId("chatroom");
         }
 
         for (var i = 0; i < chatroom.messages.length; i++) {
-            if (!chatroom.messages[i].id) {
+            if (chatroom.messages[i].id === undefined) {
                 chatroom.messages[i].id = generateId("message");
             }
         }
 
         // for (i = 0; i < chatroom.guests.length; i++) {
-        //     if (!chatroom.guests[i].id) {
+        //     if (chatroom.guests[i].id === undefined) {
         //         chatroom.guests[i].id = generateId("guest");
         //     }
         // }

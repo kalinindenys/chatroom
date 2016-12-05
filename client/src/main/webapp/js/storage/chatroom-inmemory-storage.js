@@ -6,7 +6,7 @@ var ChatroomInMemoryStorage = function () {
     var messageIdCounter = 0;
 
     var save = function (chatroom) {
-        chatroom = generateIdsIfNecessary(chatroom);
+        chatroom = deepGenerateId(chatroom);
 
         for (var i = 0; i < items.length; i++) {
             if (items[i].id === chatroom.id) {
@@ -33,13 +33,13 @@ var ChatroomInMemoryStorage = function () {
         return items;
     };
 
-    var generateIdsIfNecessary = function (chatroom) {
-        if (!chatroom.id) {
+    var deepGenerateId = function (chatroom) {
+        if (chatroom.id === undefined) {
             chatroom.id = chatroomIdCounter++;
         }
 
         for (var i = 0; i < chatroom.messages.length; i++) {
-            if (!chatroom.messages[i].id) {
+            if (chatroom.messages[i].id === undefined) {
                 chatroom.messages[i].id = messageIdCounter++;
             }
         }
