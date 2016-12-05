@@ -72,6 +72,8 @@ var ChatRoomService = function () {
         }
         chatRoom.users = users;
         localStorage.setItem(chatRoomName, JSON.stringify(chatRoom));
+        return chatRoom;
+        //todo: CHECK ERRORS
 
     };
 

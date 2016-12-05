@@ -7,11 +7,16 @@ body{
 }
 
 div.chat-room-list{
+    float: left;
     width: 440px;
 }
 
 div.add-chat-room{
     width: 340px;
+}
+
+div.widget-director{
+    float: right;
 }
 
 span.chat-date {

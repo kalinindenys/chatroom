@@ -2,6 +2,7 @@ var Events = {
     CHAT_ROOM_LIST_UPDATED: "Chat room List updated",
 	CHAT_ROOM_CANNOT_BE_CREATED: "Chat room cannot be created",
 	JOIN_VALIDATED: "Join validated",
+	ENTER_CHAT_ROOM: "Enter chat room"
 };
 
 var ChatRoomListUpdatedEvent = function(chatRoomList) {
@@ -17,6 +18,15 @@ var JoinValidatedEvent = function(validationResult) {
 
 	var _toMessage = function() {
 		return new Message(Events.JOIN_VALIDATED, validationResult);
+	};
+
+	return { "toMessage": _toMessage };
+};
+
+var EnterChatRoomEvent = function(chatRoomDto) {
+
+	var _toMessage = function() {
+		return new Message(Events.ENTER_CHAT_ROOM, chatRoomDto);
 	};
 
 	return { "toMessage": _toMessage };

@@ -1,5 +1,6 @@
 var ChatRoomsFacade = function (commandBus, eventBus) {
     var chatRoomService = new ChatRoomService();
+
     var _onCreateChatRoom = function (command) {
         var chatRoom = command.data;
 
@@ -43,8 +44,8 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
         var chatRoomName = command.data.chatRoomName;
         var nickname = command.data.nickname;
         var resultingEvent;
-        var isValidated = chatRoomService.joinChatRoom(chatRoomName, nickname);
-        resultingEvent = new JoinValidatedEvent(isValidated);
+        var chatRoom = chatRoomService.joinChatRoom(chatRoomName, nickname);
+        resultingEvent = new EnterChatRoomEvent(chatRoom);
 
         eventBus.emit(resultingEvent.toMessage());
     };

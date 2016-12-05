@@ -38,7 +38,7 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
         });
 
         $("#" + cancelButtonId).on("click", function () {
-            $('#myModal').modal('hide');
+            _closeJoinDialog
         });
 
         enterButton.on("click", function () {
@@ -47,7 +47,6 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
             var command = JoinChatRoomCommand(commandData);
             commandBus.emit(command.toMessage());
         });
-
 
         var _checkValidation = function (evt) {
             var validationResult = evt.data;
@@ -61,6 +60,11 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
             }
         };
 
+       var _closeJoinDialog = function(){
+            $('#myModal').modal('hide');
+        };
+
         eventBus.subscribe(Events.JOIN_VALIDATED, _checkValidation);
+        eventBus.subscribe(Events.ENTER_CHAT_ROOM, _closeJoinDialog);
     }
     ;
