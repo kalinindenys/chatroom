@@ -57,7 +57,7 @@ var ChatroomComponent = function (rootElementId, chatroomSession, commandBus, ev
 
     function updateView(updatedChatroom) {
         if (chatroom.getId() === updatedChatroom.getId()) {
-            $("#" + guestsNumberId).html(chatroom.getGuests().length);
+            $("#" + guestsNumberId).html(updatedChatroom.getGuests().length);
 
             if (updatedChatroom.getMessages().length === 0) {
                 messagesList.html('No messages yet');
