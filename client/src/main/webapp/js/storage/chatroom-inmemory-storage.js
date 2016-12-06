@@ -11,26 +11,25 @@ var ChatroomInMemoryStorage = function () {
         for (var i = 0; i < items.length; i++) {
             if (items[i].id === chatroom.id) {
                 items[i] = chatroom;
-                return chatroom;
+                return $.extend(true, {}, chatroom);
             }
         }
 
         //add item if not exists
         items.push(chatroom);
-
-        return chatroom;
+        return $.extend(true, {}, chatroom);
     };
 
     var findOne = function (itemId) {
         for (var i = 0; i < items.length; i++) {
             if (items[i].id === itemId) {
-                return items[i];
+                return $.extend(true, {}, items[i]);
             }
         }
     };
 
     var findAll = function () {
-        return items;
+        return items.slice();
     };
 
     var deepGenerateId = function (chatroom) {

@@ -14,7 +14,7 @@ var ChatroomLocalStorage = function () {
             if (items[i].id === chatroom.id) {
                 items[i] = chatroom;
                 localStorage.setItem(key, JSON.stringify(items));
-                return chatroom;
+                return $.extend(true, {}, chatroom);
             }
         }
 
@@ -22,19 +22,19 @@ var ChatroomLocalStorage = function () {
         items.push(chatroom);
         localStorage.setItem(key, JSON.stringify(items));
 
-        return chatroom;
+        return $.extend(true, {}, chatroom);
     };
 
     var findOne = function (itemId) {
         for (var i = 0; i < items.length; i++) {
             if (items[i].id === itemId) {
-                return items[i];
+                return $.extend(true, {}, items[i]);
             }
         }
     };
 
     var findAll = function () {
-        return items;
+        return items.slice();
     };
 
     function dateReviver(key, value) {
