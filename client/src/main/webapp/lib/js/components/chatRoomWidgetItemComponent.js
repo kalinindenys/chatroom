@@ -21,6 +21,7 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
         '<span class="input-group-btn"> <button disabled id=' + widgetItemSendButtonId + ' class="btn btn-info" type="submit">Post</button>' +
         '</span></div></div></div></div>'
     );
+    _populateMessages();
 
     function _postMessage(messageToPost, username) {
         var message = "[" + _formatDate() + "] " + "<strong>" + username + "</strong>" + " said: " + messageToPost;
@@ -29,10 +30,12 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
         //todo: FINISH
     }
 
-    function _postMessageFromEvent(evt) {
+    function _postMessageByEvent(evt) {
         var messages = evt.data.chatRoom.messages;
-        var messageToPost = messages[messages.length -1];
+        var messageToPost = messages[messages.length - 1];
         var author = messageToPost.user;
+        $('#' + widgetItemMessageTextAreaId).val('');
+        $("#" + widgetItemSendButtonId).prop("disabled", true);
         _postMessage(messageToPost.content, author)
     }
 
@@ -42,7 +45,6 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
         var commandData = {"chatRoomName": chatRoomName, "message": message};
         command = new PostMessageCommand(commandData);
         commandBus.emit(command.toMessage());
-        /*           _postMessage(content, user);*/
         //todo: MODIFY
     });
 
@@ -68,6 +70,13 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
         return day + "-" + month + "-" + year + " " + hours + ":" + minutes;
     }
 
+    function _populateMessages() {
+        for (var i = 0; i < chatRoom.messages.length; i++) {
+            var message = chatRoom.messages[i];
+            _postMessage(message.content, message.user);
+        }
+    }
+
     function _updateUserNum(evt) {
         var updatedChatRoomName = evt.data.chatRoomName;
         var users = evt.data.users;
@@ -80,7 +89,7 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
     }
 
     eventBus.subscribe(Events.UPDATE_USER_NUMBER, _updateUserNum);
-    eventBus.subscribe(Events.MESSAGE_POSTED, _postMessageFromEvent);
+    eventBus.subscribe(Events.MESSAGE_POSTED, _postMessageByEvent);
 
 
 };
