@@ -58,6 +58,8 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
                     'This nickname already exists</div>');
                 enterButton.hide();
             }
+
+            //todo: FIX AND CLEAR
         };
 
        var _closeJoinDialog = function(){
@@ -65,6 +67,6 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
         };
 
         eventBus.subscribe(Events.JOIN_VALIDATED, _checkValidation);
-        eventBus.subscribe(Events.ENTER_CHAT_ROOM, _closeJoinDialog);
+        eventBus.subscribe(Events.OPEN_CHAT_ROOM, _closeJoinDialog);
     }
     ;

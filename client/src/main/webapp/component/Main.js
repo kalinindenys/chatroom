@@ -40,7 +40,7 @@ var MainComponent = function (commandBus, eventBus) {
         localStorage.setItem("chatroom token", message.token);
     })
 
-    eventBus.subscribe(Events.ENTER_CHAT_ROOM, function (message) {
+    eventBus.subscribe(Events.OPEN_CHAT_ROOM, function (message) {
         $("#" + mainId).html("Entered chat room");
 
         localStorage.setItem("chatroom token", message.token);

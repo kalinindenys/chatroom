@@ -77,10 +77,24 @@ var ChatRoomService = function () {
 
     };
 
+    var _leaveChatRoom = function (chatRoomName, nickname) {
+        var chatRoom = JSON.parse(localStorage.getItem(chatRoomName));
+        var users = chatRoom.users;
+
+        var leavingUserIndex = jQuery.inArray(nickname, users);
+        users.splice(leavingUserIndex,1);
+
+        chatRoom.users = users;
+        localStorage.setItem(chatRoomName, JSON.stringify(chatRoom));
+        return chatRoom;
+
+    };
+
     return {
         "createChatRoom": _createChatRoom,
         "readAllChatRooms": _readAllChatRooms,
         "validateNickname": _validateNickname,
-        "joinChatRoom": _joinChatRoom
+        "joinChatRoom": _joinChatRoom,
+        "leaveChatRoom": _leaveChatRoom
     };
 };
