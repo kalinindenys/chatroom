@@ -23,7 +23,8 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
     ;
 
     $("#" + widgetItemSendButtonId).on('click', function () {
-        var message = "[" + _formatDate() + "] " + "<strong>" + user + "</strong>" + " said: " + $("#" + widgetItemMessageTextAreaId).val().replace(/\r?\n/g, '<br />');
+        var formattedMessage = $("#" + widgetItemMessageTextAreaId).val().replace('<','&lt;').replace('>','&gt;').replace(/\r?\n/g, '<br />');
+        var message = "[" + _formatDate() + "] " + "<strong>" + user + "</strong>" + " said: " + formattedMessage;
         $('#' + widgetItemMessageList).append('<li class="list-group-item">' + message + '</li>');
 
         //todo: FINISH
