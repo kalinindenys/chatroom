@@ -11,7 +11,8 @@ var ChatRoomService = function () {
             } else {
                 var length = localStorage.length;
                 var users = [];
-                var chatroomDto = new ChatroomDto(length, chatRoomName, new Date(), users);
+                var messages = [];
+                var chatroomDto = new ChatroomDto(length, chatRoomName, new Date(), users, messages);
                 localStorage.setItem(chatRoomName, JSON.stringify(chatroomDto))
             }
         } else {
@@ -90,11 +91,27 @@ var ChatRoomService = function () {
 
     };
 
+    var _postMessage = function (chatRoomName, message) {
+        var chatRoom = JSON.parse(localStorage.getItem(chatRoomName));
+        var messages = chatRoom.messages;
+
+        if (!(messages === undefined)) {
+            messages.push(message);
+        } else {
+            messages = message;
+        }
+        chatRoom.messages = messages;
+        localStorage.setItem(chatRoomName, JSON.stringify(chatRoom));
+        return chatRoom;
+
+    };
+
     return {
         "createChatRoom": _createChatRoom,
         "readAllChatRooms": _readAllChatRooms,
         "validateNickname": _validateNickname,
         "joinChatRoom": _joinChatRoom,
-        "leaveChatRoom": _leaveChatRoom
+        "leaveChatRoom": _leaveChatRoom,
+        "postMessage": _postMessage
     };
 };

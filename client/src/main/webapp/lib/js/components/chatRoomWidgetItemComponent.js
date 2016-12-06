@@ -22,16 +22,27 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
         '</span></div></div></div></div>'
     );
 
-    function _putMessage(messageToPut, username) {
-        var message = "[" + _formatDate() + "] " + "<strong>" + username + "</strong>" + " said: " + messageToPut;
+    function _postMessage(messageToPost, username) {
+        var message = "[" + _formatDate() + "] " + "<strong>" + username + "</strong>" + " said: " + messageToPost;
         $('#' + widgetItemMessageList).append('<li class="list-group-item">' + message + '</li>');
 
         //todo: FINISH
     }
 
+    function _postMessageFromEvent(evt) {
+        var messages = evt.data.chatRoom.messages;
+        var messageToPost = messages[messages.length -1];
+        var author = messageToPost.user;
+        _postMessage(messageToPost.content, author)
+    }
+
     $("#" + widgetItemSendButtonId).on('click', function () {
-        var message = $("#" + widgetItemMessageTextAreaId).val().replace('<', '&lt;').replace('>', '&gt;').replace(/\r?\n/g, '<br />');
-        _putMessage(message, user);
+        var content = $("#" + widgetItemMessageTextAreaId).val().replace('<', '&lt;').replace('>', '&gt;').replace(/\r?\n/g, '<br />');
+        var message = new MessageDto(user, content, new Date());
+        var commandData = {"chatRoomName": chatRoomName, "message": message};
+        command = new PostMessageCommand(commandData);
+        commandBus.emit(command.toMessage());
+        /*           _postMessage(content, user);*/
         //todo: MODIFY
     });
 
@@ -69,6 +80,7 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
     }
 
     eventBus.subscribe(Events.UPDATE_USER_NUMBER, _updateUserNum);
+    eventBus.subscribe(Events.MESSAGE_POSTED, _postMessageFromEvent);
 
 
 };

@@ -4,7 +4,8 @@ var Events = {
     JOIN_VALIDATED: "Join validated",
     OPEN_CHAT_ROOM: "Enter chat room",
     UPDATE_USER_NUMBER: "Update user number",
-    LEAVE_CHAT_ROOM: "Leave chat room"
+    LEAVE_CHAT_ROOM: "Leave chat room",
+    MESSAGE_POSTED: "Message posted",
 };
 
 var ChatRoomListUpdatedEvent = function (chatRoomList) {
@@ -60,6 +61,18 @@ var LeaveChatRoomEvent = function (chatRoomDto, username) {
     };
     var _toMessage = function () {
         return new Message(Events.LEAVE_CHAT_ROOM, data);
+    };
+
+    return {"toMessage": _toMessage};
+};
+
+var MessagePostedEvent = function (chatRoomDto) {
+
+    var data = {
+        "chatRoom": chatRoomDto
+    };
+    var _toMessage = function () {
+        return new Message(Events.MESSAGE_POSTED, data);
     };
 
     return {"toMessage": _toMessage};

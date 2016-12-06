@@ -2,7 +2,8 @@ var Commands = {
     CREATE_CHAT_ROOM: "Create chat room",
     JOIN_VALIDATION: "Join validation",
     JOIN_CHAT_ROOM: "Join chat room",
-    LEAVE_CHAT_ROOM: "Leave chat room"
+    LEAVE_CHAT_ROOM: "Leave chat room",
+    POST_MESSAGE: "Post message"
 };
 
 var CreateChatRoomCommand = function (chatroomDto) {
@@ -22,6 +23,11 @@ var JoinChatRoomCommand = function (commandData) {
 
 var LeaveChatRoomCommand = function (commandData) {
     var _toMessage = createMessage(Commands.LEAVE_CHAT_ROOM, commandData);
+    return {"toMessage": _toMessage};
+};
+
+var PostMessageCommand = function (commandData) {
+    var _toMessage = createMessage(Commands.POST_MESSAGE, commandData);
     return {"toMessage": _toMessage};
 };
 
