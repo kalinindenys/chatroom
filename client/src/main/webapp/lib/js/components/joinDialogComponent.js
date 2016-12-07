@@ -7,7 +7,7 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
 
     var chatRoomName = chatRoom.name;
 
-    $('#joinModal').html('').append('<div id=' + joinDialogId + ' class="modal-dialog modal-sm" role="document"> ' +
+    $('#popup').html('').append('<div id=' + joinDialogId + ' class="modal-dialog modal-sm" role="document"> ' +
         '<div class="join-popup">' +
         '<div class="panel panel-info">' +
         ' <div class="panel-heading"><h3 class="panel-title">\'' + chatRoomName + '\'</h3></div>' +
@@ -63,7 +63,7 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
     };
 
     var _closeJoinDialog = function () {
-        $('#joinModal').modal('hide');
+        $('#popup').modal('hide');
     };
 
     eventBus.subscribe(Events.NICKNAME_VALIDATED, _checkValidation);

@@ -3,7 +3,7 @@ var ChatRoomService = function () {
     var allChatRooms = [];
 
     var _addChatRoom = function (chatRoomName) {
-        var chatRoomName = chatRoomName.trim();
+        chatRoomName = chatRoomName.trim();
         if (chatRoomName.length > 2 && chatRoomName.length <= 50) {
             var item = localStorage.getItem(chatRoomName);
             if (item) {
@@ -41,19 +41,13 @@ var ChatRoomService = function () {
     var _validateNickname = function (chatRoomName, nickname) {
         var chatRoom = JSON.parse(localStorage.getItem(chatRoomName));
         var users = chatRoom.users;
-        var foundUser;
 
         var isValid;
         if (users) {
             if (jQuery.inArray(nickname, users) != -1) {
                 return false;
             }
-            else if (nickname.length < 1) {
-                isValid = false
-            }
-            else {
-                isValid = true;
-            }
+            else isValid = nickname.length >= 1;
         } else {
             isValid = true;
         }
@@ -83,7 +77,7 @@ var ChatRoomService = function () {
         var users = chatRoom.users;
 
         var leavingUserIndex = jQuery.inArray(nickname, users);
-        users.splice(leavingUserIndex,1);
+        users.splice(leavingUserIndex, 1);
 
         chatRoom.users = users;
         localStorage.setItem(chatRoomName, JSON.stringify(chatRoom));
@@ -92,6 +86,7 @@ var ChatRoomService = function () {
     };
 
     var _postMessage = function (chatRoomName, message) {
+        message.content = message.content.replace('<', '&lt;').replace('>', '&gt;').replace(/\r?\n/g, '<br />');
         var chatRoom = JSON.parse(localStorage.getItem(chatRoomName));
         var messages = chatRoom.messages;
 

@@ -10,22 +10,15 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
             var allChatRooms = chatRoomService.readAllChatRooms();
             resultingEvent = new ChatRoomListUpdatedEvent(allChatRooms);
         } catch (err) {
-            var allChatRooms = chatRoomService.readAllChatRooms();
-            var resultingEvent = new ChatRoomCannotBeCreatedEvent("Server error: " + err, allChatRooms);
+            resultingEvent = new ChatRoomCannotBeCreatedEvent("Server error: " + err);
         }
 
         eventBus.emit(resultingEvent.toMessage());
     };
 
     var _onReadChatRoom = function () {
-        var resultingEvent;
-        var allChatRooms;
-        try {
-            allChatRooms = chatRoomService.readAllChatRooms();
-            resultingEvent = new ChatRoomListUpdatedEvent(allChatRooms);
-        } catch (err) {
-            var resultingEvent = new TaskCannotBeCreatedEvent("Server error: " + err, allChatRooms);
-        }
+        var allChatRooms = chatRoomService.readAllChatRooms();
+        var resultingEvent = new ChatRoomListUpdatedEvent(allChatRooms);
 
         eventBus.emit(resultingEvent.toMessage());
     };

@@ -1,7 +1,7 @@
 var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, chatRoom, user) {
     var chatRoomWidgetItemComponentId = rootDivId + "_chatRoomWidgetItem_" + chatRoom.id + "_" + user;
     var widgetItemMessageList = chatRoomWidgetItemComponentId + "_messageList";
-    var widgetItemSendButtonId = chatRoomWidgetItemComponentId + "_postButton";
+    var widgetItemPostButtonId = chatRoomWidgetItemComponentId + "_postButton";
     var widgetItemLeaveButtonId = chatRoomWidgetItemComponentId + "_leaveButton";
     var widgetItemMessageTextAreaId = chatRoomWidgetItemComponentId + "_messageTextArea";
     var widgetItemUserNumInfoId = chatRoomWidgetItemComponentId + "_userNumInfo";
@@ -18,8 +18,8 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
         '<ul id=' + widgetItemMessageList + ' class="list-group" style="height:300px"></ul>' +
         '</div><div class="panel-footer">' +
         '<div class="input-group">' +
-        '<textarea id=' + widgetItemMessageTextAreaId + ' class="form-control" placeholder="Message" style="max-width: 310"></textarea>' +
-        '<span class="input-group-btn"> <button disabled id=' + widgetItemSendButtonId + ' class="btn btn-info" type="submit">Post</button>' +
+        '<textarea id=' + widgetItemMessageTextAreaId + ' class="form-control" placeholder="Message" style="max-width: 310px"></textarea>' +
+        '<span class="input-group-btn"> <button disabled id=' + widgetItemPostButtonId + ' class="btn btn-info" type="submit">Post</button>' +
         '</span></div></div></div></div>'
     );
     _populateMessages();
@@ -27,8 +27,6 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
     function _renderMessage(messageToPost, username, date) {
         var message = "[" + formatter.formatDate(date) + "] " + "<strong>" + username + "</strong>" + " said: " + messageToPost;
         $('#' + widgetItemMessageList).append('<li class="list-group-item">' + message + '</li>');
-
-        //todo: FINISH
     }
 
     function _postMessage(evt) {
@@ -37,15 +35,15 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
         var author = messageToPost.user;
         var messageDate = messageToPost.date;
         $('#' + widgetItemMessageTextAreaId).val('');
-        $("#" + widgetItemSendButtonId).prop("disabled", true);
+        $("#" + widgetItemPostButtonId).prop("disabled", true);
         _renderMessage(messageToPost.content, author, messageDate);
     }
 
-    $("#" + widgetItemSendButtonId).on('click', function () {
-        var content = $("#" + widgetItemMessageTextAreaId).val().replace('<', '&lt;').replace('>', '&gt;').replace(/\r?\n/g, '<br />');
+    $("#" + widgetItemPostButtonId).on('click', function () {
+        var content = $("#" + widgetItemMessageTextAreaId).val();
         var message = new MessageDto(user, content, new Date());
         var commandData = {"chatRoomName": chatRoomName, "message": message};
-       var command = new PostMessageCommand(commandData);
+        var command = new PostMessageCommand(commandData);
         commandBus.emit(command.toMessage());
         //todo: MODIFY
     });
@@ -59,7 +57,7 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
     $("#" + widgetItemMessageTextAreaId).on("input", function () {
         var message = $("#" + widgetItemMessageTextAreaId).val().trim();
         var isDisabled = message.length < 1;
-        $("#" + widgetItemSendButtonId).prop("disabled", isDisabled);
+        $("#" + widgetItemPostButtonId).prop("disabled", isDisabled);
     });
 
     function _populateMessages() {

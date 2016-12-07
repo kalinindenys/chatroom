@@ -17,9 +17,9 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
     var inputElement = $("#" + inputId);
     var _cleanComponent = function () {
         inputElement.val("");
-    }
+    };
 
-    var _onCreateChatRoom = function (evt) {
+    var _onCreateChatRoom = function () {
         var chatRoomName = inputElement.val().trim();
 
         var command = new CreateChatRoomCommand(chatRoomName);
@@ -29,10 +29,8 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
 
     var _onError = function (evt) {
         var reason = evt.data.reason;
-        var chatRoomList = evt.data.chatRoomList;
-
         $("#" + validationId).html(reason);
-    }
+    };
 
     $("#" + createChatRoomBtnId).click(_onCreateChatRoom);
 

@@ -78,13 +78,12 @@ var MessagePostedEvent = function (chatRoomDto) {
     return {"toMessage": _toMessage};
 };
 
-var ChatRoomCannotBeCreatedEvent = function (reason, chatRoomList) {
+var ChatRoomCannotBeCreatedEvent = function (reason) {
 
     var _toMessage = function () {
 
         var data = {
-            "reason": reason,
-            "chatRoomList": chatRoomList
+            "reason": reason
         };
 
         return new Message(Events.CHAT_ROOM_CANNOT_BE_CREATED, data);
@@ -93,4 +92,4 @@ var ChatRoomCannotBeCreatedEvent = function (reason, chatRoomList) {
     return {"toMessage": _toMessage};
 
 
-}
+};

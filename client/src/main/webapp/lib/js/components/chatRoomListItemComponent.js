@@ -17,14 +17,14 @@ var ChatRoomListItemComponent = function (eventBus, commandBus, rootDivId, chatR
 
     $(joinButton).on("click", function () {
         new JoinDialogComponent(commandBus, eventBus, rootDivId, chatRoom);
-        $('#joinModal').modal();
+        $('#popup').modal();
     });
 
-    chatRoomListItem.mouseover(function (event) {
+    chatRoomListItem.mouseover(function () {
         joinButton.show();
     });
 
-    chatRoomListItem.mouseout(function (event) {
+    chatRoomListItem.mouseout(function () {
         joinButton.hide();
     });
 

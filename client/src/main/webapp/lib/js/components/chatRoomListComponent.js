@@ -19,12 +19,10 @@ var ChatRoomListComponent = function (eventBus, commandBus, rootDivId) {
         containerElement.html("");
 
         if (chatRooms && chatRooms.length > 0) {
-
             containerElement.append('<ul class="list-group">');
 
             for (var chatRoomIndex = 0; chatRoomIndex < chatRooms.length; chatRoomIndex++) {
                 var aChatRoom = chatRooms[chatRoomIndex];
-                var name = aChatRoom.name;
                 new ChatRoomListItemComponent(eventBus, commandBus, chatRoomListContainerId, aChatRoom);
             }
 

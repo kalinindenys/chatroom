@@ -32,9 +32,8 @@ var PostMessageCommand = function (commandData) {
 };
 
 function createMessage(type, data) {
-    var _toMessage = function () {
+    return function () {
         return new Message(type, data);
     };
-    return _toMessage;
 }
 
