@@ -7,7 +7,7 @@ var ChatRoomService = function (storage) {
             if (item) {
                 throw new Error("Chat room already exist")
             } else {
-                var length = localStorage.length;
+                var length = storage.getChatRoomNumber();
                 var users = [];
                 var messages = [];
                 var chatroomDto = new ChatroomDto(length, chatRoomName, new Date(), users, messages);

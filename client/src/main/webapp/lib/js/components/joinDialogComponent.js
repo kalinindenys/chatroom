@@ -66,7 +66,7 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
         $('#popup').modal('hide');
     };
 
-    function _initialize(){
+    function _initialize() {
         $('#popup').modal();
     }
 
@@ -74,6 +74,6 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
     eventBus.subscribe(Events.CHAT_ROOM_OPENED, _closeJoinDialog);
 
     return {
-        "init": _initialize()
+        "init": _initialize
     }
 };
