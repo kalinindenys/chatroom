@@ -6,13 +6,14 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
     var widgetItemMessageTextAreaId = chatRoomWidgetItemComponentId + "_messageTextArea";
     var widgetItemUserNumInfoId = chatRoomWidgetItemComponentId + "_userNumInfo";
     var chatRoomName = chatRoom.name;
-    var userNum = chatRoom.users.length;
+    var userNumber = chatRoom.users.length;
+    var formatter = new DateFormatter();
 
     $("#" + rootDivId).append('<div class="widget-chat-room" id=' + chatRoomWidgetItemComponentId + '><div class="panel panel-info">' +
         '<div class="panel-heading" style="height:  70px">' +
         '<h1 class="panel-title">' + chatRoomName + '</h1>' +
         '<button id=' + widgetItemLeaveButtonId + ' class="btn btn-info" type="button" style="float: right">Leave</button>' +
-        '<label id=' + widgetItemUserNumInfoId + '>Users: ' + userNum + '</label></div > ' +
+        '<label id=' + widgetItemUserNumInfoId + '>Users: ' + userNumber + '</label></div > ' +
         '<div class="panel-body" style="overflow-y: scroll">' +
         '<ul id=' + widgetItemMessageList + ' class="list-group" style="height:300px"></ul>' +
         '</div><div class="panel-footer">' +
@@ -23,34 +24,35 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
     );
     _populateMessages();
 
-    function _postMessage(messageToPost, username) {
-        var message = "[" + _formatDate() + "] " + "<strong>" + username + "</strong>" + " said: " + messageToPost;
+    function _renderMessage(messageToPost, username, date) {
+        var message = "[" + formatter.formatDate(date) + "] " + "<strong>" + username + "</strong>" + " said: " + messageToPost;
         $('#' + widgetItemMessageList).append('<li class="list-group-item">' + message + '</li>');
 
         //todo: FINISH
     }
 
-    function _postMessageByEvent(evt) {
+    function _postMessage(evt) {
         var messages = evt.data.chatRoom.messages;
         var messageToPost = messages[messages.length - 1];
         var author = messageToPost.user;
+        var messageDate = messageToPost.date;
         $('#' + widgetItemMessageTextAreaId).val('');
         $("#" + widgetItemSendButtonId).prop("disabled", true);
-        _postMessage(messageToPost.content, author)
+        _renderMessage(messageToPost.content, author, messageDate);
     }
 
     $("#" + widgetItemSendButtonId).on('click', function () {
         var content = $("#" + widgetItemMessageTextAreaId).val().replace('<', '&lt;').replace('>', '&gt;').replace(/\r?\n/g, '<br />');
         var message = new MessageDto(user, content, new Date());
         var commandData = {"chatRoomName": chatRoomName, "message": message};
-        command = new PostMessageCommand(commandData);
+       var command = new PostMessageCommand(commandData);
         commandBus.emit(command.toMessage());
         //todo: MODIFY
     });
 
     $("#" + widgetItemLeaveButtonId).on('click', function () {
         var commandData = {"chatRoomName": chatRoomName, "nickname": user};
-        command = new LeaveChatRoomCommand(commandData);
+        var command = new LeaveChatRoomCommand(commandData);
         commandBus.emit(command.toMessage());
     });
 
@@ -60,24 +62,14 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
         $("#" + widgetItemSendButtonId).prop("disabled", isDisabled);
     });
 
-    function _formatDate() {
-        var chatRoomDate = new Date();
-        var day = chatRoomDate.getDate();
-        var month = chatRoomDate.getMonth() + 1;
-        var year = chatRoomDate.getFullYear();
-        var hours = chatRoomDate.getHours();
-        var minutes = ("0" + chatRoomDate.getMinutes()).slice(-2);
-        return day + "-" + month + "-" + year + " " + hours + ":" + minutes;
-    }
-
     function _populateMessages() {
         for (var i = 0; i < chatRoom.messages.length; i++) {
             var message = chatRoom.messages[i];
-            _postMessage(message.content, message.user);
+            _renderMessage(message.content, message.user, message.date);
         }
     }
 
-    function _updateUserNum(evt) {
+    function _updateUserNumber(evt) {
         var updatedChatRoomName = evt.data.chatRoomName;
         var users = evt.data.users;
         if (updatedChatRoomName === chatRoomName) {
@@ -88,8 +80,8 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
         }
     }
 
-    eventBus.subscribe(Events.UPDATE_USER_NUMBER, _updateUserNum);
-    eventBus.subscribe(Events.MESSAGE_POSTED, _postMessageByEvent);
+    eventBus.subscribe(Events.USER_NUMBER_UPDATED, _updateUserNumber);
+    eventBus.subscribe(Events.MESSAGE_POSTED, _postMessage);
 
 
 };

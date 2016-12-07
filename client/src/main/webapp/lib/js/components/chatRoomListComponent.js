@@ -37,10 +37,5 @@ var ChatRoomListComponent = function (eventBus, commandBus, rootDivId) {
 
     };
 
-    var _onError = function (evt) {
-        _renderChatRooms(evt.data.chatRoomList);
-    };
-
     eventBus.subscribe(Events.CHAT_ROOM_LIST_UPDATED, _onListUpdated);
-    eventBus.subscribe(Events.CHAT_ROOM_CANNOT_BE_CREATED, _onError)
 };

@@ -1,7 +1,7 @@
 var ChatRoomListItemComponent = function (eventBus, commandBus, rootDivId, chatRoom) {
     var chatRoomListItemComponentId = rootDivId + "_chatRoomListItemContainer_" + chatRoom.id;
-
-    var date = _formatDate();
+    var formatter = new DateFormatter();
+    var date = formatter.formatDate(chatRoom.date);
     var chatRoomName = chatRoom.name;
 
     $("#" + rootDivId).append('<li id=' + chatRoomListItemComponentId + ' class="list-group-item" style="height: 70px">' +
@@ -16,34 +16,16 @@ var ChatRoomListItemComponent = function (eventBus, commandBus, rootDivId, chatR
     joinButton.hide();
 
     $(joinButton).on("click", function () {
-        new JoinDialogComponent(commandBus,eventBus, rootDivId, chatRoom);
-        $('#myModal').modal();
+        new JoinDialogComponent(commandBus, eventBus, rootDivId, chatRoom);
+        $('#joinModal').modal();
     });
 
     chatRoomListItem.mouseover(function (event) {
-        _changeButtonVisibility(true);
+        joinButton.show();
     });
 
     chatRoomListItem.mouseout(function (event) {
-        _changeButtonVisibility(false);
+        joinButton.hide();
     });
-
-    var _changeButtonVisibility = function (isMouseOver) {
-        if (isMouseOver) {
-            joinButton.show();
-        } else {
-            joinButton.hide();
-        }
-    };
-
-    function _formatDate() {
-        var chatRoomDate = new Date(chatRoom.date);
-        var day = chatRoomDate.getDate();
-        var month = chatRoomDate.getMonth() + 1;
-        var year = chatRoomDate.getFullYear();
-        var hours = chatRoomDate.getHours();
-        var minutes = ("0" + chatRoomDate.getMinutes()).slice(-2);
-        return day + "-" + month + "-" + year + " " + hours + ":" + minutes;
-    }
 
 };

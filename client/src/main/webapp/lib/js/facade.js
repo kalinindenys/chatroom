@@ -74,7 +74,7 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
     _onReadChatRoom();
 
     commandBus.subscribe(Commands.CREATE_CHAT_ROOM, _onCreateChatRoom);
-    commandBus.subscribe(Commands.JOIN_VALIDATION, _onJoinValidation);
+    commandBus.subscribe(Commands.VALIDATE_NICKNAME, _onJoinValidation);
     commandBus.subscribe(Commands.JOIN_CHAT_ROOM, _onJoinChatRoom);
     commandBus.subscribe(Commands.LEAVE_CHAT_ROOM, _onLeaveChatRoom);
     commandBus.subscribe(Commands.POST_MESSAGE, _onPostMessage);

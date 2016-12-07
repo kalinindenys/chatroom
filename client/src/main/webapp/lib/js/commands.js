@@ -1,6 +1,6 @@
 var Commands = {
     CREATE_CHAT_ROOM: "Create chat room",
-    JOIN_VALIDATION: "Join validation",
+    VALIDATE_NICKNAME: "Validate nickname",
     JOIN_CHAT_ROOM: "Join chat room",
     LEAVE_CHAT_ROOM: "Leave chat room",
     POST_MESSAGE: "Post message"
@@ -12,7 +12,7 @@ var CreateChatRoomCommand = function (chatroomDto) {
 };
 
 var JoinValidationCommand = function (commandData) {
-    var _toMessage = createMessage(Commands.JOIN_VALIDATION, commandData);
+    var _toMessage = createMessage(Commands.VALIDATE_NICKNAME, commandData);
     return {"toMessage": _toMessage};
 };
 

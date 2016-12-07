@@ -22,7 +22,7 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
     var _onCreateChatRoom = function (evt) {
         var chatRoomName = inputElement.val().trim();
 
-        command = new CreateChatRoomCommand(chatRoomName);
+        var command = new CreateChatRoomCommand(chatRoomName);
         commandBus.emit(command.toMessage());
 
     };

@@ -10,6 +10,6 @@ var ChatRoomWidgetDirector = function (eventBus, commandBus, rootDivId) {
 
     };
 
-    eventBus.subscribe(Events.OPEN_CHAT_ROOM, _showChatRoom);
+    eventBus.subscribe(Events.CHAT_ROOM_OPENED, _showChatRoom);
 
 };
