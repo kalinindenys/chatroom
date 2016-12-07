@@ -16,8 +16,8 @@ var ChatRoomListItemComponent = function (eventBus, commandBus, rootDivId, chatR
     joinButton.hide();
 
     $(joinButton).on("click", function () {
-        new JoinDialogComponent(commandBus, eventBus, rootDivId, chatRoom);
-        $('#popup').modal();
+        var joinDialog = new JoinDialogComponent(commandBus, eventBus, rootDivId, chatRoom);
+        joinDialog.init();
     });
 
     chatRoomListItem.mouseover(function () {

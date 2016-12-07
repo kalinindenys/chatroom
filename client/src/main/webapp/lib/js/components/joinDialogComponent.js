@@ -66,10 +66,14 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
         $('#popup').modal('hide');
     };
 
+    function _initialize(){
+        $('#popup').modal();
+    }
+
     eventBus.subscribe(Events.NICKNAME_VALIDATED, _checkValidation);
     eventBus.subscribe(Events.CHAT_ROOM_OPENED, _closeJoinDialog);
 
-    /*return {
-        "init": new JoinDialogComponent(commandBus, eventBus, rootDivId, chatRoom)
-    }*/
+    return {
+        "init": _initialize()
+    }
 };
