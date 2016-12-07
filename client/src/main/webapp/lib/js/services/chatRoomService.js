@@ -1,11 +1,9 @@
-var ChatRoomService = function () {
-
-    var allChatRooms = [];
+var ChatRoomService = function (storage) {
 
     var _addChatRoom = function (chatRoomName) {
         chatRoomName = chatRoomName.trim();
         if (chatRoomName.length > 2 && chatRoomName.length <= 50) {
-            var item = localStorage.getItem(chatRoomName);
+            var item = storage.getChatRoom();
             if (item) {
                 throw new Error("Chat room already exist")
             } else {
@@ -13,7 +11,7 @@ var ChatRoomService = function () {
                 var users = [];
                 var messages = [];
                 var chatroomDto = new ChatroomDto(length, chatRoomName, new Date(), users, messages);
-                localStorage.setItem(chatRoomName, JSON.stringify(chatroomDto))
+                storage.saveChatRoom(chatroomDto);
             }
         } else {
             throw new Error("Empty chat room cannot be added")
@@ -21,10 +19,7 @@ var ChatRoomService = function () {
     };
 
     var _readAllChatRooms = function () {
-        allChatRooms = [];
-        for (var key in localStorage) {
-            allChatRooms.push(JSON.parse(localStorage.getItem(key)));
-        }
+        var allChatRooms = storage.getAllChatRooms();
         allChatRooms.sort(function (a, b) {
             return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
@@ -39,7 +34,7 @@ var ChatRoomService = function () {
     };
 
     var _validateNickname = function (chatRoomName, nickname) {
-        var chatRoom = JSON.parse(localStorage.getItem(chatRoomName));
+        var chatRoom = storage.getChatRoom(chatRoomName);
         var users = chatRoom.users;
 
         var isValid;
@@ -57,7 +52,7 @@ var ChatRoomService = function () {
     };
 
     var _joinChatRoom = function (chatRoomName, nickname) {
-        var chatRoom = JSON.parse(localStorage.getItem(chatRoomName));
+        var chatRoom = storage.getChatRoom(chatRoomName);
         var users = chatRoom.users;
 
         if (!(users === undefined)) {
@@ -66,28 +61,28 @@ var ChatRoomService = function () {
             users = nickname;
         }
         chatRoom.users = users;
-        localStorage.setItem(chatRoomName, JSON.stringify(chatRoom));
+        storage.saveChatRoom(chatRoom);
         return chatRoom;
         //todo: CHECK ERRORS
 
     };
 
     var _leaveChatRoom = function (chatRoomName, nickname) {
-        var chatRoom = JSON.parse(localStorage.getItem(chatRoomName));
+        var chatRoom = storage.getChatRoom(chatRoomName);
         var users = chatRoom.users;
 
         var leavingUserIndex = jQuery.inArray(nickname, users);
         users.splice(leavingUserIndex, 1);
 
         chatRoom.users = users;
-        localStorage.setItem(chatRoomName, JSON.stringify(chatRoom));
+        storage.saveChatRoom(chatRoom);
         return chatRoom;
 
     };
 
     var _postMessage = function (chatRoomName, message) {
         message.content = message.content.replace('<', '&lt;').replace('>', '&gt;').replace(/\r?\n/g, '<br />');
-        var chatRoom = JSON.parse(localStorage.getItem(chatRoomName));
+        var chatRoom = storage.getChatRoom(chatRoomName);
         var messages = chatRoom.messages;
 
         if (!(messages === undefined)) {
@@ -96,7 +91,7 @@ var ChatRoomService = function () {
             messages = message;
         }
         chatRoom.messages = messages;
-        localStorage.setItem(chatRoomName, JSON.stringify(chatRoom));
+        storage.saveChatRoom(chatRoom);
         return chatRoom;
 
     };
