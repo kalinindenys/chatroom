@@ -16,28 +16,20 @@
         existingChatroom = chatroomInMemoryStorage.save(existingChatroom);
     });
 
-    describe("findById", function () {
-
-        it("Should return existing chatroom", function () {
-            var actualChatroom = DTOConverter.toChatroomEntity(chatroomService.findById(existingChatroom.id));
-            unitjs.assert.deepEqual(actualChatroom, existingChatroom);
-        });
-
-    });
-
-    describe("findByName", function () {
-
-        it("Should return existing chatroom", function () {
-            var actualChatroom = DTOConverter.toChatroomEntity(chatroomService.findByName(existingChatroom.name));
-            unitjs.assert.deepEqual(actualChatroom, existingChatroom);
-        })
-
-    });
-
     describe("findAll", function () {
 
         it("Should return all stored chatrooms", function () {
-            unitjs.assert.deepEqual(DTOConverter.toChatroomEntities(chatroomService.findAll()), chatroomInMemoryStorage.findAll());
+            var actualChatrooms = DTOConverter.toChatroomEntities(chatroomService.findAll());
+            var expectedChatrooms = chatroomInMemoryStorage.findAll();
+            unitjs.assert.deepEqual(actualChatrooms, expectedChatrooms);
+        });
+
+        it("Should return empty array of chatrooms", function () {
+            var emptyStorage = new ChatroomInMemoryStorage();
+            chatroomService = new ChatroomService(emptyStorage);
+
+            var chatrooms = DTOConverter.toChatroomEntities(chatroomService.findAll());
+            unitjs.value(chatrooms.length).is(0);
         });
 
     });
@@ -46,9 +38,11 @@
 
         it("Should create chatroom", function () {
             var chatroomName = " chatroomName ";
-            chatroomService.createChatroom(chatroomName);
+            var updatedChatroomList = chatroomService.createChatroom(chatroomName);
 
-            var chatroom = chatroomService.findByName(chatroomName.trim());
+            var chatroom = updatedChatroomList.find(function (chatroom) {
+                return chatroom.getName() === chatroomName.trim();
+            });
 
             unitjs.value(chatroom.getId());
             unitjs.string(chatroom.getName()).is(chatroomName.trim());
@@ -75,49 +69,72 @@
                 .throw("Chatroom name length is less than 3 or more than 50 symbols");
         });
 
+        it("Should throw exception if chatroom name is not string", function () {
+            chatroomService.createChatroom.bind(null, null).should.throw("Chatroom name must be presented as string");
+        });
+
     });
 
     describe("isValidNickname", function () {
 
-        it("Should return true", function () {
+        it("Should return true if nickname with non zero length and not occupied", function () {
             var nicknameValidationInfo = new JoinChatroomInfo("Not occupied", existingChatroom.id);
             unitjs.bool(chatroomService.isValidNickname(nicknameValidationInfo)).isTrue();
         });
 
-        it("Should return false. Nickname with zero length", function () {
+        it("Should return false if nickname with zero length", function () {
             var nicknameValidationInfo = new JoinChatroomInfo(" ", existingChatroom.id);
             unitjs.bool(chatroomService.isValidNickname(nicknameValidationInfo)).isFalse();
         });
 
-        it("Should return false. Nickname occupied", function () {
+        it("Should return false if nickname occupied", function () {
             var nicknameValidationInfo = new JoinChatroomInfo(joinedGuestNickname, existingChatroom.id);
             unitjs.bool(chatroomService.isValidNickname(nicknameValidationInfo)).isFalse();
+        });
+
+        it("Should throw exception if chatroom with specified id not exist", function () {
+            var nicknameValidationInfo = new JoinChatroomInfo("who is who", null);
+            chatroomService.isValidNickname.bind(null, nicknameValidationInfo).should
+                .throw("Chatroom with specified id not exist");
         });
 
     });
 
     describe("join", function () {
 
-        it("Should add guest to chatroom", function () {
+        it("Should add guest to chatroom if nickname is valid", function () {
             var nickname = "Not occupied";
             var joinChatroomInfo = new JoinChatroomInfo(nickname, existingChatroom.id);
             var chatroomSession = chatroomService.join(joinChatroomInfo);
+            var chatroomEntity = DTOConverter.toChatroomEntity(chatroomSession.getChatroom());
             existingChatroom.guests.push(nickname);
 
             unitjs.string(chatroomSession.getNickname()).is(nickname);
-            unitjs.assert.deepEqual(DTOConverter.toChatroomEntity(chatroomSession.getChatroom()), existingChatroom);
+            unitjs.assert.deepEqual(chatroomEntity, existingChatroom);
+        });
+
+        it("Should throw exception if nickname is invalid", function () {
+            var invalidNickname = "";
+            var joinChatroomInfo = new JoinChatroomInfo(invalidNickname, existingChatroom.id);
+            chatroomService.join.bind(null, joinChatroomInfo).should.throw("Specified nickname is not valid");
         });
 
     });
 
     describe("leave", function () {
 
-        it("Should remove guest from chatroom", function () {
+        it("Should remove existing guest from chatroom", function () {
             var joinChatroomInfo = new JoinChatroomInfo(joinedGuestNickname, existingChatroom.id);
             var updatedChatroomEntity = DTOConverter.toChatroomEntity(chatroomService.leave(joinChatroomInfo));
             existingChatroom.guests.splice(existingChatroom.guests.indexOf(joinedGuestNickname), 1);
 
             unitjs.assert.deepEqual(updatedChatroomEntity, existingChatroom);
+        });
+
+
+        it("Should throw exception if specified guest is not a member of chatroom", function () {
+            var joinChatroomInfo = new JoinChatroomInfo("I am not in chatroom", existingChatroom.id);
+            chatroomService.leave.bind(null, joinChatroomInfo).should.throw("Trying to remove not existing guest");
         });
 
     });

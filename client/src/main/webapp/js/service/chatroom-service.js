@@ -1,23 +1,11 @@
 var ChatroomService = function (chatroomStorage) {
 
-    var findById = function (chatroomId) {
-        var chatrooms = chatroomStorage.findAll();
-
-        for (var i = 0; i < chatrooms.length; i++) {
-            if (chatrooms[i].id === chatroomId) {
-                return DTOConverter.toChatroomDTO(chatrooms[i]);
-            }
-        }
-    };
-
     var findByName = function (chatroomName) {
         var chatrooms = chatroomStorage.findAll();
 
-        var chatroom = chatrooms.find(function (chatroom) {
+        return chatrooms.find(function (chatroom) {
             return chatroom.name === chatroomName;
         });
-
-        return chatroom ? DTOConverter.toChatroomDTO(chatroom) : chatroom;
     };
 
     var findAll = function () {
@@ -25,6 +13,10 @@ var ChatroomService = function (chatroomStorage) {
     };
 
     var createChatroom = function (chatroomName) {
+        if (typeof chatroomName !== "string") {
+            throw new Error("Chatroom name must be presented as string");
+        }
+
         chatroomName = chatroomName.trim();
 
         if (chatroomName.length < 3 || chatroomName.length > 50) {
@@ -41,50 +33,51 @@ var ChatroomService = function (chatroomStorage) {
     };
 
     var join = function (joinChatroomInfo) {
+        if (!isValidNickname(joinChatroomInfo)) {
+            throw new Error("Specified nickname is not valid");
+        }
+
         var chatroomId = joinChatroomInfo.getChatroomId();
         var nickname = joinChatroomInfo.getNickname().trim();
+        var chatroom = chatroomStorage.findOne(chatroomId);
 
-        var chatroomDTO = findById(chatroomId);
-        chatroomDTO.getGuests().push(nickname);
+        chatroom.guests.push(nickname);
 
-        var chatroomEntity = chatroomStorage.save(DTOConverter.toChatroomEntity(chatroomDTO));
-
+        var chatroomEntity = chatroomStorage.save(chatroom);
         return new ChatroomSession(nickname, DTOConverter.toChatroomDTO(chatroomEntity));
     };
 
     var leave = function (joinChatroomInfo) {
-        var chatroom = findById(joinChatroomInfo.getChatroomId());
+        var chatroom = chatroomStorage.findOne(joinChatroomInfo.getChatroomId());
         var nickname = joinChatroomInfo.getNickname();
 
-        var guestIndexForRemove = chatroom.getGuests().indexOf(nickname);
+        var guestIndexForRemove = chatroom.guests.indexOf(nickname);
 
         if (guestIndexForRemove === -1) {
-            throw new Error("Illegal state. Trying to remove not existing nickname");
+            throw new Error("Trying to remove not existing guest");
         }
-        chatroom.getGuests().splice(guestIndexForRemove, 1);
+        chatroom.guests.splice(guestIndexForRemove, 1);
 
-        var chatroomEntity = DTOConverter.toChatroomEntity(chatroom);
-        chatroomEntity = chatroomStorage.save(chatroomEntity);
-
-        return DTOConverter.toChatroomDTO(chatroomEntity);
+        chatroomStorage.save(chatroom);
+        return DTOConverter.toChatroomDTO(chatroom);
     };
 
     var isValidNickname = function (nicknameValidationInfo) {
         var nickname = nicknameValidationInfo.getNickname().trim();
         var chatroomId = nicknameValidationInfo.getChatroomId();
 
-        var chatroom = findById(chatroomId);
+        var chatroom = chatroomStorage.findOne(chatroomId);
 
         if (!chatroom) {
-            throw new Error("Illegal state");
+            throw new Error("Chatroom with specified id not exist");
         }
 
         if (nickname.length === 0) {
             return false;
         }
 
-        for (var i = 0; i < chatroom.getGuests().length; i++) {
-            if (chatroom.getGuests()[i] === nickname) {
+        for (var i = 0; i < chatroom.guests.length; i++) {
+            if (chatroom.guests[i] === nickname) {
                 return false;
             }
         }
@@ -94,8 +87,6 @@ var ChatroomService = function (chatroomStorage) {
 
     return {
         findAll: findAll,
-        findById: findById,
-        findByName: findByName,
         createChatroom: createChatroom,
         join: join,
         leave: leave,
