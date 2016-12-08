@@ -26,7 +26,9 @@ var ChatRoomService = function (storage) {
         }
     };
 
-    var _validateNickname = function (chatRoomName, nickname) {
+    var _validateNickname = function (chatRoomMember) {
+        var chatRoomName = chatRoomMember.chatRoomName;
+        var nickname = chatRoomMember.user;
         var chatRoom = storage.getChatRoom(chatRoomName);
         var users = chatRoom.users;
 
@@ -44,7 +46,9 @@ var ChatRoomService = function (storage) {
         //todo: CLEAN
     };
 
-    var _joinChatRoom = function (chatRoomName, nickname) {
+    var _joinChatRoom = function (chatRoomMember) {
+        var chatRoomName = chatRoomMember.chatRoomName;
+        var nickname = chatRoomMember.user;
         var chatRoom = storage.getChatRoom(chatRoomName);
         var users = chatRoom.users;
 
@@ -60,7 +64,9 @@ var ChatRoomService = function (storage) {
 
     };
 
-    var _leaveChatRoom = function (chatRoomName, nickname) {
+    var _leaveChatRoom = function (chatRoomMember) {
+        var chatRoomName = chatRoomMember.chatRoomName;
+        var nickname = chatRoomMember.user;
         var chatRoom = storage.getChatRoom(chatRoomName);
         var users = chatRoom.users;
 

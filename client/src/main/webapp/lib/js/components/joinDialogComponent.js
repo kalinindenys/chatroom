@@ -30,8 +30,8 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
     joinInput.on("input", function () {
         var nickname = joinInput.val().trim();
         if (nickname.length > 1) {
-            var commandData = {"chatRoomName": chatRoomName, "nickname": nickname};
-            var command = new JoinValidationCommand(commandData);
+            var chatRoomMember = new ChatRoomMember(chatRoomName, nickname);
+            var command = new JoinValidationCommand(chatRoomMember);
             commandBus.emit(command.toMessage());
             //todo: CHECK NICKNAME
         }
@@ -43,8 +43,8 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
 
     enterButton.on("click", function () {
         var nickname = joinInput.val().trim();
-        var commandData = {"chatRoomName": chatRoomName, "nickname": nickname};
-        var command = new JoinChatRoomCommand(commandData);
+        var chatRoomMember = new ChatRoomMember(chatRoomName, nickname);
+        var command = new JoinChatRoomCommand(chatRoomMember);
         commandBus.emit(command.toMessage());
     });
 

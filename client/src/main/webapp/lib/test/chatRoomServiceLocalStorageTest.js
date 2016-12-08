@@ -40,19 +40,23 @@ describe('chatRoomService tests with localStorage', function () {
     it('Testing validateNickname() method: ', function () {
         var chatRoomName = "chatRoom1";
         var validNickname = "user1_valid";
-        isValid = service.validateNickname(chatRoomName, validNickname);
+        var chatRoomMember = new ChatRoomMember(chatRoomName, validNickname);
+        isValid = service.validateNickname(chatRoomMember);
         unitjs.bool(isValid).isTrue();
 
-        var inValidNickname = "";
-        var isValid = service.validateNickname(chatRoomName, inValidNickname);
+        var invalidNickname = "";
+        chatRoomMember.user=invalidNickname;
+        var isValid = service.validateNickname(chatRoomMember);
         unitjs.bool(isValid).isFalse();
 
-        inValidNickname = "";
-        isValid = service.validateNickname(chatRoomName, inValidNickname);
+        invalidNickname = "            ";
+        chatRoomMember.user=invalidNickname;
+        isValid = service.validateNickname(chatRoomMember);
         unitjs.bool(isValid).isFalse();
 
-        inValidNickname = "user1";
-        isValid = service.validateNickname(chatRoomName, inValidNickname);
+        invalidNickname = "user1";
+        chatRoomMember.user=invalidNickname;
+        isValid = service.validateNickname(chatRoomMember);
         unitjs.bool(isValid).isFalse();
     });
 

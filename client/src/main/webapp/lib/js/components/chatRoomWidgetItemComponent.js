@@ -49,9 +49,9 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
     });
 
     $("#" + widgetItemLeaveButtonId).on('click', function () {
-        var commandData = {"chatRoomName": chatRoomName, "nickname": user};
-        var command = new LeaveChatRoomCommand(commandData);
-        commandBus.emit(command.toMessage());
+        var chatRoomMember = new ChatRoomMember(chatRoomName, user);
+        var confirmDialog = new LeaveConfirmationDialogComponent(commandBus, rootDivId, chatRoomMember);
+        confirmDialog.init();
     });
 
     $("#" + widgetItemMessageTextAreaId).on("input", function () {
@@ -73,7 +73,7 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
         if (updatedChatRoomName === chatRoomName) {
             $('#' + widgetItemUserNumInfoId).html('').append('Users: ' + users.length);
             if (jQuery.inArray(user, users) == -1) {
-                $('#' + chatRoomWidgetItemComponentId).html('');
+                $('#' + chatRoomWidgetItemComponentId).remove();
             }
         }
     }

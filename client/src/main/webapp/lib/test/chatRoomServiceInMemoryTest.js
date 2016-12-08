@@ -24,7 +24,8 @@ describe('chatRoomService tests with inMemoryStorage', function () {
         for (var i = 0; i < 5; i++) {
             var username = "user" + i;
             var chatRoomName = "chatRoom" + i;
-            var chatRoom = service.joinChatRoom(chatRoomName, username);
+            var chatRoomMember = new ChatRoomMember(chatRoomName, username);
+            var chatRoom = service.joinChatRoom(chatRoomMember);
             unitjs.object(chatRoom);
             unitjs.array(chatRoom.users).hasLength(1);
             unitjs.value(chatRoom.users[0]).isEqualTo(username);
@@ -36,26 +37,31 @@ describe('chatRoomService tests with inMemoryStorage', function () {
     it('Testing validateNickname() method: ', function () {
         var chatRoomName = "chatRoom1";
         var validNickname = "user1_valid";
-        isValid = service.validateNickname(chatRoomName, validNickname);
+        var chatRoomMember = new ChatRoomMember(chatRoomName, validNickname);
+        isValid = service.validateNickname(chatRoomMember);
         unitjs.bool(isValid).isTrue();
 
-        var inValidNickname = "";
-        var isValid = service.validateNickname(chatRoomName, inValidNickname);
+        var invalidNickname = "";
+        chatRoomMember.user=invalidNickname;
+        var isValid = service.validateNickname(chatRoomMember);
         unitjs.bool(isValid).isFalse();
 
-        inValidNickname = "";
-        isValid = service.validateNickname(chatRoomName, inValidNickname);
+        invalidNickname = "            ";
+        chatRoomMember.user=invalidNickname;
+        isValid = service.validateNickname(chatRoomMember);
         unitjs.bool(isValid).isFalse();
 
-        inValidNickname = "user1";
-        isValid = service.validateNickname(chatRoomName, inValidNickname);
+        invalidNickname = "user1";
+        chatRoomMember.user=invalidNickname;
+        isValid = service.validateNickname(chatRoomMember);
         unitjs.bool(isValid).isFalse();
     });
 
     it('Testing leaveChatRoom() method: ', function () {
         var chatRoomName = "chatRoom0";
         var nickname = "user0";
-        var chatRoom = service.leaveChatRoom(chatRoomName, nickname);
+        var chatRoomMember = new ChatRoomMember(chatRoomName, nickname);
+        var chatRoom = service.leaveChatRoom(chatRoomMember);
 
         unitjs.object(chatRoom);
         unitjs.array(chatRoom.users).hasLength(0);

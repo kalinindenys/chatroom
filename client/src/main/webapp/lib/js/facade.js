@@ -25,31 +25,30 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
     };
 
     var _onJoinValidation = function (command) {
-        var chatRoomName = command.data.chatRoomName;
-        var nickname = command.data.nickname;
+        var chatRoomMember = command.data;
         var resultingEvent;
-        var isValidated = chatRoomService.validateNickname(chatRoomName, nickname);
+        var isValidated = chatRoomService.validateNickname(chatRoomMember);
         resultingEvent = new JoinValidatedEvent(isValidated);
 
         eventBus.emit(resultingEvent.toMessage());
     };
 
     var _onJoinChatRoom = function (command) {
-        var chatRoomName = command.data.chatRoomName;
-        var nickname = command.data.nickname;
+        var chatRoomMember = command.data;
         var resultingEvent;
-        var chatRoom = chatRoomService.joinChatRoom(chatRoomName, nickname);
+        var chatRoom = chatRoomService.joinChatRoom(chatRoomMember);
         resultingEvent = new UpdateUserNumEvent(chatRoom.name, chatRoom.users);
         eventBus.emit(resultingEvent.toMessage());
+        var nickname = chatRoomMember.user;
         resultingEvent = new OpenChatRoomEvent(chatRoom, nickname);
         eventBus.emit(resultingEvent.toMessage());
     };
 
     var _onLeaveChatRoom = function (command) {
-        var chatRoomName = command.data.chatRoomName;
-        var nickname = command.data.nickname;
+        var chatRoomMember = command.data;
         var resultingEvent;
-        var chatRoom = chatRoomService.leaveChatRoom(chatRoomName, nickname);
+        var chatRoom = chatRoomService.leaveChatRoom(chatRoomMember);
+        var nickname = chatRoomMember.user;
         resultingEvent = new LeaveChatRoomEvent(chatRoom, nickname);
         eventBus.emit(resultingEvent.toMessage());
         resultingEvent = new UpdateUserNumEvent(chatRoom.name, chatRoom.users);
