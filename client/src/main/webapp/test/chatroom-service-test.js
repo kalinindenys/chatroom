@@ -16,6 +16,14 @@
         existingChatroom = chatroomInMemoryStorage.save(existingChatroom);
     });
 
+    describe("Construction of chatroom service", function () {
+
+        it("Should throw exception if chatroom strorage is not specified", function () {
+            ChatroomService.bind(null, null).should.throw("Chatroom storage must be specified");
+        });
+
+    });
+
     describe("findAll", function () {
 
         it("Should return all stored chatrooms", function () {
@@ -49,7 +57,6 @@
             unitjs.date(chatroom.getCreationDate());
             unitjs.array(chatroom.getGuests()).is([]);
             unitjs.array(chatroom.getMessages()).is([]);
-            //TODO also check createChatroom return value???
         });
 
         it("Should not create chat with existing name", function () {
@@ -69,7 +76,7 @@
                 .throw("Chatroom name length is less than 3 or more than 50 symbols");
         });
 
-        it("Should throw exception if chatroom name is not string", function () {
+        it("Should throw exception if chatroom name is not initialized", function () {
             chatroomService.createChatroom.bind(null, null).should.throw("Chatroom name must be presented as string");
         });
 
@@ -92,10 +99,16 @@
             unitjs.bool(chatroomService.isValidNickname(nicknameValidationInfo)).isFalse();
         });
 
-        it("Should throw exception if chatroom with specified id not exist", function () {
+        it("Should throw exception if chatroom with specified ID not exist", function () {
             var nicknameValidationInfo = new JoinChatroomInfo("who is who", null);
             chatroomService.isValidNickname.bind(null, nicknameValidationInfo).should
-                .throw("Chatroom with specified id not exist");
+                .throw("Chatroom with specified ID not exist");
+        });
+
+        it("Should throw exception if nickname is not initialized", function () {
+            var nicknameValidationInfo = new JoinChatroomInfo(null, existingChatroom.id);
+            chatroomService.isValidNickname.bind(null, nicknameValidationInfo).should
+                .throw("Nickname must be presented as string");
         });
 
     });

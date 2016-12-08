@@ -15,6 +15,14 @@
         existingChatroom = chatroomStorage.save(existingChatroom);
     });
 
+    describe("Construction of message service", function () {
+
+        it("Should throw exception if chatroom strorage is not specified", function () {
+            MessageService.bind(null, null).should.throw("Chatroom storage must be specified");
+        });
+
+    });
+
     describe("postMessage", function () {
 
         it("Should post message to specified chatroom", function () {
@@ -28,6 +36,13 @@
             unitjs.assert.deepEqual(DTOConverter.toMessageEntities(updatedChatroom.getMessages()), existingChatroom.messages);
         });
 
+        it("Should not post message if it is not specify chatroom ID", function () {
+            var message = new ChatroomMessageDTO(null, "guest nickname", "message content", new Date());
+            messageService.postMessage.bind(null, message).should.throw("Message must specify chatroom ID");
+        });
+
     });
+
+
 
 })();
