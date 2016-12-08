@@ -59,17 +59,17 @@
             unitjs.array(chatroom.getMessages()).is([]);
         });
 
-        it("Should not create chat with existing name", function () {
+        it("Should not create chat if exists another chat with same name", function () {
             chatroomService.createChatroom.bind(null, " " + existingChatroom.name + " ").should
                 .throw("Chatroom with specified name exists");
         });
 
-        it("Should not create chat with name length is less than 3 symbols", function () {
+        it("Should not create chat if specified name length is less than 3 symbols", function () {
             chatroomService.createChatroom.bind(null, "").should
                 .throw("Chatroom name length is less than 3 or more than 50 symbols");
         });
 
-        it("Should not create chat with name length is more than 50 symbols", function () {
+        it("Should not create chat if specified name length is more than 50 symbols", function () {
             var longName = new Array(52).join("a");
 
             chatroomService.createChatroom.bind(null, longName).should
@@ -84,22 +84,22 @@
 
     describe("isValidNickname", function () {
 
-        it("Should return true if nickname with non zero length and not occupied", function () {
+        it("Should return true if specified nickname with non zero length and not occupied", function () {
             var nicknameValidationInfo = new JoinChatroomInfo("Not occupied", existingChatroom.id);
             unitjs.bool(chatroomService.isValidNickname(nicknameValidationInfo)).isTrue();
         });
 
-        it("Should return false if nickname with zero length", function () {
+        it("Should return false if specified nickname with zero length", function () {
             var nicknameValidationInfo = new JoinChatroomInfo(" ", existingChatroom.id);
             unitjs.bool(chatroomService.isValidNickname(nicknameValidationInfo)).isFalse();
         });
 
-        it("Should return false if nickname occupied", function () {
+        it("Should return false if specified nickname occupied", function () {
             var nicknameValidationInfo = new JoinChatroomInfo(joinedGuestNickname, existingChatroom.id);
             unitjs.bool(chatroomService.isValidNickname(nicknameValidationInfo)).isFalse();
         });
 
-        it("Should throw exception if chatroom with specified ID not exist", function () {
+        it("Should throw exception if chatroom with specified ID not exists", function () {
             var nicknameValidationInfo = new JoinChatroomInfo("who is who", null);
             chatroomService.isValidNickname.bind(null, nicknameValidationInfo).should
                 .throw("Chatroom with specified ID not exist");
