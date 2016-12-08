@@ -28,7 +28,7 @@ var ChatRoomService = function (storage) {
 
     var _validateNickname = function (chatRoomMember) {
         var chatRoomName = chatRoomMember.chatRoomName;
-        var nickname = chatRoomMember.user;
+        var nickname = chatRoomMember.user.trim();
         var chatRoom = storage.getChatRoom(chatRoomName);
         var users = chatRoom.users;
 
