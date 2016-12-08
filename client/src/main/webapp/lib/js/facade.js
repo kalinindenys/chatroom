@@ -1,5 +1,5 @@
 var ChatRoomsFacade = function (commandBus, eventBus) {
-    var storage = new ChatRoomInMemoryStorage();
+    var storage = new ChatRoomStorage();
     var chatRoomService = new ChatRoomService(storage);
 
     var _onCreateChatRoom = function (command) {

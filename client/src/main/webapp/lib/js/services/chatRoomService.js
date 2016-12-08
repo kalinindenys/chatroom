@@ -1,6 +1,14 @@
 var ChatRoomService = function (storage) {
 
-    var _addChatRoom = function (chatRoomName) {
+    var _readAllChatRooms = function () {
+        var allChatRooms = storage.getAllChatRooms();
+        allChatRooms.sort(function (a, b) {
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
+        return allChatRooms;
+    };
+
+    var _createChatRoom = function (chatRoomName) {
         chatRoomName = chatRoomName.trim();
         if (chatRoomName.length > 2 && chatRoomName.length <= 50) {
             var item = storage.getChatRoom();
@@ -16,21 +24,6 @@ var ChatRoomService = function (storage) {
         } else {
             throw new Error("Empty chat room cannot be added")
         }
-    };
-
-    var _readAllChatRooms = function () {
-        var allChatRooms = storage.getAllChatRooms();
-        allChatRooms.sort(function (a, b) {
-            return new Date(b.date).getTime() - new Date(a.date).getTime();
-        });
-        return allChatRooms;
-    };
-
-    var _createChatRoom = function (chatRoomName) {
-
-        _addChatRoom(chatRoomName);
-
-        return _readAllChatRooms();
     };
 
     var _validateNickname = function (chatRoomName, nickname) {

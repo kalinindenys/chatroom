@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link href="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.css" rel="stylesheet" />
+    <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+    <script type="text/javascript" src="../js/storages/storage.js"></script>
+    <script type="text/javascript" src="../js/storages/in-memoryStorage.js"></script>
+    <script type="text/javascript" src="../js/services/chatRoomService.js"></script>
+    <script type="text/javascript" src="../js/dto/chatrooms.js"></script>
+    <script type="text/javascript" src="../js/dto/messages.js"></script>
+    <meta charset="UTF-8">
+    <title>Tests</title>
+</head>
+<body>
+
+<h1>ChatRoomService tests</h1>
+<div id="mocha"></div>
+<script src="unit.js"></script>
+<script>
+    mocha.setup('bdd');
+</script>
+<script src="chatRoomServiceTest.js"></script>
+<script>
+    mocha.run();
+</script>
+</body>
+</html>
