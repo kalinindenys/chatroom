@@ -6,7 +6,7 @@
     <link href="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.css" rel="stylesheet" />
     <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
     <script type="text/javascript" src="../js/storages/storage.js"></script>
-    <script type="text/javascript" src="../js/storages/in-memoryStorage.js"></script>
+    <script type="text/javascript" src="../js/storages/inMemoryStorage.js"></script>
     <script type="text/javascript" src="../js/services/chatRoomService.js"></script>
     <script type="text/javascript" src="../js/dto/chatrooms.js"></script>
     <script type="text/javascript" src="../js/dto/messages.js"></script>
@@ -21,9 +21,10 @@
 <script>
     mocha.setup('bdd');
 </script>
-<script src="chatRoomServiceTest.js"></script>
+<script src="chatRoomServiceLocalStorageTest.js"></script>
+<script src="chatRoomServiceInMemoryTest.js"></script>
 <script>
-    mocha.run();
+mocha.run();
 </script>
 </body>
 </html>

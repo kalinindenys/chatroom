@@ -1,13 +1,14 @@
-describe('chatRoomService tests with localStorage', function () {
-    var service = new ChatRoomService(new ChatRoomStorage());
+describe('chatRoomService tests with inMemoryStorage', function () {
+    var storage = new ChatRoomInMemoryStorage();
+    var service = new ChatRoomService(storage);
 
     it('Testing createChatRoom() method: ', function () {
         for (var i = 0; i < 5; i++) {
             var chatRoomName = "chatRoom" + i;
             service.createChatRoom(chatRoomName);
-            var answer = JSON.parse(localStorage.getItem("chatRoom" + i));
+            var answer = storage.getChatRoom(chatRoomName);
             unitjs.object(answer);
-            unitjs.value(answer.name).isEqualTo("chatRoom" + i);
+            unitjs.value(answer.name).isEqualTo(chatRoomName);
         }
 
     });
@@ -20,35 +21,34 @@ describe('chatRoomService tests with localStorage', function () {
     });
 
     it('Testing joinChatRoom() method: ', function () {
-        var allChatRooms = service.readAllChatRooms();
-
         for (var i = 0; i < 5; i++) {
             var username = "user" + i;
             var chatRoomName = "chatRoom" + i;
             var chatRoom = service.joinChatRoom(chatRoomName, username);
             unitjs.object(chatRoom);
             unitjs.array(chatRoom.users).hasLength(1);
-            unitjs.value(chatRoom.users[0]).isEqualTo("user" + i);
+            unitjs.value(chatRoom.users[0]).isEqualTo(username);
 
         }
 
     });
 
     it('Testing validateNickname() method: ', function () {
+        var chatRoomName = "chatRoom1";
         var validNickname = "user1_valid";
-        isValid = service.validateNickname("chatRoom1", validNickname);
+        isValid = service.validateNickname(chatRoomName, validNickname);
         unitjs.bool(isValid).isTrue();
 
-        var notValidNickname = "";
-        var isValid = service.validateNickname("chatRoom1", notValidNickname);
+        var inValidNickname = "";
+        var isValid = service.validateNickname(chatRoomName, inValidNickname);
         unitjs.bool(isValid).isFalse();
 
-        notValidNickname = "";
-        isValid = service.validateNickname("chatRoom1", notValidNickname);
+        inValidNickname = "";
+        isValid = service.validateNickname(chatRoomName, inValidNickname);
         unitjs.bool(isValid).isFalse();
 
-        notValidNickname = "user1";
-        isValid = service.validateNickname("chatRoom1", notValidNickname);
+        inValidNickname = "user1";
+        isValid = service.validateNickname(chatRoomName, inValidNickname);
         unitjs.bool(isValid).isFalse();
     });
 
