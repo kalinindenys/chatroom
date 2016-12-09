@@ -3,11 +3,11 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
     var chatRoomService = new ChatRoomService(storage);
 
     var _onCreateChatRoom = function (command) {
-        var chatRoom = command.data;
+        var chatRoomName = command.data;
 
         var resultingEvent;
         try {
-            chatRoomService.createChatRoom(chatRoom);
+            chatRoomService.createChatRoom(chatRoomName);
             var allChatRooms = chatRoomService.readAllChatRooms();
             resultingEvent = new ChatRoomListUpdatedEvent(allChatRooms);
         } catch (err) {
@@ -27,8 +27,13 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
     var _onJoinValidation = function (command) {
         var chatRoomMember = command.data;
         var resultingEvent;
-        var isValidated = chatRoomService.validateNickname(chatRoomMember);
-        resultingEvent = new JoinValidatedEvent(isValidated);
+        try {
+            var isValidated = chatRoomService.validateNickname(chatRoomMember);
+            resultingEvent = new NicknameValidatedEvent(isValidated);
+        }catch (err){
+            resultingEvent = new NicknameFailedValidationEvent("Server error: " + err);
+        }
+
 
         eventBus.emit(resultingEvent.toMessage());
     };
@@ -37,10 +42,10 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
         var chatRoomMember = command.data;
         var resultingEvent;
         var chatRoom = chatRoomService.joinChatRoom(chatRoomMember);
-        resultingEvent = new UpdateUserNumEvent(chatRoom.name, chatRoom.users);
+        resultingEvent = new UserNumberUpdatedEvent(chatRoom.name, chatRoom.users);
         eventBus.emit(resultingEvent.toMessage());
         var nickname = chatRoomMember.user;
-        resultingEvent = new OpenChatRoomEvent(chatRoom, nickname);
+        resultingEvent = new ChatRoomOpenedEvent(chatRoom, nickname);
         eventBus.emit(resultingEvent.toMessage());
     };
 
@@ -49,9 +54,9 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
         var resultingEvent;
         var chatRoom = chatRoomService.leaveChatRoom(chatRoomMember);
         var nickname = chatRoomMember.user;
-        resultingEvent = new LeaveChatRoomEvent(chatRoom, nickname);
+        resultingEvent = new ChatRoomLeftEvent(new ChatRoomMember(chatRoom.name, nickname));
         eventBus.emit(resultingEvent.toMessage());
-        resultingEvent = new UpdateUserNumEvent(chatRoom.name, chatRoom.users);
+        resultingEvent = new UserNumberUpdatedEvent(chatRoom.name, chatRoom.users);
         eventBus.emit(resultingEvent.toMessage());
     };
 

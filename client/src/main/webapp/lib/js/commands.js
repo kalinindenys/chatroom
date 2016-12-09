@@ -6,28 +6,32 @@ var Commands = {
     POST_MESSAGE: "Post message"
 };
 
-var CreateChatRoomCommand = function (chatroomDto) {
-    var _toMessage = createMessage(Commands.CREATE_CHAT_ROOM, chatroomDto);
+var CreateChatRoomCommand = function (chatRoomName) {
+    var _toMessage = createMessage(Commands.CREATE_CHAT_ROOM, chatRoomName);
     return {"toMessage": _toMessage};
 };
 
-var JoinValidationCommand = function (commandData) {
-    var _toMessage = createMessage(Commands.VALIDATE_NICKNAME, commandData);
+var JoinValidationCommand = function (chatRoomMember) {
+    var _toMessage = createMessage(Commands.VALIDATE_NICKNAME, chatRoomMember);
     return {"toMessage": _toMessage};
 };
 
-var JoinChatRoomCommand = function (commandData) {
-    var _toMessage = createMessage(Commands.JOIN_CHAT_ROOM, commandData);
+var JoinChatRoomCommand = function (chatRoomMember) {
+    var _toMessage = createMessage(Commands.JOIN_CHAT_ROOM, chatRoomMember);
     return {"toMessage": _toMessage};
 };
 
-var LeaveChatRoomCommand = function (commandData) {
-    var _toMessage = createMessage(Commands.LEAVE_CHAT_ROOM, commandData);
+var LeaveChatRoomCommand = function (chatRoomMember) {
+    var _toMessage = createMessage(Commands.LEAVE_CHAT_ROOM, chatRoomMember);
     return {"toMessage": _toMessage};
 };
 
-var PostMessageCommand = function (commandData) {
-    var _toMessage = createMessage(Commands.POST_MESSAGE, commandData);
+var PostMessageCommand = function (chatRoomName, message) {
+    var data = {
+        "chatRoomName": chatRoomName,
+        "message": message
+    };
+    var _toMessage = createMessage(Commands.POST_MESSAGE, data);
     return {"toMessage": _toMessage};
 };
 

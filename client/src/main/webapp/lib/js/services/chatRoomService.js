@@ -2,6 +2,8 @@ var ChatRoomService = function (storage) {
 
     var _readAllChatRooms = function () {
         var allChatRooms = storage.getAllChatRooms();
+
+        //storage.getAllByType(Types.CHATROOM);
         allChatRooms.sort(function (a, b) {
             return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
@@ -11,33 +13,40 @@ var ChatRoomService = function (storage) {
     var _createChatRoom = function (chatRoomName) {
         chatRoomName = chatRoomName.trim();
         if (chatRoomName.length > 2 && chatRoomName.length <= 50) {
-            var item = storage.getChatRoom();
+            var item = storage.getChatRoom(chatRoomName);
             if (item) {
                 throw new Error("Chat room already exist")
             } else {
-                var length = storage.getChatRoomNumber();
+                var id = storage.generateId();
+                //var id = storage.generateId(Types.CHATROOM);
                 var users = [];
                 var messages = [];
-                var chatroomDto = new ChatroomDto(length, chatRoomName, new Date(), users, messages);
+                var chatroomDto = new ChatroomDto(id, chatRoomName, new Date(), users, messages);
                 storage.saveChatRoom(chatroomDto);
+                //storage.save(Types.CHATROOM, chatroomDto);
             }
         } else {
-            throw new Error("Empty chat room cannot be added")
+            throw new Error("Too short name for the chat room")
         }
     };
 
     var _validateNickname = function (chatRoomMember) {
-        var chatRoomName = chatRoomMember.chatRoomName;
+        var chatRoomName = chatRoomMember.chatRoomName; //chatId
         var nickname = chatRoomMember.user.trim();
         var chatRoom = storage.getChatRoom(chatRoomName);
+        //var chatRoom = storage.getById(Types.CHATROOM, chatId)
         var users = chatRoom.users;
 
         var isValid;
         if (users) {
-            if (jQuery.inArray(nickname, users) != -1) {
-                return false;
+            if (nickname.length < 1) {
+                throw new Error("Nickname cannot be empty!")
             }
-            else isValid = nickname.length >= 1;
+            else if (jQuery.inArray(nickname, users) != -1) {
+                throw new Error("Nickname already exist!");
+            } else {
+                isValid = true;
+            }
         } else {
             isValid = true;
         }
@@ -48,7 +57,7 @@ var ChatRoomService = function (storage) {
 
     var _joinChatRoom = function (chatRoomMember) {
         var chatRoomName = chatRoomMember.chatRoomName;
-        var nickname = chatRoomMember.user;
+        var nickname = chatRoomMember.user.trim();
         var chatRoom = storage.getChatRoom(chatRoomName);
         var users = chatRoom.users;
 

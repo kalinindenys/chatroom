@@ -16,8 +16,7 @@ var ChatRoomListItemComponent = function (eventBus, commandBus, rootDivId, chatR
     joinButton.hide();
 
     $(joinButton).on("click", function () {
-        var joinDialog = new JoinDialogComponent(commandBus, eventBus, rootDivId, chatRoom);
-        joinDialog.init();
+        JoinDialogComponent.init(commandBus, eventBus, rootDivId, chatRoom);
     });
 
     chatRoomListItem.mouseover(function () {
@@ -28,4 +27,8 @@ var ChatRoomListItemComponent = function (eventBus, commandBus, rootDivId, chatR
         joinButton.hide();
     });
 
+};
+
+ChatRoomListItemComponent.init = function (eventBus, commandBus, rootDivId, chatRoom) {
+    return new ChatRoomListItemComponent(eventBus, commandBus, rootDivId, chatRoom);
 };

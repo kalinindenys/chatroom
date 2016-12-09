@@ -18,9 +18,8 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
         '<span class="input-group-btn">' +
         '<enterButton id = ' + enterButtonId + ' class="btn btn-info" type="enterButton">' +
         '<i class="glyphicon glyphicon-user"></i>Enter</enterButton>' +
-        '<div id="validationAlertId"></div> ' +
-        '<enterButton id=' + cancelButtonId + ' type="enterButton" class="btn btn-default" style="float: right;margin: 5px">Cancel</enterButton> ' +
-        '</span></div></div></div></div>' +
+        '<enterButton id=' + cancelButtonId + ' type="button" class="btn btn-default" style="float: right;margin: 5px">Cancel</enterButton> ' +
+        '</span></div><div id=' + validationAlertId + '></div></div></div></div>' +
         '</div></div>'
     );
 
@@ -28,13 +27,11 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
     var joinInput = $("#" + joinInputId);
     enterButton.hide();
     joinInput.on("input", function () {
-        var nickname = joinInput.val().trim();
-        if (nickname.length > 1) {
-            var chatRoomMember = new ChatRoomMember(chatRoomName, nickname);
-            var command = new JoinValidationCommand(chatRoomMember);
-            commandBus.emit(command.toMessage());
-            //todo: CHECK NICKNAME
-        }
+        var nickname = joinInput.val();
+        var chatRoomMember = new ChatRoomMember(chatRoomName, nickname);
+        var command = new JoinValidationCommand(chatRoomMember);
+        commandBus.emit(command.toMessage());
+        //todo: CHECK NICKNAME
     });
 
     $("#" + cancelButtonId).on("click", function () {
@@ -42,7 +39,7 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
     });
 
     enterButton.on("click", function () {
-        var nickname = joinInput.val().trim();
+        var nickname = joinInput.val();
         var chatRoomMember = new ChatRoomMember(chatRoomName, nickname);
         var command = new JoinChatRoomCommand(chatRoomMember);
         commandBus.emit(command.toMessage());
@@ -54,26 +51,36 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
             $('#' + validationAlertId).html('');
             enterButton.show();
         } else {
-            $('#' + validationAlertId).html('').append('<div class="alert alert-danger" role="alert">' +
-                'This nickname already exists</div>');
-            enterButton.hide();
+            /*            $('#' + validationAlertId).html('').append('<div class="alert alert-danger" role="alert">' +
+             'This nickname already exists</div>');
+             enterButton.hide();*/
         }
-
         //todo: FIX AND CLEAR
     };
+
+
+    var _showError = function (evt) {
+        var errorMessage = evt.data;
+        $('#' + validationAlertId).html('').append('<div class="alert alert-danger" role="alert">'+errorMessage+'</div>');
+        enterButton.hide();
+    };
+
+
 
     var _closeJoinDialog = function () {
         $('#popup').modal('hide');
     };
 
-    function _initialize() {
+    var _initialize = new function () {
         $('#popup').modal();
-    }
+    };
 
     eventBus.subscribe(Events.NICKNAME_VALIDATED, _checkValidation);
     eventBus.subscribe(Events.CHAT_ROOM_OPENED, _closeJoinDialog);
+    eventBus.subscribe(Events.NICKNAME_FAILED_VALIDATION, _showError);
 
-    return {
-        "init": _initialize
-    }
+};
+
+JoinDialogComponent.init = function (commandBus, eventBus, rootDivId, chatRoom) {
+    return new JoinDialogComponent(commandBus, eventBus, rootDivId, chatRoom);
 };

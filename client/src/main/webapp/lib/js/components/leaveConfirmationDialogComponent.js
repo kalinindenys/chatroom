@@ -12,7 +12,7 @@ var LeaveConfirmationDialogComponent = function (commandBus, rootDivId, chatRoom
         '<div class="panel-body">' +
         'Are you sure you want to leave the room? <br>' +
         '<button id = ' + confirmButtonId + ' class="btn btn-info" type="button">Yes</button>' +
-        '<button id=' + cancelButtonId + ' type="button" class="btn btn-default">Cancel</button> ' +
+        '<button id=' + cancelButtonId + ' type="button" class="btn btn-default" style="float: right">Cancel</button> ' +
         '</div></div></div></div>'
     );
 
@@ -34,11 +34,12 @@ var LeaveConfirmationDialogComponent = function (commandBus, rootDivId, chatRoom
         $('#popup').modal('hide');
     };
 
-    function _initialize() {
+    var _initialize = new function () {
         $('#popup').modal();
-    }
-
-    return {
-        "init": _initialize
-    }
+    };
 };
+
+LeaveConfirmationDialogComponent.init = function (commandBus, rootDivId, chatRoomMember) {
+    return new LeaveConfirmationDialogComponent(commandBus, rootDivId, chatRoomMember);
+};
+

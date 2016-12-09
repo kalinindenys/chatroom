@@ -19,11 +19,20 @@ function ChatRoomStorage() {
         return localStorage.length;
     }
 
+    function _generateId() {
+        var date = new Date();
+        var var1 = (date.getMilliseconds() * date.getSeconds());
+        var var2 = Math.floor((Math.random() * 100) + 1);
+        return var1 * var2;
+
+    }
+
     return {
         "saveChatRoom": _saveChatRoom,
         "getChatRoom": _getChatRoom,
         "getAllChatRooms": _getAllChatRooms,
-        "getChatRoomNumber": _getChatRoomNumber
+        "getChatRoomNumber": _getChatRoomNumber,
+        "generateId": _generateId
     }
 }
 

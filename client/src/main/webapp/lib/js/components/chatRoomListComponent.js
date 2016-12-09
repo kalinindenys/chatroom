@@ -23,7 +23,7 @@ var ChatRoomListComponent = function (eventBus, commandBus, rootDivId) {
 
             for (var chatRoomIndex = 0; chatRoomIndex < chatRooms.length; chatRoomIndex++) {
                 var aChatRoom = chatRooms[chatRoomIndex];
-                new ChatRoomListItemComponent(eventBus, commandBus, chatRoomListContainerId, aChatRoom);
+                ChatRoomListItemComponent.init(eventBus, commandBus, chatRoomListContainerId, aChatRoom);
             }
 
             containerElement.append('</ul>');
@@ -36,4 +36,8 @@ var ChatRoomListComponent = function (eventBus, commandBus, rootDivId) {
     };
 
     eventBus.subscribe(Events.CHAT_ROOM_LIST_UPDATED, _onListUpdated);
+};
+
+ChatRoomListComponent.init = function (eventBus, commandBus, rootDivId) {
+    return new ChatRoomListComponent(eventBus, commandBus, rootDivId);
 };
