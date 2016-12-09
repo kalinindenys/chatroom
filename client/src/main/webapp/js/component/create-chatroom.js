@@ -1,41 +1,44 @@
 var CreateChatroomComponent = function (rootElementId, commandBus, eventBus) {
 
-    var chatroomNameId = rootElementId + "_chatroomName";
-    var validationId = rootElementId + "_validation";
-    var createChatroomBtnId = rootElementId + "_createChatroomBtn";
+    var template;
+    var view = {
+        rootElementId: rootElementId,
+        chatroomName: "",
+        validationMessage: ""
+    };
 
-    $("#" + rootElementId).html(
-        '<form>' +
-        '<div class="form-group">' +
-        '<label for' + chatroomNameId + '>Chatroom name:</label>' +
-        '<input id="' + chatroomNameId + '" type="text" class="form-control" placeholder="Chatroom name">' +
-        '<p id="' + validationId + '" class="text-danger"></p>' +
-        '</div>' +
-        '<button id="' + createChatroomBtnId + '" type="button" class="btn btn-primary">' +
-        'Create' +
-        '</button>' +
-        '</form>'
-    );
+    $.get("js/templates/create-chatroom.html", function (htmlTemplate) {
+        template = htmlTemplate;
+        Mustache.parse(template);
+        renderTemplate();
 
-    var chatroomName = $("#" + chatroomNameId);
-    var validation = $("#" + validationId);
-
-    $("#" + createChatroomBtnId).click(function () {
-        var createChatroomCommand = new CreateChatroom(chatroomName.val());
-        commandBus.emitMessage(createChatroomCommand.toMessage());
+        eventBus.subscribe(Events.CHATROOM_CREATION_FAILED, showError);
+        eventBus.subscribe(Events.CHATROOM_LIST_UPDATED, clearComponent);
     });
 
     var showError = function (errorMessage) {
-        validation.html(errorMessage);
+        view.validationMessage = errorMessage;
+        renderTemplate();
     };
 
     var clearComponent = function () {
-        chatroomName.val("");
-        validation.html("");
+        view.chatroomName = "";
+        view.validationMessage = "";
+        renderTemplate();
     };
 
-    eventBus.subscribe(Events.CHATROOM_CREATION_FAILED, showError);
-    eventBus.subscribe(Events.CHATROOM_LIST_UPDATED, clearComponent);
+    var onCreateChatroomBtnClick = function () {
+        view.chatroomName = $("#" + rootElementId + "_chatroomName").val();
+        var createChatroomCommand = new CreateChatroom(view.chatroomName);
+        commandBus.emitMessage(createChatroomCommand.toMessage());
+    };
+
+    var renderTemplate = function () {
+        html = Mustache.render(template, view);
+        $("#" + rootElementId).html(html);
+
+        $("#" + rootElementId + "_createBtn").click(onCreateChatroomBtnClick);
+    };
 
 };
 

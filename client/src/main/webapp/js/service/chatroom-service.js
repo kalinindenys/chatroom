@@ -1,5 +1,9 @@
 var ChatroomService = function (chatroomStorage) {
 
+    if (!chatroomStorage) {
+        throw new Error("Chatroom storage must be specified");
+    }
+
     var findByName = function (chatroomName) {
         var chatrooms = chatroomStorage.findAll();
 
@@ -63,13 +67,17 @@ var ChatroomService = function (chatroomStorage) {
     };
 
     var isValidNickname = function (nicknameValidationInfo) {
+        if (typeof nicknameValidationInfo.getNickname() !== "string") {
+            throw new Error("Nickname must be presented as string");
+        }
+
         var nickname = nicknameValidationInfo.getNickname().trim();
         var chatroomId = nicknameValidationInfo.getChatroomId();
 
         var chatroom = chatroomStorage.findOne(chatroomId);
 
         if (!chatroom) {
-            throw new Error("Chatroom with specified id not exist");
+            throw new Error("Chatroom with specified ID not exist");
         }
 
         if (nickname.length === 0) {

@@ -29,3 +29,7 @@ var ChatroomListItem = function (rootElementId, chatroom, commandBus) {
     });
 
 };
+
+ChatroomListItem.createFor = function (rootElementId, chatroom, commandBus) {
+    new ChatroomListItem(rootElementId, chatroom, commandBus);
+};
