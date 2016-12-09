@@ -1,6 +1,8 @@
-var MessageDto = function (user, content, date) {
+var MessageDto = function (id, userId, chatRoomId, content, date) {
     return {
-        "user": user,
+        "id": id,
+        "userId": userId,
+        "chatRoomId": chatRoomId,
         "content": content,
         "date": date
     };

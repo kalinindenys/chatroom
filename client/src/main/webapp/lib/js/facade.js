@@ -31,7 +31,7 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
             var isValidated = chatRoomService.validateNickname(chatRoomMember);
             resultingEvent = new NicknameValidatedEvent(isValidated);
         }catch (err){
-            resultingEvent = new NicknameFailedValidationEvent("Server error: " + err);
+            resultingEvent = new NicknameValidationFailedEvent("Server error: " + err);
         }
 
 
@@ -54,7 +54,7 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
         var resultingEvent;
         var chatRoom = chatRoomService.leaveChatRoom(chatRoomMember);
         var nickname = chatRoomMember.user;
-        resultingEvent = new ChatRoomLeftEvent(new ChatRoomMember(chatRoom.name, nickname));
+        resultingEvent = new ChatRoomLeftEvent(new UserDto(chatRoom.name, nickname));
         eventBus.emit(resultingEvent.toMessage());
         resultingEvent = new UserNumberUpdatedEvent(chatRoom.name, chatRoom.users);
         eventBus.emit(resultingEvent.toMessage());

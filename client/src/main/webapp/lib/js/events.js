@@ -3,10 +3,10 @@ var Events = {
     CHAT_ROOM_CANNOT_BE_CREATED: "Chat room cannot be created",
     NICKNAME_VALIDATED: "Nickname validated",
     CHAT_ROOM_OPENED: "Chat room opened",
-    USER_NUMBER_UPDATED: "User number updated",
+    USER_NUMBER_UPDATED: "UserDto number updated",
     CHAT_ROOM_LEFT: "Chat room left",
     MESSAGE_POSTED: "Message posted",
-    NICKNAME_FAILED_VALIDATION: "Nickname failed validation"
+    NICKNAME_VALIDATION_FAILED: "Nickname validation failed"
 };
 
 var ChatRoomListUpdatedEvent = function (chatRoomList) {
@@ -83,10 +83,10 @@ var ChatRoomCannotBeCreatedEvent = function (reason) {
 
 };
 
-var NicknameFailedValidationEvent = function (reason) {
+var NicknameValidationFailedEvent = function (reason) {
 
     var _toMessage = function () {
-        return new Message(Events.NICKNAME_FAILED_VALIDATION, reason);
+        return new Message(Events.NICKNAME_VALIDATION_FAILED, reason);
     };
 
     return {"toMessage": _toMessage};

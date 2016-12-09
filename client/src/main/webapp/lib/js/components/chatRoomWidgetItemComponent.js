@@ -48,7 +48,7 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
     });
 
     $("#" + widgetItemLeaveButtonId).on('click', function () {
-        var chatRoomMember = new ChatRoomMember(chatRoomName, user);
+        var chatRoomMember = new user(chatRoomName, user);
         LeaveConfirmationDialogComponent.init(commandBus, rootDivId, chatRoomMember);
     });
 

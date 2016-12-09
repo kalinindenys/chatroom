@@ -1,28 +1,27 @@
 var ChatRoomService = function (storage) {
 
     var _readAllChatRooms = function () {
-        var allChatRooms = storage.getAllChatRooms();
+        var allChatRooms = storage.getAllByType(Types.CHATROOM);
 
-        //storage.getAllByType(Types.CHATROOM);
         allChatRooms.sort(function (a, b) {
-            return new Date(b.date).getTime() - new Date(a.date).getTime();
+            return new Date(b.entity.date).getTime() - new Date(a.entity.date).getTime();
         });
         return allChatRooms;
     };
 
     var _createChatRoom = function (chatRoomName) {
         chatRoomName = chatRoomName.trim();
+        var type = Types.CHATROOM;
         if (chatRoomName.length > 2 && chatRoomName.length <= 50) {
-            var item = storage.getChatRoom(chatRoomName);
-            if (item) {
+            var item = storage.getAllByName(type, chatRoomName);
+            if (item.length() > 0) {
                 throw new Error("Chat room already exist")
             } else {
                 var id = storage.generateId();
-                //var id = storage.generateId(Types.CHATROOM);
                 var users = [];
                 var messages = [];
                 var chatroomDto = new ChatroomDto(id, chatRoomName, new Date(), users, messages);
-                storage.saveChatRoom(chatroomDto);
+                storage.saveItem(type, chatroomDto);
                 //storage.save(Types.CHATROOM, chatroomDto);
             }
         } else {
@@ -30,47 +29,45 @@ var ChatRoomService = function (storage) {
         }
     };
 
-    var _validateNickname = function (chatRoomMember) {
+    var _validateNickname = function (chatRoomMember) { // inputs: username, chatRoomId
         var chatRoomName = chatRoomMember.chatRoomName; //chatId
         var nickname = chatRoomMember.user.trim();
-        var chatRoom = storage.getChatRoom(chatRoomName);
-        //var chatRoom = storage.getById(Types.CHATROOM, chatId)
-        var users = chatRoom.users;
+        var chatRoom = storage.getItemById(Types.CHATROOM, chatRoomId);
+        var users = chatRoom.userIds;
 
         var isValid;
         if (users) {
-            if (nickname.length < 1) {
+            if (nickname.length > 0) {
+                users.forEach(function (userId) {
+                    if (storage.getItemById(Types.USER, userId).name === nickname)
+                        throw new Error("Nickname already exist!")
+                });
+            } else {
                 throw new Error("Nickname cannot be empty!")
             }
-            else if (jQuery.inArray(nickname, users) != -1) {
-                throw new Error("Nickname already exist!");
-            } else {
-                isValid = true;
-            }
         } else {
-            isValid = true;
+            isValid = true
         }
         return isValid;
-
-        //todo: CLEAN
     };
 
     var _joinChatRoom = function (chatRoomMember) {
-        var chatRoomName = chatRoomMember.chatRoomName;
+        var chatRoomId;
         var nickname = chatRoomMember.user.trim();
-        var chatRoom = storage.getChatRoom(chatRoomName);
-        var users = chatRoom.users;
+        var user = new UserDto(storage.generateId, nickname, chatRoomId);
+        var chatRoom = storage.getItemById(Types.CHATROOM, chatRoomId);
 
-        if (!(users === undefined)) {
-            users.push(nickname);
+        if (!(chatRoom.userIds === undefined)) {
+            chatRoom.userIds.push(user.id);
         } else {
-            users = nickname;
+            chatRoom.userIds = user.id;
         }
-        chatRoom.users = users;
-        storage.saveChatRoom(chatRoom);
+        storage.saveItem(Types.CHATROOM, chatRoom);
+        storage.saveItem(Types.USER, user);
         return chatRoom;
-        //todo: CHECK ERRORS
 
+        //todo: continue
+        //todo: CHECK ERRORS
     };
 
     var _leaveChatRoom = function (chatRoomMember) {

@@ -17,7 +17,7 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
         '<input type="text" id=' + joinInputId + ' class="form-control"  placeholder="Enter your name">' +
         '<span class="input-group-btn">' +
         '<enterButton id = ' + enterButtonId + ' class="btn btn-info" type="enterButton">' +
-        '<i class="glyphicon glyphicon-user"></i>Enter</enterButton>' +
+        '<i class="glyphicon glyphicon-UserDto"></i>Enter</enterButton>' +
         '<enterButton id=' + cancelButtonId + ' type="button" class="btn btn-default" style="float: right;margin: 5px">Cancel</enterButton> ' +
         '</span></div><div id=' + validationAlertId + '></div></div></div></div>' +
         '</div></div>'
@@ -28,7 +28,7 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
     enterButton.hide();
     joinInput.on("input", function () {
         var nickname = joinInput.val();
-        var chatRoomMember = new ChatRoomMember(chatRoomName, nickname);
+        var chatRoomMember = new UserDto(chatRoomName, nickname);
         var command = new JoinValidationCommand(chatRoomMember);
         commandBus.emit(command.toMessage());
         //todo: CHECK NICKNAME
@@ -40,7 +40,7 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
 
     enterButton.on("click", function () {
         var nickname = joinInput.val();
-        var chatRoomMember = new ChatRoomMember(chatRoomName, nickname);
+        var chatRoomMember = new UserDto(chatRoomName, nickname);
         var command = new JoinChatRoomCommand(chatRoomMember);
         commandBus.emit(command.toMessage());
     });
@@ -77,7 +77,7 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
 
     eventBus.subscribe(Events.NICKNAME_VALIDATED, _checkValidation);
     eventBus.subscribe(Events.CHAT_ROOM_OPENED, _closeJoinDialog);
-    eventBus.subscribe(Events.NICKNAME_FAILED_VALIDATION, _showError);
+    eventBus.subscribe(Events.NICKNAME_VALIDATION_FAILED, _showError);
 
 };
 

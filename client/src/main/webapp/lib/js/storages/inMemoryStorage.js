@@ -1,48 +1,41 @@
 function ChatRoomInMemoryStorage() {
-    var chatRooms = [];
+    var storage = [];
 
-    function _createStorageItem(chatRoomDto) {
-        return {key: chatRoomDto.name, value: chatRoomDto};
+    function _createStorageItem(id, entity) {
+        return {key: id, value: entity};
     }
 
-    function _findItemInStorage(key) {
-        var existingItemIndex;
-        chatRooms.forEach(function (item) {
-            if (item.key === key) {
-                existingItemIndex = chatRooms.indexOf(item);
+    function _findItemInStorage(type, id) {
+        //todo: MODIFY OR REMOVE
+        var existingItemIndex = -1;
+        storage[type].forEach(function (item) {
+            if (item.id === id) {
+                existingItemIndex = storage[type].indexOf(item);
             }
         });
         return existingItemIndex;
     }
 
-    function _saveChatRoom(chatRoomDto) {
-        var currentItem = _createStorageItem(chatRoomDto);
-        var index = _findItemInStorage(currentItem.key);
-        if (index) {
-            chatRooms[index] = currentItem;
-        } else {
-            chatRooms.push(currentItem);
-        }
+    function _saveItem(type, entity) {
+        storage[type].push(_createStorageItem(entity.id, entity));
     }
 
-    function _getChatRoom(chatRoomName) {
-        var index = _findItemInStorage(chatRoomName);
-        if (index >= 0) {
-            return chatRooms[index].value;
-        }
-        return index;
+    function _getItemById(type, id) {
+        return storage[type][id];
     }
 
-    function _getAllChatRooms() {
-        var chatRoomsToReturn = [];
-        chatRooms.forEach(function (item) {
-            chatRoomsToReturn.push(item.value);
+    function _getAllByName(type, name) {
+        var foundItems = [];
+        storage[type].forEach(function (item) {
+            if (item.name == name) {
+                foundItems.push(item);
+            }
         });
-        return chatRoomsToReturn;
+        return foundItems;
     }
 
-    function _getChatRoomNumber() {
-        return chatRooms.length;
+    function _getAllByType(type) {
+        return storage[type];
     }
 
     function _generateId() {
@@ -53,10 +46,10 @@ function ChatRoomInMemoryStorage() {
     }
 
     return {
-        "saveChatRoom": _saveChatRoom,
-        "getChatRoom": _getChatRoom,
-        "getAllChatRooms": _getAllChatRooms,
-        "getChatRoomNumber": _getChatRoomNumber,
+        "saveItem": _saveItem,
+        "getItemById": _getItemById,
+        "getAllByType": _getAllByType,
+        "getAllByName": _getAllByName,
         "generateId": _generateId
     }
 }

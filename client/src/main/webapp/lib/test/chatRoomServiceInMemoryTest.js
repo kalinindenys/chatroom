@@ -22,9 +22,9 @@ describe('chatRoomService tests with inMemoryStorage', function () {
 
     it('Testing joinChatRoom() method: ', function () {
         for (var i = 0; i < 5; i++) {
-            var username = "user" + i;
+            var username = "UserDto" + i;
             var chatRoomName = "chatRoom" + i;
-            var chatRoomMember = new ChatRoomMember(chatRoomName, username);
+            var chatRoomMember = new UserDto(chatRoomName, username);
             var chatRoom = service.joinChatRoom(chatRoomMember);
             unitjs.object(chatRoom);
             unitjs.array(chatRoom.users).hasLength(1);
@@ -37,7 +37,7 @@ describe('chatRoomService tests with inMemoryStorage', function () {
     it('Testing validateNickname() method: ', function () {
         var chatRoomName = "chatRoom1";
         var validNickname = "user1_valid";
-        var chatRoomMember = new ChatRoomMember(chatRoomName, validNickname);
+        var chatRoomMember = new UserDto(chatRoomName, validNickname);
         isValid = service.validateNickname(chatRoomMember);
         unitjs.bool(isValid).isTrue();
 
@@ -60,7 +60,7 @@ describe('chatRoomService tests with inMemoryStorage', function () {
     it('Testing leaveChatRoom() method: ', function () {
         var chatRoomName = "chatRoom0";
         var nickname = "user0";
-        var chatRoomMember = new ChatRoomMember(chatRoomName, nickname);
+        var chatRoomMember = new UserDto(chatRoomName, nickname);
         var chatRoom = service.leaveChatRoom(chatRoomMember);
 
         unitjs.object(chatRoom);
