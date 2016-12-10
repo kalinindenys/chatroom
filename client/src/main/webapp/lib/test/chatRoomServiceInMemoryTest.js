@@ -1,14 +1,14 @@
 describe('chatRoomService tests with inMemoryStorage', function () {
-    var storage = new ChatRoomInMemoryStorage();
+    var storage = new InMemoryStorage();
     var service = new ChatRoomService(storage);
 
     it('Testing createChatRoom() method: ', function () {
         for (var i = 0; i < 5; i++) {
             var chatRoomName = "chatRoom" + i;
-            service.createChatRoom(chatRoomName);
-            var answer = storage.getChatRoom(chatRoomName);
+            var chatRoom = service.createChatRoom(chatRoomName);
+           /* var answer = storage.getItemById(Types.CHATROOM,chatRoom.id);
             unitjs.object(answer);
-            unitjs.value(answer.name).isEqualTo(chatRoomName);
+            unitjs.value(answer.name).isEqualTo(chatRoomName);*/
         }
 
     });

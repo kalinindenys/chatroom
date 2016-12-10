@@ -1,4 +1,4 @@
-function ChatRoomInMemoryStorage() {
+function InMemoryStorage() {
     var storage = [];
 
     function _createStorageItem(id, entity) {
@@ -17,25 +17,34 @@ function ChatRoomInMemoryStorage() {
     }
 
     function _saveItem(type, entity) {
+        if (storage[type] === undefined) {
+            storage[type] = [];
+        }
         storage[type].push(_createStorageItem(entity.id, entity));
+
+        //fixed
     }
 
     function _getItemById(type, id) {
-        return storage[type][id];
+        return storage[type][id];//storage[type].key
     }
 
     function _getAllByName(type, name) {
         var foundItems = [];
-        storage[type].forEach(function (item) {
-            if (item.name == name) {
-                foundItems.push(item);
-            }
-        });
+        /*        if (storage[type] != undefined) {
+         for(var i=0; i<storage[type].length;i++){
+         if storage[type].
+         }
+         }*/
         return foundItems;
     }
 
     function _getAllByType(type) {
         return storage[type];
+    }
+
+    function _removeItemById(type, id) {
+        storage[type].get(id).remove();
     }
 
     function _generateId() {
@@ -50,7 +59,8 @@ function ChatRoomInMemoryStorage() {
         "getItemById": _getItemById,
         "getAllByType": _getAllByType,
         "getAllByName": _getAllByName,
-        "generateId": _generateId
+        "generateId": _generateId,
+        "removeItemById": _removeItemById
     }
 }
 
