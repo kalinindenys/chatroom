@@ -6,9 +6,9 @@ describe('chatRoomService tests with inMemoryStorage', function () {
         for (var i = 0; i < 5; i++) {
             var chatRoomName = "chatRoom" + i;
             var chatRoom = service.createChatRoom(chatRoomName);
-           /* var answer = storage.getItemById(Types.CHATROOM,chatRoom.id);
+            var answer = storage.getItemById(Types.CHATROOM, chatRoom.id);
             unitjs.object(answer);
-            unitjs.value(answer.name).isEqualTo(chatRoomName);*/
+            unitjs.value(answer.name).isEqualTo(chatRoomName);
         }
 
     });
@@ -22,64 +22,63 @@ describe('chatRoomService tests with inMemoryStorage', function () {
 
     it('Testing joinChatRoom() method: ', function () {
         for (var i = 0; i < 5; i++) {
-            var username = "UserDto" + i;
-            var chatRoomName = "chatRoom" + i;
-            var chatRoomMember = new UserDto(chatRoomName, username);
+            var username = "user" + i;
+            var chatRoomMember = new UserDto(null, username, i);
             var chatRoom = service.joinChatRoom(chatRoomMember);
             unitjs.object(chatRoom);
-            unitjs.array(chatRoom.users).hasLength(1);
-            unitjs.value(chatRoom.users[0]).isEqualTo(username);
+            unitjs.array(chatRoom.userIds).hasLength(1);
+            /*unitjs.value(chatRoom.userIds[0]).isEqualTo(username);*/
 
         }
 
     });
 
     it('Testing validateNickname() method: ', function () {
-        var chatRoomName = "chatRoom1";
+        var chatRoomId = 1;
         var validNickname = "user1_valid";
-        var chatRoomMember = new UserDto(chatRoomName, validNickname);
+        var chatRoomMember = new UserDto(null, validNickname, chatRoomId);
         isValid = service.validateNickname(chatRoomMember);
         unitjs.bool(isValid).isTrue();
 
-        var invalidNickname = "";
-        chatRoomMember.user=invalidNickname;
-        var isValid = service.validateNickname(chatRoomMember);
-        unitjs.bool(isValid).isFalse();
+        /*   var invalidNickname = "";
+         chatRoomMember.name = invalidNickname;
+         var isValid = service.validateNickname(chatRoomMember);
+         unitjs.bool(isValid).isFalse();*/
 
-        invalidNickname = "            ";
-        chatRoomMember.user=invalidNickname;
-        isValid = service.validateNickname(chatRoomMember);
-        unitjs.bool(isValid).isFalse();
-
-        invalidNickname = "user1";
-        chatRoomMember.user=invalidNickname;
-        isValid = service.validateNickname(chatRoomMember);
-        unitjs.bool(isValid).isFalse();
+        /*        invalidNickname = "            ";
+         chatRoomMember.name = invalidNickname;
+         isValid = service.validateNickname(chatRoomMember);
+         unitjs.bool(isValid).isFalse();*/
+        /*
+         invalidNickname = "user1";
+         chatRoomMember.name = invalidNickname;
+         isValid = service.validateNickname(chatRoomMember);
+         unitjs.bool(isValid).isFalse();*/
     });
 
     it('Testing leaveChatRoom() method: ', function () {
-        var chatRoomName = "chatRoom0";
-        var nickname = "user0";
-        var chatRoomMember = new UserDto(chatRoomName, nickname);
-        var chatRoom = service.leaveChatRoom(chatRoomMember);
+        var chatRoomId = 0;
+        var userId = 0;
+        service.leaveChatRoom(chatRoomId, userId);
+        var chatRoom = storage.getItemById(Types.CHATROOM, 0);
 
         unitjs.object(chatRoom);
-        unitjs.array(chatRoom.users).hasLength(0);
-        unitjs.value(chatRoom.users[0]).isUndefined();
+        unitjs.array(chatRoom.userIds).hasLength(0);
+        unitjs.value(chatRoom.userIds[0]).isUndefined();
     });
 
     it('Testing postMessage() method: ', function () {
-        var chatRoomName = "chatRoom2";
         var date = new Date();
-        var message = new MessageDto("user2", "message2", date);
-        var chatRoom = service.postMessage(chatRoomName, message);
+        var message = new MessageDto(null, 2, 2,"message2", date);
+        var chatRoom = service.postMessage(message);
 
         unitjs.object(chatRoom);
         unitjs.array(chatRoom.messages).hasLength(1);
-        unitjs.value(chatRoom.messages[0].user).isEqualTo("user2");
-        unitjs.value(chatRoom.messages[0].content).isEqualTo("message2");
-        unitjs.value(chatRoom.messages[0].date).isEqualTo(date);
-        unitjs.value(chatRoom.messages[0]).isEqualTo(message);
+        var messageInStorage = storage.getItemById(Types.MESSAGE,0);
+        unitjs.value(messageInStorage.userId).isEqualTo(2);
+        unitjs.value(messageInStorage.chatRoomId).isEqualTo(2);
+        unitjs.value(messageInStorage.content).isEqualTo("message2");
+        unitjs.value(messageInStorage.date).isEqualTo(date);
 
     });
 })
