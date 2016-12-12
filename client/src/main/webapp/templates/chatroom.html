@@ -1,0 +1,25 @@
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h4 class="panel-title pull-left" style="padding-top: 7px;">{{chatroomName}}</h4>
+        <div class="pull-right">
+            <span style="padding-right: 10px">guests: <span>{{guestsNumber}}</span></span>
+            <button class="btn btn-default btn-sm" id="{{leaveBtnId}}">Leave</button>
+        </div>
+    </div>
+    <ul class="panel-body list-group scrollable" style="height: 340px" id="{{messagesId}}">
+        {{#messages}}
+        <li class="list-group-item">
+            <pre style="border: 0; background-color: transparent;">[{{formattedMessage.postTime}}] <b>{{formattedMessage.authorNickname}}</b> said: {{formattedMessage.message}}</pre>
+        </li>
+        {{/messages}}
+        {{^messages}}
+        No messages yet
+        {{/messages}}
+    </ul>
+    <div class="panel-footer input-group">
+        <textarea class="form-control" placeholder="Your message..." style="resize: none" id="{{messageInputId}}"></textarea>
+        <span class="input-group-btn">
+        <button class="btn btn-default disabled" disabled type="button" id="{{postMessageBtnId}}">Post</button>
+        </span>
+    </div>
+</div>

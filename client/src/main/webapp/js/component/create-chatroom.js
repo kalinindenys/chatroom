@@ -3,11 +3,13 @@ var CreateChatroomComponent = function (rootElementId, commandBus, eventBus) {
     var template;
     var view = {
         rootElementId: rootElementId,
+        chatroomNameId: rootElementId + "_chatroomName",
+        createChatroomBtnId: rootElementId + "_createChatroomBtn",
         chatroomName: "",
         validationMessage: ""
     };
 
-    $.get("js/templates/create-chatroom.html", function (htmlTemplate) {
+    $.get("templates/create-chatroom.html", function (htmlTemplate) {
         template = htmlTemplate;
         Mustache.parse(template);
         renderTemplate();
@@ -28,7 +30,7 @@ var CreateChatroomComponent = function (rootElementId, commandBus, eventBus) {
     };
 
     var onCreateChatroomBtnClick = function () {
-        view.chatroomName = $("#" + rootElementId + "_chatroomName").val();
+        view.chatroomName = $("#" + view.chatroomNameId).val();
         var createChatroomCommand = new CreateChatroom(view.chatroomName);
         commandBus.emitMessage(createChatroomCommand.toMessage());
     };
@@ -37,7 +39,7 @@ var CreateChatroomComponent = function (rootElementId, commandBus, eventBus) {
         html = Mustache.render(template, view);
         $("#" + rootElementId).html(html);
 
-        $("#" + rootElementId + "_createBtn").click(onCreateChatroomBtnClick);
+        $("#" + view.createChatroomBtnId).click(onCreateChatroomBtnClick);
     };
 
 };

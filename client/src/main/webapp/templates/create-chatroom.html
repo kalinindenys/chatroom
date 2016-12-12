@@ -1,0 +1,9 @@
+<form>
+    <div class="form-group">
+        <label for="{{chatroomNameId}}">Chatroom name:</label>
+        <input id="{{chatroomNameId}}" type="text" class="form-control" placeholder="Chatroom name" value="{{chatroomName}}">
+        <p class="text-danger">{{validationMessage}}</p>
+    </div>
+    <button id="{{createChatroomBtnId}}" type="button" class="btn btn-primary">Create</button>
+    <p>{{> text}}</p>
+</form>

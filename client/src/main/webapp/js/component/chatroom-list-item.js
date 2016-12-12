@@ -1,31 +1,31 @@
 var ChatroomListItem = function (rootElementId, chatroom, commandBus) {
 
-    var itemId = rootElementId + "_" + $("#" + rootElementId + " li").length;
-    var joinBtnId = itemId + "_joinBtnId";
+    $.get("templates/chatroom-list-item.html", function (htmlTemplate) {
+        var itemId = rootElementId + "_" + $("#" + rootElementId + " li").length;
+        var view = {
+            itemId: itemId,
+            joinBtnId: itemId + "_joinBtnId",
+            chatroomName: chatroom.getName(),
+            creationDate: chatroom.getCreationDate().toString("dd-MM-yy HH:mm")
+        };
 
-    $("#" + rootElementId).append(
-        '<li id="' + itemId + '" class="list-group-item">' +
-        chatroom.getName() +
-        '<div class="pull-right">' +
-        '<button class="btn btn-default btn-sm" style="display: none; margin-right: 10px;" id="' + joinBtnId + '">Join</button>' +
-        '<span class="badge">' + chatroom.getCreationDate().toString("dd-MM-yy HH:mm") + '</span>' +
-        '</div>' +
-        '</li>'
-    );
+        var html = Mustache.render(htmlTemplate, view);
+        $("#" + rootElementId).append(html);
 
-    var item = $("#" + itemId);
-    var joinBtn = $("#" + joinBtnId);
+        var item = $("#" + view.itemId);
+        var joinBtn = $("#" + view.joinBtnId);
 
-    joinBtn.click(function () {
-        commandBus.emitMessage(new TryJoinToChatroom(chatroom).toMessage());
-    });
+        joinBtn.click(function () {
+            commandBus.emitMessage(new TryJoinToChatroom(chatroom).toMessage());
+        });
 
-    item.mouseover(function () {
-        joinBtn.show();
-    });
+        item.mouseover(function () {
+            joinBtn.show();
+        });
 
-    item.mouseout(function () {
-        joinBtn.hide();
+        item.mouseout(function () {
+            joinBtn.hide();
+        });
     });
 
 };
