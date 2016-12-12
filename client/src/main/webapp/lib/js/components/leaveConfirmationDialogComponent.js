@@ -1,9 +1,7 @@
-var LeaveConfirmationDialogComponent = function (commandBus, rootDivId, chatRoomMember) {
+var LeaveConfirmationDialogComponent = function (commandBus, rootDivId, chatRoomMember, chatRoomName) {
     var confirmLeaveId = rootDivId + "_confirmLeaveDialogComponent";
     var confirmButtonId = confirmLeaveId + "_confirmButton";
     var cancelButtonId = confirmLeaveId + "_cancelButton";
-
-    var chatRoomName = chatRoomMember.chatRoomName;
 
     $('#popup').html('').append('<div id=' + confirmLeaveId + ' class="modal-dialog modal-sm" role="document"> ' +
         '<div class="join-popup">' +
@@ -39,7 +37,7 @@ var LeaveConfirmationDialogComponent = function (commandBus, rootDivId, chatRoom
     };
 };
 
-LeaveConfirmationDialogComponent.init = function (commandBus, rootDivId, chatRoomMember) {
-    return new LeaveConfirmationDialogComponent(commandBus, rootDivId, chatRoomMember);
+LeaveConfirmationDialogComponent.init = function (commandBus, rootDivId, chatRoomMember, chatRoomName) {
+    return new LeaveConfirmationDialogComponent(commandBus, rootDivId, chatRoomMember,chatRoomName);
 };
 

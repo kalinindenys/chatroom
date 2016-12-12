@@ -27,11 +27,12 @@ var NicknameValidatedEvent = function (validationResult) {
     return {"toMessage": _toMessage};
 };
 
-var ChatRoomOpenedEvent = function (chatRoomDto, username) {
+var ChatRoomOpenedEvent = function (chatRoomDto, userDto, messages) {
 
     var data = {
-        "chatRoom": chatRoomDto,
-        "username": username
+        "chatRoomDto": chatRoomDto,
+        "userDto": userDto,
+        "messages": messages
     };
     var _toMessage = function () {
         return new Message(Events.CHAT_ROOM_OPENED, data);
@@ -40,15 +41,9 @@ var ChatRoomOpenedEvent = function (chatRoomDto, username) {
     return {"toMessage": _toMessage};
 };
 
-var UserNumberUpdatedEvent = function (chatRoomName, users) {
-
-    var data = {
-        "chatRoomName": chatRoomName,
-        "users": users
-    };
-
+var UserNumberUpdatedEvent = function (chatRoomDto) {
     var _toMessage = function () {
-        return new Message(Events.USER_NUMBER_UPDATED, data);
+        return new Message(Events.USER_NUMBER_UPDATED, chatRoomDto);
     };
 
     return {"toMessage": _toMessage};
@@ -63,10 +58,16 @@ var ChatRoomLeftEvent = function (chatRoomMember) {
     return {"toMessage": _toMessage};
 };
 
-var MessagePostedEvent = function (chatRoomDto) {
+var MessagePostedEvent = function (chatRoomDto, messageDto, username) {
+
+    var data = {
+        "chatRoomDto": chatRoomDto,
+        "messageDto": messageDto,
+        "username": username
+    };
 
     var _toMessage = function () {
-        return new Message(Events.MESSAGE_POSTED, chatRoomDto);
+        return new Message(Events.MESSAGE_POSTED, data);
     };
 
     return {"toMessage": _toMessage};

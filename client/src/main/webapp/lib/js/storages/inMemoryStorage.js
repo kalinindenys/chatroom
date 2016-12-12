@@ -27,10 +27,10 @@ function InMemoryStorage() {
     }
 
     function _generateId(type) {
-        if (storage[type] === undefined) {
-            return 0;
+        if (storage[type] === undefined || storage[type].length == 0) {
+            return '0';
         } else {
-            return storage[type][storage[type].length - 1].id + 1;
+            return (parseInt(storage[type][storage[type].length - 1].id).to + 1).toString();
         }
         /*        var date = new Date();
          var var1 = (date.getMilliseconds() * date.getSeconds());

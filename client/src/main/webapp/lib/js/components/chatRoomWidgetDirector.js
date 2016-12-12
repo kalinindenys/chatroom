@@ -4,16 +4,17 @@ var ChatRoomWidgetDirector = function (eventBus, commandBus, rootDivId) {
     $("#" + rootDivId).html('').append('<ul id=' + chatRoomWidgetListId + '></ul> ');
 
     var _showChatRoom = function (evt) {
-        var chatRoom = evt.data.chatRoom;
-        var user = evt.data.username;
-        var item = ChatRoomWidgetItemComponent.init(eventBus, commandBus, chatRoomWidgetListId, chatRoom, user);
+        var chatRoom = evt.data.chatRoomDto;
+        var user = evt.data.userDto;
+        var messages = evt.data.messages;
+        var item = ChatRoomWidgetItemComponent.init(eventBus, commandBus, chatRoomWidgetListId, chatRoom, user, messages);
         items.push(item);
 
     };
 
     function _updateUserNumber(evt) {
         for (var i = 0; i < items.length; i++) {
-            if ((items[i].getChatRoomName == evt.data.chatRoomName) && (items[i].getUsername == evt.data.user)) {
+            if ((items[i].getChatRoomId == evt.data.chatRoomId) && (items[i].getUserId == evt.data.id)) {
                 $("#" + items[i].getItemId).remove();
             }
         }

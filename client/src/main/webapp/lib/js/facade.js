@@ -1,5 +1,5 @@
 var ChatRoomsFacade = function (commandBus, eventBus) {
-    var storage = new ChatRoomStorage();
+    var storage = new InMemoryStorage();
     var chatRoomService = new ChatRoomService(storage);
 
     var _onCreateChatRoom = function (command) {
@@ -30,7 +30,7 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
         try {
             var isValidated = chatRoomService.validateNickname(chatRoomMember);
             resultingEvent = new NicknameValidatedEvent(isValidated);
-        }catch (err){
+        } catch (err) {
             resultingEvent = new NicknameValidationFailedEvent("Server error: " + err);
         }
 
@@ -39,33 +39,41 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
     };
 
     var _onJoinChatRoom = function (command) {
-        var chatRoomMember = command.data;
+        var userDto = command.data;
         var resultingEvent;
-        var chatRoom = chatRoomService.joinChatRoom(chatRoomMember);
-        resultingEvent = new UserNumberUpdatedEvent(chatRoom.name, chatRoom.users);
+        var data = chatRoomService.joinChatRoom(userDto);
+        var chatRoomDto = data.chatRoomDto;
+        userDto = data.userDto;
+        resultingEvent = new UserNumberUpdatedEvent(chatRoomDto);
         eventBus.emit(resultingEvent.toMessage());
-        var nickname = chatRoomMember.user;
-        resultingEvent = new ChatRoomOpenedEvent(chatRoom, nickname);
+        var messages = [];
+        for (messageId in chatRoomDto.messageIds) {
+            messages.push(storage.getItemById(Types.MESSAGE, messageId));
+        }
+        resultingEvent = new ChatRoomOpenedEvent(chatRoomDto, userDto, messages);
         eventBus.emit(resultingEvent.toMessage());
     };
 
     var _onLeaveChatRoom = function (command) {
-        var chatRoomMember = command.data;
+        var userDto = command.data;
         var resultingEvent;
-        var chatRoom = chatRoomService.leaveChatRoom(chatRoomMember);
-        var nickname = chatRoomMember.user;
-        resultingEvent = new ChatRoomLeftEvent(new UserDto(chatRoom.name, nickname));
-        eventBus.emit(resultingEvent.toMessage());
-        resultingEvent = new UserNumberUpdatedEvent(chatRoom.name, chatRoom.users);
-        eventBus.emit(resultingEvent.toMessage());
+        var chatRoom = chatRoomService.leaveChatRoom(userDto);
+        if (chatRoom) {
+            resultingEvent = new ChatRoomLeftEvent(userDto);
+            eventBus.emit(resultingEvent.toMessage());
+            resultingEvent = new UserNumberUpdatedEvent(chatRoom);
+            eventBus.emit(resultingEvent.toMessage());
+        }
     };
 
     var _onPostMessage = function (command) {
-        var chatRoomName = command.data.chatRoomName;
-        var message = command.data.message;
+        var messageDto = command.data;
         var resultingEvent;
-        var chatRoom = chatRoomService.postMessage(chatRoomName, message);
-        resultingEvent = new MessagePostedEvent(chatRoom);
+        var data = chatRoomService.postMessage(messageDto);
+        var chatRoomDto = data.chatRoomDto;
+        messageDto = data.messageDto;
+        var username = data.username;
+        resultingEvent = new MessagePostedEvent(chatRoomDto, messageDto, username);
         eventBus.emit(resultingEvent.toMessage());
     };
 

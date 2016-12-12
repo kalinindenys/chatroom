@@ -2,10 +2,11 @@ var ChatRoomService = function (storage) {
 
         var _readAllChatRooms = function () {
             var allChatRooms = storage.getAllByType(Types.CHATROOM);
-
-            allChatRooms.sort(function (a, b) {
-                return new Date(b.date).getTime() - new Date(a.date).getTime();
-            });
+            if (allChatRooms) {
+                allChatRooms.sort(function (a, b) {
+                    return new Date(b.date).getTime() - new Date(a.date).getTime();
+                });
+            }
             return allChatRooms;
         };
 
@@ -39,9 +40,9 @@ var ChatRoomService = function (storage) {
             }
         };
 
-        var _validateNickname = function (chatRoomMember) { // inputs: username, chatRoomId
-            var chatRoomId = chatRoomMember.chatRoomId;
-            var nickname = chatRoomMember.name.trim();
+        var _validateNickname = function (userDto) { // inputs: username, chatRoomId
+            var chatRoomId = userDto.chatRoomId;
+            var nickname = userDto.name.trim();
             var chatRoom = storage.getItemById(Types.CHATROOM, chatRoomId);
             var users = chatRoom.userIds;
 
@@ -62,25 +63,29 @@ var ChatRoomService = function (storage) {
             return isValid;
         };
 
-        var _joinChatRoom = function (chatRoomMember) {
-            var chatRoomId = chatRoomMember.chatRoomId;
-            var nickname = chatRoomMember.name.trim();
-            var user = new UserDto(storage.generateId(Types.USER), nickname, chatRoomId);
-            var chatRoom = storage.getItemById(Types.CHATROOM, chatRoomId);
+        var _joinChatRoom = function (userDto) {
+            var chatRoomId = userDto.chatRoomId;
+            var nickname = userDto.name.trim();
+            userDto = new UserDto(storage.generateId(Types.USER), nickname, chatRoomId);//think about simplify
+            var chatRoomDto = storage.getItemById(Types.CHATROOM, chatRoomId);
 
-            if (!(chatRoom.userIds === undefined)) {
-                chatRoom.userIds.push(user.id);
+            if (!(chatRoomDto.userIds === undefined)) {
+                chatRoomDto.userIds.push(userDto.id);
             } else {
-                chatRoom.userIds = user.id;
+                chatRoomDto.userIds = userDto.id;
             }
-            storage.saveItem(Types.CHATROOM, chatRoom);
-            storage.saveItem(Types.USER, user);
-            return chatRoom;
-
+            storage.saveItem(Types.CHATROOM, chatRoomDto);
+            storage.saveItem(Types.USER, userDto);
+            return {
+                "chatRoomDto": chatRoomDto,
+                "userDto": userDto
+            };
             //todo: CHECK ERRORS
         };
 
-        var _leaveChatRoom = function (chatRoomId, userId) {//chatRoomId, userId
+        var _leaveChatRoom = function (userDto) {//chatRoomId, userId
+            var userId = userDto.id;
+            var chatRoomId = userDto.chatRoomId;
             var joinedChatRoomId = storage.getItemById(Types.USER, userId).chatRoomId;
             if (joinedChatRoomId === chatRoomId) {
                 var chatRoom = storage.getItemById(Types.CHATROOM, chatRoomId);
@@ -88,31 +93,33 @@ var ChatRoomService = function (storage) {
 
                 for (joinedUserId in joinedUserIds) {
                     if (joinedUserId == userId) {
-                        joinedUserIds.splice(joinedUserIds,1);
+                        joinedUserIds.splice(joinedUserIds, 1);
                         storage.removeItemById(Types.USER, userId);
                         storage.saveItem(Types.CHATROOM, chatRoom);
                     }
                 }
+                return chatRoom;
             }
-
         };
 
         var _postMessage = function (message) { //chatRoomId, message
             var chatRoomId = message.chatRoomId;
             message.content = message.content.replace('<', '&lt;').replace('>', '&gt;').replace(/\r?\n/g, '<br />');
-            var messageEntity = new MessageDto(storage.generateId(Types.MESSAGE), message.userId, message.chatRoomId, message.content, message.date);//dumb
-            var chatRoom = storage.getItemById(Types.CHATROOM, chatRoomId);
-            var messages = chatRoom.messageIds;
-
-            if (!(messages === undefined)) {
-                messages.push(messageEntity.id);
+            message = new MessageDto(storage.generateId(Types.MESSAGE), message.userId, message.username, message.chatRoomId, message.content, message.date);//dumb
+            var chatRoomDto = storage.getItemById(Types.CHATROOM, chatRoomId);
+            if (!(chatRoomDto.messageIds === undefined)) {
+                chatRoomDto.messageIds.push(message.id);
             } else {
-                messages = messageEntity.id;
+                chatRoomDto.messageIds = message.id;
             }
-            chatRoom.messages = messages;
-            storage.saveItem(Types.CHATROOM, chatRoom);
-            storage.saveItem(Types.MESSAGE, messageEntity);
-            return chatRoom;
+            storage.saveItem(Types.CHATROOM, chatRoomDto);
+            storage.saveItem(Types.MESSAGE, message);
+            var username = storage.getItemById(Types.USER, message.userId).name;
+            return {
+                "chatRoomDto": chatRoomDto,
+                "messageDto": message,
+                "username": username
+            };
 
         };
 

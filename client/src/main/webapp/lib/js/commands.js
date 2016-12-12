@@ -26,12 +26,8 @@ var LeaveChatRoomCommand = function (chatRoomMember) {
     return {"toMessage": _toMessage};
 };
 
-var PostMessageCommand = function (chatRoomName, message) {
-    var data = {
-        "chatRoomName": chatRoomName,
-        "message": message
-    };
-    var _toMessage = createMessage(Commands.POST_MESSAGE, data);
+var PostMessageCommand = function (messageDto) {
+    var _toMessage = createMessage(Commands.POST_MESSAGE, messageDto);
     return {"toMessage": _toMessage};
 };
 

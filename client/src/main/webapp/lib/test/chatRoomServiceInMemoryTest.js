@@ -24,7 +24,8 @@ describe('chatRoomService tests with inMemoryStorage', function () {
         for (var i = 0; i < 5; i++) {
             var username = "user" + i;
             var chatRoomMember = new UserDto(null, username, i);
-            var chatRoom = service.joinChatRoom(chatRoomMember);
+            var data = service.joinChatRoom(chatRoomMember);
+            var chatRoom = data.chatRoomDto;
             unitjs.object(chatRoom);
             unitjs.array(chatRoom.userIds).hasLength(1);
             /*unitjs.value(chatRoom.userIds[0]).isEqualTo(username);*/
@@ -57,9 +58,7 @@ describe('chatRoomService tests with inMemoryStorage', function () {
     });
 
     it('Testing leaveChatRoom() method: ', function () {
-        var chatRoomId = 0;
-        var userId = 0;
-        service.leaveChatRoom(chatRoomId, userId);
+        service.leaveChatRoom(new UserDto(0, 0, 0));
         var chatRoom = storage.getItemById(Types.CHATROOM, 0);
 
         unitjs.object(chatRoom);
@@ -69,12 +68,13 @@ describe('chatRoomService tests with inMemoryStorage', function () {
 
     it('Testing postMessage() method: ', function () {
         var date = new Date();
-        var message = new MessageDto(null, 2, 2,"message2", date);
-        var chatRoom = service.postMessage(message);
+        var message = new MessageDto(null, 2, "user2", 2, "message2", date);
+        var data = service.postMessage(message);
+        var chatRoom = data.chatRoomDto;
 
         unitjs.object(chatRoom);
-        unitjs.array(chatRoom.messages).hasLength(1);
-        var messageInStorage = storage.getItemById(Types.MESSAGE,0);
+        unitjs.array(chatRoom.messageIds).hasLength(1);
+        var messageInStorage = storage.getItemById(Types.MESSAGE, 0);
         unitjs.value(messageInStorage.userId).isEqualTo(2);
         unitjs.value(messageInStorage.chatRoomId).isEqualTo(2);
         unitjs.value(messageInStorage.content).isEqualTo("message2");
