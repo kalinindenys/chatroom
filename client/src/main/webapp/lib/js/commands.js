@@ -11,18 +11,18 @@ var CreateChatRoomCommand = function (chatRoomName) {
     return {"toMessage": _toMessage};
 };
 
-var JoinValidationCommand = function (chatRoomMember) {
-    var _toMessage = createMessage(Commands.VALIDATE_NICKNAME, chatRoomMember);
+var JoinValidationCommand = function (userDto) {
+    var _toMessage = createMessage(Commands.VALIDATE_NICKNAME, userDto);
     return {"toMessage": _toMessage};
 };
 
-var JoinChatRoomCommand = function (chatRoomMember) {
-    var _toMessage = createMessage(Commands.JOIN_CHAT_ROOM, chatRoomMember);
+var JoinChatRoomCommand = function (userDto) {
+    var _toMessage = createMessage(Commands.JOIN_CHAT_ROOM, userDto);
     return {"toMessage": _toMessage};
 };
 
-var LeaveChatRoomCommand = function (chatRoomMember) {
-    var _toMessage = createMessage(Commands.LEAVE_CHAT_ROOM, chatRoomMember);
+var LeaveChatRoomCommand = function (userDto) {
+    var _toMessage = createMessage(Commands.LEAVE_CHAT_ROOM, userDto);
     return {"toMessage": _toMessage};
 };
 

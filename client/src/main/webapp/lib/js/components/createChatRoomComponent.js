@@ -22,7 +22,6 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
 
     var _onCreateChatRoom = function () {
         var chatRoomName = inputElement.val();
-
         var command = new CreateChatRoomCommand(chatRoomName);
         commandBus.emit(command.toMessage());
 
@@ -30,7 +29,7 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
 
     var _onError = function (evt) {
         var reason = evt.data;
-        $("#" + validationId).html('').append('<div class="alert alert-danger" role="alert" style="margin: 0">'+reason+'</div>');
+        $("#" + validationId).html('').append('<div class="alert alert-danger" role="alert" style="margin: 0">' + reason + '</div>');
     };
 
     $("#" + createChatRoomBtnId).click(_onCreateChatRoom);
