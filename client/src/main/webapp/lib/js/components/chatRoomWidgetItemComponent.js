@@ -43,7 +43,6 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
         var messageDto = new MessageDto(null, user.id, user.name, chatRoom.id, content, new Date());
         var command = new PostMessageCommand(messageDto);
         commandBus.emit(command.toMessage());
-        //todo: MODIFY
     });
 
     $("#" + widgetItemLeaveButtonId).on('click', function () {

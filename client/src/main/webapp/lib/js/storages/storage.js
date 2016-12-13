@@ -1,4 +1,4 @@
-function ChatRoomStorage() {
+function LocalStorage() {
     function _saveItem(type, entity) {
         if (localStorage.getItem(type) === null) {
             var item = [];

@@ -49,10 +49,10 @@ var UserNumberUpdatedEvent = function (chatRoomDto) {
     return {"toMessage": _toMessage};
 };
 
-var ChatRoomLeftEvent = function (chatRoomMember) {
+var ChatRoomLeftEvent = function (userDto) {
 
     var _toMessage = function () {
-        return new Message(Events.CHAT_ROOM_LEFT, chatRoomMember);
+        return new Message(Events.CHAT_ROOM_LEFT, userDto);
     };
 
     return {"toMessage": _toMessage};

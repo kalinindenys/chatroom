@@ -99,5 +99,4 @@ describe('work of ChatRoomService', function () {
         unitjs.value(messageInStorage.date).isEqualTo(date);
 
     });
-})
-;
+});

@@ -32,7 +32,6 @@ var ChatRoomService = function (storage) {
                 var messages = [];
                 var chatroomDto = new ChatroomDto(id, chatRoomName, new Date(), users, messages);
                 storage.saveItem(type, chatroomDto);
-                //storage.save(Types.CHATROOM, chatroomDto);
                 return chatroomDto;
             }
         } else {
@@ -40,7 +39,7 @@ var ChatRoomService = function (storage) {
         }
     };
 
-    var _validateNickname = function (userDto) { // inputs: username, chatRoomId
+    var _validateNickname = function (userDto) {
         var chatRoomId = userDto.chatRoomId;
         var nickname = userDto.name.trim();
         var chatRoom = storage.getItemById(Types.CHATROOM, chatRoomId);
@@ -66,7 +65,7 @@ var ChatRoomService = function (storage) {
     var _joinChatRoom = function (userDto) {
         var chatRoomId = userDto.chatRoomId;
         var nickname = userDto.name.trim();
-        userDto = new UserDto(storage.generateId(Types.USER), nickname, chatRoomId);//think about simplify
+        userDto = new UserDto(storage.generateId(Types.USER), nickname, chatRoomId);
         var chatRoomDto = storage.getItemById(Types.CHATROOM, chatRoomId);
 
         if (!(chatRoomDto.userIds === undefined)) {
@@ -80,10 +79,9 @@ var ChatRoomService = function (storage) {
             "chatRoomDto": chatRoomDto,
             "userDto": userDto
         };
-        //todo: CHECK ERRORS
     };
 
-    var _leaveChatRoom = function (userDto) {//chatRoomId, userId
+    var _leaveChatRoom = function (userDto) {
         var userId = userDto.id;
         var chatRoomId = userDto.chatRoomId;
         var joinedChatRoomId = storage.getItemById(Types.USER, userId).chatRoomId;
@@ -102,7 +100,7 @@ var ChatRoomService = function (storage) {
         }
     };
 
-    var _postMessage = function (message) { //chatRoomId, message
+    var _postMessage = function (message) {
         if (message.content.trim().length > 0) {
             var chatRoomId = message.chatRoomId;
             message.content = message.content.replace('<', '&lt;').replace('>', '&gt;').replace(/\r?\n/g, '<br />');

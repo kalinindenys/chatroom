@@ -6,8 +6,6 @@ function InMemoryStorage() {
             storage[type] = [];
         }
         storage[type][entity.id] = entity;
-
-        //fixed
     }
 
     function _getItemById(type, id) {
