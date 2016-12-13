@@ -11,7 +11,7 @@ function InMemoryStorage() {
     }
 
     function _getItemById(type, id) {
-        return storage[type][id];//fixed
+        return storage[type][id];
     }
 
     function _getAllByType(type) {
@@ -22,28 +22,19 @@ function InMemoryStorage() {
         }
     }
 
-    function _removeItemById(type, id) {
-        storage[type].splice(id, 1);//check
-    }
-
     function _generateId(type) {
         if (storage[type] === undefined || storage[type].length == 0) {
-            return '0';
+            return 0;
         } else {
-            var previousId = parseInt(storage[type][storage[type].length - 1].id);
-            return (previousId + 1).toString();
+            return storage[type][storage[type].length - 1].id+1;
         }
-        /*        var date = new Date();
-         var var1 = (date.getMilliseconds() * date.getSeconds());
-         var var2 = Math.floor((Math.random() * 100) + 1);*/
     }
 
     return {
         "saveItem": _saveItem,
         "getItemById": _getItemById,
         "getAllByType": _getAllByType,
-        "generateId": _generateId,
-        "removeItemById": _removeItemById
+        "generateId": _generateId
     }
 }
 

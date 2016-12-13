@@ -1,8 +1,8 @@
-describe('chatRoomService tests with inMemoryStorage', function () {
+describe('work of ChatRoomService', function () {
     var storage = new InMemoryStorage();
     var service = new ChatRoomService(storage);
 
-    it('Testing createChatRoom() method: ', function () {
+    it('should create five different chat rooms', function () {
         for (var i = 0; i < 5; i++) {
             var chatRoomName = "chatRoom" + i;
             var chatRoom = service.createChatRoom(chatRoomName);
@@ -13,14 +13,14 @@ describe('chatRoomService tests with inMemoryStorage', function () {
 
     });
 
-    it('Testing readAllChatRooms() method: ', function () {
+    it('should read all created chat rooms', function () {
         var allChatRooms = service.readAllChatRooms();
         unitjs.array(allChatRooms).isNotEmpty();
         unitjs.array(allChatRooms).hasLength(5);
 
     });
 
-    it('Testing joinChatRoom() method: ', function () {
+    it('should make five different users join five different chat rooms', function () {
         for (var i = 0; i < 5; i++) {
             var username = "user" + i;
             var chatRoomMember = new UserDto(null, username, i);
@@ -28,36 +28,54 @@ describe('chatRoomService tests with inMemoryStorage', function () {
             var chatRoom = data.chatRoomDto;
             unitjs.object(chatRoom);
             unitjs.array(chatRoom.userIds).hasLength(1);
-            /*unitjs.value(chatRoom.userIds[0]).isEqualTo(username);*/
+            unitjs.value(storage.getItemById(Types.USER, chatRoom.userIds[0]).name).isEqualTo(username);
 
         }
 
     });
 
-    it('Testing validateNickname() method: ', function () {
-        var chatRoomId = 1;
+    it('should validate a valid nickname', function () {
         var validNickname = "user1_valid";
-        var chatRoomMember = new UserDto(null, validNickname, chatRoomId);
+        var chatRoomMember = new UserDto(null, validNickname, 1);
         isValid = service.validateNickname(chatRoomMember);
         unitjs.bool(isValid).isTrue();
 
-        /*   var invalidNickname = "";
-         chatRoomMember.name = invalidNickname;
-         var isValid = service.validateNickname(chatRoomMember);
-         unitjs.bool(isValid).isFalse();*/
-
-        /*        invalidNickname = "            ";
-         chatRoomMember.name = invalidNickname;
-         isValid = service.validateNickname(chatRoomMember);
-         unitjs.bool(isValid).isFalse();*/
-        /*
-         invalidNickname = "user1";
-         chatRoomMember.name = invalidNickname;
-         isValid = service.validateNickname(chatRoomMember);
-         unitjs.bool(isValid).isFalse();*/
     });
 
-    it('Testing leaveChatRoom() method: ', function () {
+    it("shouldn't validate the empty nickname", function () {
+        var invalidNickname = "";
+        var chatRoomMember = new UserDto(null, invalidNickname, 1);
+        try {
+            var isValid = service.validateNickname(chatRoomMember);
+        } catch (err) {
+            unitjs.string("Error: Nickname cannot be empty!").isEqualTo(err);
+        }
+        unitjs.value(isValid).undefined();
+    });
+
+    it("shouldn't validate the existing nickname", function () {
+        var invalidNickname = "user1";
+        var chatRoomMember = new UserDto(null, invalidNickname, 1);
+        try {
+            var isValid = service.validateNickname(chatRoomMember);
+        } catch (err) {
+            unitjs.string("Error: Nickname already exists!").isEqualTo(err);
+        }
+        unitjs.value(isValid).undefined();
+    });
+
+    it("shouldn't validate the invalid nickname", function () {
+        var invalidNickname = "            ";
+        var chatRoomMember = new UserDto(null, invalidNickname, 1);
+        try {
+            var isValid = service.validateNickname(chatRoomMember);
+        } catch (err) {
+            unitjs.string("Error: Nickname cannot be empty!").isEqualTo(err);
+        }
+        unitjs.value(isValid).undefined();
+    });
+
+    it('should make user leave the chat room', function () {
         service.leaveChatRoom(new UserDto(0, 0, 0));
         var chatRoom = storage.getItemById(Types.CHATROOM, 0);
 
@@ -66,7 +84,7 @@ describe('chatRoomService tests with inMemoryStorage', function () {
         unitjs.value(chatRoom.userIds[0]).isUndefined();
     });
 
-    it('Testing postMessage() method: ', function () {
+    it('should post the message to the chat room', function () {
         var date = new Date();
         var message = new MessageDto(null, 2, "user2", 2, "message2", date);
         var data = service.postMessage(message);

@@ -1,37 +1,41 @@
 function ChatRoomStorage() {
-    function _saveChatRoom(chatRoomDto) {
-        localStorage.setItem(chatRoomDto.name, JSON.stringify(chatRoomDto));
-    }
-
-    function _getChatRoom(chatRoomName) {
-        return JSON.parse(localStorage.getItem(chatRoomName));
-    }
-
-    function _getAllChatRooms() {
-        var chatRooms = [];
-        for (key in localStorage) {
-            chatRooms.push(JSON.parse(localStorage.getItem(key)));
+    function _saveItem(type, entity) {
+        if (localStorage.getItem(type) === null) {
+            var item = [];
+            item[entity.id] = entity;
+            localStorage.setItem(type, JSON.stringify(item));
+        } else {
+            var items = JSON.parse(localStorage.getItem(type));
+            items[entity.id] = entity;
+            localStorage.setItem(type, JSON.stringify(items));
         }
-        return chatRooms;
     }
 
-    function _getChatRoomNumber() {
-        return localStorage.length;
+    function _getItemById(type, id) {
+        return JSON.parse(localStorage.getItem(type))[id];
     }
 
-    function _generateId() {
-        var date = new Date();
-        var var1 = (date.getMilliseconds() * date.getSeconds());
-        var var2 = Math.floor((Math.random() * 100) + 1);
-        return var1 * var2;
+    function _getAllByType(type) {
+        if (localStorage.getItem(type) === null) {
+            return null;
+        } else {
+            return JSON.parse(localStorage.getItem(type)).slice();
+        }
+    }
 
+    function _generateId(type) {
+        if (localStorage.getItem(type) === null || JSON.parse(localStorage.getItem(type)).length == 0) {
+            return 0;
+        } else {
+            var value = JSON.parse(localStorage.getItem(type));
+            return value[value.length - 1].id+1;
+        }
     }
 
     return {
-        "saveChatRoom": _saveChatRoom,
-        "getChatRoom": _getChatRoom,
-        "getAllChatRooms": _getAllChatRooms,
-        "getChatRoomNumber": _getChatRoomNumber,
+        "saveItem": _saveItem,
+        "getItemById": _getItemById,
+        "getAllByType": _getAllByType,
         "generateId": _generateId
     }
 }

@@ -11,7 +11,7 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
         '<span class="input-group-btn"> ' +
         '<button class="btn btn-info" type="button" id=' + createChatRoomBtnId + '>' +
         '<i class="glyphicon glyphicon-plus"></i> Add </button></span></div>' +
-        '<div style="color: red" id=' + validationId + '></div></div></div>');
+        '<div id=' + validationId + '></div></div></div>');
 
 
     var inputElement = $("#" + inputId);
@@ -30,7 +30,7 @@ var CreateChatroomComponent = function (eventBus, commandBus, rootDivId) {
 
     var _onError = function (evt) {
         var reason = evt.data;
-        $("#" + validationId).html(reason);
+        $("#" + validationId).html('').append('<div class="alert alert-danger" role="alert" style="margin: 0">'+reason+'</div>');
     };
 
     $("#" + createChatRoomBtnId).click(_onCreateChatRoom);
