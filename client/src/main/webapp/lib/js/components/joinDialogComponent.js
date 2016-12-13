@@ -29,7 +29,7 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
     enterButton.hide();
     joinInput.on("input", function () {
         var nickname = joinInput.val();
-        var chatRoomMember = new UserDto(null,nickname,chatRoomId);
+        var chatRoomMember = new UserDto(null, nickname, chatRoomId);
         var command = new JoinValidationCommand(chatRoomMember);
         commandBus.emit(command.toMessage());
         //todo: CHECK NICKNAME
@@ -41,7 +41,7 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
 
     enterButton.on("click", function () {
         var nickname = joinInput.val();
-        var chatRoomMember = new UserDto(null,nickname,chatRoomId);
+        var chatRoomMember = new UserDto(null, nickname, chatRoomId);
         var command = new JoinChatRoomCommand(chatRoomMember);
         commandBus.emit(command.toMessage());
     });
@@ -58,17 +58,16 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
 
     var _showError = function (evt) {
         var errorMessage = evt.data;
-        $('#' + validationAlertId).html('').append('<div class="alert alert-danger" role="alert">'+errorMessage+'</div>');
+        $('#' + validationAlertId).html('').append('<div class="alert alert-danger" role="alert">' + errorMessage + '</div>');
         enterButton.hide();
     };
-
 
 
     var _closeJoinDialog = function () {
         $('#popup').modal('hide');
     };
 
-    var _initialize = new function () {
+    new function () {
         $('#popup').modal();
     };
 

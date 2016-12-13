@@ -25,19 +25,18 @@ var LeaveConfirmationDialogComponent = function (commandBus, rootDivId, chatRoom
         var command = new LeaveChatRoomCommand(chatRoomMember);
         commandBus.emit(command.toMessage());
         _closeConfirmDialog();
-        //todo: MODIFY
     });
 
     var _closeConfirmDialog = function () {
         $('#popup').modal('hide');
     };
 
-    var _initialize = new function () {
+    new function () {
         $('#popup').modal();
     };
 };
 
 LeaveConfirmationDialogComponent.init = function (commandBus, rootDivId, chatRoomMember, chatRoomName) {
-    return new LeaveConfirmationDialogComponent(commandBus, rootDivId, chatRoomMember,chatRoomName);
+    return new LeaveConfirmationDialogComponent(commandBus, rootDivId, chatRoomMember, chatRoomName);
 };
 
