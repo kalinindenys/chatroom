@@ -30,7 +30,8 @@ function InMemoryStorage() {
         if (storage[type] === undefined || storage[type].length == 0) {
             return '0';
         } else {
-            return (parseInt(storage[type][storage[type].length - 1].id).to + 1).toString();
+            var previousId = parseInt(storage[type][storage[type].length - 1].id);
+            return (previousId + 1).toString();
         }
         /*        var date = new Date();
          var var1 = (date.getMilliseconds() * date.getSeconds());

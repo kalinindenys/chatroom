@@ -1,12 +1,6 @@
-var ChatRoomApp = function (rootElementId, externalEventBus) {
+var ChatRoomApp = function (rootElementId) {
 
-    var eventBus;
-    if (externalEventBus) {
-        eventBus = externalEventBus;
-    } else {
-        eventBus = new MessageBus("Event bus");
-    }
-
+    var eventBus = new MessageBus("Event bus");
     var commandBus = new MessageBus("Command bus");
 
     var createChatRoomDivId = rootElementId + "_createChatRoom";
@@ -22,4 +16,7 @@ var ChatRoomApp = function (rootElementId, externalEventBus) {
     ChatRoomWidgetDirector.init(eventBus, commandBus, chatRoomWidgetDirectorId);
     new ChatRoomsFacade(commandBus, eventBus);
 
+};
+ChatRoomApp.init = function (rootElementId) {
+    return new ChatRoomApp(rootElementId);
 };

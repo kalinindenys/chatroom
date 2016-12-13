@@ -39,8 +39,7 @@
     <script type="text/javascript">
         $(function () {
 
-            var externalEventBus = new MessageBus("External event bus");
-            var widget = new ChatRoomApp("chatroom", externalEventBus);
+            ChatRoomApp.init("chatroom");
         });
 
     </script>

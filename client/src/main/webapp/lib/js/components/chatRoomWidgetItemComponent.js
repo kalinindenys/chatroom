@@ -18,7 +18,7 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
         '<ul id=' + widgetItemMessageList + ' class="list-group" style="height:300px"></ul>' +
         '</div><div class="panel-footer">' +
         '<div class="input-group">' +
-        '<textarea id=' + widgetItemMessageTextAreaId + ' class="form-control" placeholder="Message" style="max-width: 310px"></textarea>' +
+        '<textarea id=' + widgetItemMessageTextAreaId + ' class="form-control" placeholder="Message" style="max-width: 425px; max-height: 150px"></textarea>' +
         '<span class="input-group-btn"> <button disabled id=' + widgetItemPostButtonId + ' class="btn btn-info" type="submit">Post</button>' +
         '</span></div></div></div></div>'
     );

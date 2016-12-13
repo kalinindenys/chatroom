@@ -87,14 +87,13 @@ var ChatRoomService = function (storage) {
             var userId = userDto.id;
             var chatRoomId = userDto.chatRoomId;
             var joinedChatRoomId = storage.getItemById(Types.USER, userId).chatRoomId;
-            if (joinedChatRoomId === chatRoomId) {
+            if (joinedChatRoomId == chatRoomId) {
                 var chatRoom = storage.getItemById(Types.CHATROOM, chatRoomId);
                 var joinedUserIds = chatRoom.userIds;
 
                 for (joinedUserId in joinedUserIds) {
                     if (joinedUserId == userId) {
                         joinedUserIds.splice(joinedUserIds, 1);
-                        storage.removeItemById(Types.USER, userId);
                         storage.saveItem(Types.CHATROOM, chatRoom);
                     }
                 }
