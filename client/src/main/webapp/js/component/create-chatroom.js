@@ -1,6 +1,6 @@
 var CreateChatroomComponent = function (rootElementId, commandBus, eventBus) {
 
-    var template;
+    var template = document.querySelector('#createChatroomTemplate').import.querySelector("template").innerHTML;
     var view = {
         rootElementId: rootElementId,
         chatroomNameId: rootElementId + "_chatroomName",
@@ -9,14 +9,8 @@ var CreateChatroomComponent = function (rootElementId, commandBus, eventBus) {
         validationMessage: ""
     };
 
-    $.get("templates/create-chatroom.html", function (htmlTemplate) {
-        template = htmlTemplate;
-        Mustache.parse(template);
-        renderTemplate();
-
-        eventBus.subscribe(Events.CHATROOM_CREATION_FAILED, showError);
-        eventBus.subscribe(Events.CHATROOM_LIST_UPDATED, clearComponent);
-    });
+    Mustache.parse(template);
+    renderTemplate();
 
     var showError = function (errorMessage) {
         view.validationMessage = errorMessage;
@@ -35,13 +29,15 @@ var CreateChatroomComponent = function (rootElementId, commandBus, eventBus) {
         commandBus.emitMessage(createChatroomCommand.toMessage());
     };
 
-    var renderTemplate = function () {
+    function renderTemplate() {
         html = Mustache.render(template, view);
         $("#" + rootElementId).html(html);
 
         $("#" + view.createChatroomBtnId).click(onCreateChatroomBtnClick);
-    };
+    }
 
+    eventBus.subscribe(Events.CHATROOM_CREATION_FAILED, showError);
+    eventBus.subscribe(Events.CHATROOM_LIST_UPDATED, clearComponent);
 };
 
 CreateChatroomComponent.createFor = function (createChatroomComponentId, commandBus, eventBus) {

@@ -1,31 +1,30 @@
 var ChatroomListItem = function (rootElementId, chatroom, commandBus) {
 
-    $.get("templates/chatroom-list-item.html", function (htmlTemplate) {
-        var itemId = rootElementId + "_" + $("#" + rootElementId + " li").length;
-        var view = {
-            itemId: itemId,
-            joinBtnId: itemId + "_joinBtnId",
-            chatroomName: chatroom.getName(),
-            creationDate: chatroom.getCreationDate().toString("dd-MM-yy HH:mm")
-        };
+    var itemId = rootElementId + "_" + $("#" + rootElementId + " li").length;
+    var template = document.querySelector('#chatroomListItemTemplate').import.querySelector("template").innerHTML;
+    var view = {
+        itemId: itemId,
+        joinBtnId: itemId + "_joinBtnId",
+        chatroomName: chatroom.getName(),
+        creationDate: chatroom.getCreationDate().toString("dd-MM-yy HH:mm")
+    };
 
-        var html = Mustache.render(htmlTemplate, view);
-        $("#" + rootElementId).append(html);
+    var html = Mustache.render(template, view);
+    $("#" + rootElementId).append(html);
 
-        var item = $("#" + view.itemId);
-        var joinBtn = $("#" + view.joinBtnId);
+    var item = $("#" + view.itemId);
+    var joinBtn = $("#" + view.joinBtnId);
 
-        joinBtn.click(function () {
-            commandBus.emitMessage(new TryJoinToChatroom(chatroom).toMessage());
-        });
+    joinBtn.click(function () {
+        commandBus.emitMessage(new TryJoinToChatroom(chatroom).toMessage());
+    });
 
-        item.mouseover(function () {
-            joinBtn.show();
-        });
+    item.mouseover(function () {
+        joinBtn.show();
+    });
 
-        item.mouseout(function () {
-            joinBtn.hide();
-        });
+    item.mouseout(function () {
+        joinBtn.hide();
     });
 
 };

@@ -1,6 +1,6 @@
 var ChatroomComponent = function (rootElementId, chatroomSession, commandBus, eventBus) {
 
-    var template;
+    var template = document.querySelector('#chatroomTemplate').import.querySelector("template").innerHTML;
     var view = {
         messagesId: rootElementId + "_messages",
         messageInputId: rootElementId + "_message",
@@ -25,19 +25,7 @@ var ChatroomComponent = function (rootElementId, chatroomSession, commandBus, ev
     var messageInput;
     var postMessageBtn;
 
-    $.get("templates/chatroom.html", function (htmlTemplate) {
-        template = htmlTemplate;
-        Mustache.parse(template);
-
-        updateView(chatroomSession.getChatroom());
-
-        var subscriptionId = eventBus.subscribe(Events.CHATROOM_UPDATED, updateView);
-        eventBus.subscribe(Events.USER_LEFT_CHAT, function (joinChatroomInfo) {
-            if (chatroomSession.getNickname() === joinChatroomInfo.getNickname()) {
-                eventBus.unsubscribe(subscriptionId);
-            }
-        });
-    });
+    Mustache.parse(template);
 
     var updateView = function (updatedChatroom) {
         if (chatroomSession.getChatroom().getId() === updatedChatroom.getId()) {
@@ -88,6 +76,15 @@ var ChatroomComponent = function (rootElementId, chatroomSession, commandBus, ev
             return first.getPostTime() - second.getPostTime();
         });
     }
+
+    updateView(chatroomSession.getChatroom());
+
+    var subscriptionId = eventBus.subscribe(Events.CHATROOM_UPDATED, updateView);
+    eventBus.subscribe(Events.USER_LEFT_CHAT, function (joinChatroomInfo) {
+        if (chatroomSession.getNickname() === joinChatroomInfo.getNickname()) {
+            eventBus.unsubscribe(subscriptionId);
+        }
+    });
 
 };
 
