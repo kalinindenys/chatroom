@@ -25,7 +25,7 @@ var ChatRoomService = function (storage) {
                 }
             }
             if (isItemFound) {
-                throw new Error("Chat room already exists")
+                throw new Error(Errors.CHAT_ROOM_ALREADY_EXISTS)
             } else {
                 var id = storage.generateId(type);
                 var users = [];
@@ -35,7 +35,11 @@ var ChatRoomService = function (storage) {
                 return chatroomDto;
             }
         } else {
-            throw new Error("Too short name for the chat room")
+            if(chatRoomName.length <=2) {
+                throw new Error(Errors.SHORT_CHAT_ROOM_NAME);
+            }else {
+                throw new Error(Errors.LONG_CHAT_ROOM_NAME);
+            }
         }
     };
 
@@ -50,11 +54,11 @@ var ChatRoomService = function (storage) {
             if (nickname.length > 0) {
                 users.forEach(function (userId) {
                     if (storage.getItemById(Types.USER, userId).name === nickname)
-                        throw new Error("Nickname already exists!")
+                        throw new Error(Errors.NICKNAME_ALREADY_EXISTS)
                 });
                 isValid = true;
             } else {
-                throw new Error("Nickname cannot be empty!")
+                throw new Error(Errors.EMPTY_NICKNAME)
             }
         } else {
             isValid = true
