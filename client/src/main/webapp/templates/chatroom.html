@@ -10,7 +10,9 @@
     <ul class="panel-body list-group scrollable" style="height: 340px" id="{{messagesId}}">
         {{#messages}}
         <li class="list-group-item">
-            <pre style="border: 0; background-color: transparent;">[{{formattedMessage.postTime}}] <b>{{formattedMessage.authorNickname}}</b> said: {{formattedMessage.message}}</pre>
+            [{{formattedMessage.postTime}}]
+            <b>{{formattedMessage.authorNickname}}</b> said:
+            <pre>{{formattedMessage.message}}</pre>
         </li>
         {{/messages}}
         {{^messages}}
