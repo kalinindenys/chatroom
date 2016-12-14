@@ -34,6 +34,7 @@ var ChatroomComponent = function (rootElementId, chatroomSession, commandBus, ev
             view.messages = sortMessages(updatedChatroom.getMessages());
 
             renderTemplate();
+            scrollMessages();
         }
     };
 
@@ -69,6 +70,11 @@ var ChatroomComponent = function (rootElementId, chatroomSession, commandBus, ev
         messageInput.keyup(onMessageInputChanged);
         postMessageBtn.click(onPostMessageBtnClick);
         $("#" + view.leaveBtnId).click(onLeaveBtnClick);
+    };
+
+    var scrollMessages = function () {
+        var messages = document.getElementById(view.messagesId);
+        messages.scrollTop = messages.scrollHeight;
     };
 
     function sortMessages(messages) {
