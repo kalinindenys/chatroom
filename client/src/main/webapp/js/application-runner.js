@@ -13,5 +13,5 @@ $(function () {
         '</div>'
     );
 
-    new ChatroomApplication(chatroomAppId);
+    ChatroomApplication.createFor(chatroomAppId);
 });

@@ -21,9 +21,9 @@ var ChatroomApplication = function (rootElementId) {
         '</div>' +
         '<br>' +
         '<div class="row">' +
-        '<div id="' + chatroomListComponentId + '" class="col-md-4">ChatroomListComponent placeholder</div>' +
+        '<div id="' + chatroomListComponentId + '" class="col-md-5">ChatroomListComponent placeholder</div>' +
         '<div id="' + popupId + '" class="col-md-4"></div>' +
-        '<div id="' + chatroomComponentsId + '" class="col-md-8"></div>' +
+        '<div id="' + chatroomComponentsId + '" class="col-md-7"></div>' +
         '</div>'
     );
 
@@ -32,4 +32,8 @@ var ChatroomApplication = function (rootElementId) {
     JoinChatComponent.createFor(popupId, commandBus, eventBus);
     ChatroomsComponentDirector.createFor(chatroomComponentsId, commandBus, eventBus);
 
+};
+
+ChatroomApplication.createFor = function (rootElementId) {
+    return new ChatroomApplication(rootElementId);
 };
