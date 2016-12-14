@@ -1,5 +1,5 @@
 var ChatRoomsFacade = function (commandBus, eventBus) {
-    var storage = new LocalStorage();
+    var storage = new InMemoryStorage();
     var chatRoomService = new ChatRoomService(storage);
 
     var _onCreateChatRoom = function (command) {
@@ -72,8 +72,7 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
         var data = chatRoomService.postMessage(messageDto);
         var chatRoomDto = data.chatRoomDto;
         messageDto = data.messageDto;
-        var username = data.username;
-        resultingEvent = new MessagePostedEvent(chatRoomDto, messageDto, username);
+        resultingEvent = new MessagePostedEvent(chatRoomDto, messageDto);
         eventBus.emit(resultingEvent.toMessage());
     };
 

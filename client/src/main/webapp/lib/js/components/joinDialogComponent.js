@@ -32,7 +32,6 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
         var chatRoomMember = new UserDto(null, nickname, chatRoomId);
         var command = new JoinValidationCommand(chatRoomMember);
         commandBus.emit(command.toMessage());
-        //todo: CHECK NICKNAME
     });
 
     $("#" + cancelButtonId).on("click", function () {
@@ -52,7 +51,6 @@ var JoinDialogComponent = function (commandBus, eventBus, rootDivId, chatRoom) {
             $('#' + validationAlertId).html('');
             enterButton.show();
         }
-        //todo: FIX AND CLEAR
     };
 
 

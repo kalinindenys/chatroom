@@ -1,6 +1,7 @@
 describe('ChatRoomService', function () {
     var storage = new InMemoryStorage();
     var service = new ChatRoomService(storage);
+
     describe('#createChatRoom()', function () {
         it('should create five different chat rooms', function () {
             for (var i = 0; i < 5; i++) {
@@ -62,6 +63,7 @@ describe('ChatRoomService', function () {
 
         });
     });
+
     describe('#joinChatRoom()', function () {
         before(function () {
             if (storage.getAllByType(Types.CHATROOM) === null) {

@@ -31,7 +31,6 @@ var ChatRoomListComponent = function (eventBus, commandBus, rootDivId) {
             containerElement.append('<span class="chat-date"> --- No Chat Rooms yet ---</span>');
         }
 
-        //todo: CLEAN
 
     };
 

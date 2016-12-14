@@ -58,7 +58,7 @@ var ChatRoomLeftEvent = function (userDto) {
     return {"toMessage": _toMessage};
 };
 
-var MessagePostedEvent = function (chatRoomDto, messageDto, username) {
+var MessagePostedEvent = function (chatRoomDto, messageDto) {
 
     var data = {
         "chatRoomDto": chatRoomDto,
