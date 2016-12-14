@@ -168,12 +168,13 @@ describe('ChatRoomService', function () {
             var chatRoomId = 0;
             var content = "message2";
             var message = new MessageDto(null, userId, username, chatRoomId, content, date);
-            var data = service.postMessage(message);
-            var chatRoom = data.chatRoomDto;
+            service.postMessage(message);
+            var chatRoom = storage.getItemById(Types.CHATROOM, chatRoomId);
 
-            unitjs.object(chatRoom);
             unitjs.array(chatRoom.messageIds).hasLength(1);
+            unitjs.value(chatRoom.messageIds[0]).isEqualTo(0);
             var messageInStorage = storage.getItemById(Types.MESSAGE, 0);
+            unitjs.object(messageInStorage);
             unitjs.value(messageInStorage.userId).isEqualTo(userId);
             unitjs.value(messageInStorage.username).isEqualTo(username);
             unitjs.value(messageInStorage.chatRoomId).isEqualTo(chatRoomId);

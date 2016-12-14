@@ -30,8 +30,8 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
     }
 
     function _postMessage(evt) {
-        if (evt.data.chatRoomDto.id == chatRoom.id) {
-            var messageDto = evt.data.messageDto;
+        var messageDto = evt.data;
+        if (messageDto.chatRoomId == chatRoom.id) {
             $('#' + widgetItemMessageTextAreaId).val('');
             $("#" + widgetItemPostButtonId).prop("disabled", true);
             _renderMessage(messageDto);

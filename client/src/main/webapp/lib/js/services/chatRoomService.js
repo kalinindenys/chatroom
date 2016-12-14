@@ -35,9 +35,9 @@ var ChatRoomService = function (storage) {
                 return chatroomDto;
             }
         } else {
-            if(chatRoomName.length <=2) {
+            if (chatRoomName.length <= 2) {
                 throw new Error(Errors.SHORT_CHAT_ROOM_NAME);
-            }else {
+            } else {
                 throw new Error(Errors.LONG_CHAT_ROOM_NAME);
             }
         }
@@ -117,12 +117,7 @@ var ChatRoomService = function (storage) {
             }
             storage.saveItem(Types.CHATROOM, chatRoomDto);
             storage.saveItem(Types.MESSAGE, message);
-            var username = storage.getItemById(Types.USER, message.userId).name;
-            return {
-                "chatRoomDto": chatRoomDto,
-                "messageDto": message,
-                "username": username
-            };
+            return message;
         }
     };
 

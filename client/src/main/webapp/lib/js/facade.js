@@ -69,10 +69,8 @@ var ChatRoomsFacade = function (commandBus, eventBus) {
     var _onPostMessage = function (command) {
         var messageDto = command.data;
         var resultingEvent;
-        var data = chatRoomService.postMessage(messageDto);
-        var chatRoomDto = data.chatRoomDto;
-        messageDto = data.messageDto;
-        resultingEvent = new MessagePostedEvent(chatRoomDto, messageDto);
+        messageDto = chatRoomService.postMessage(messageDto);
+        resultingEvent = new MessagePostedEvent(messageDto);
         eventBus.emit(resultingEvent.toMessage());
     };
 
