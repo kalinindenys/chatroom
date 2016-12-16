@@ -60,7 +60,7 @@ public class AuthenticationServiceInMemoryTest {
     }
 
     @Test
-    public void signUp_unregisteredLogin_correctPasswordConfirmation() throws LoginAlreadyExistsException, PasswordConfirmationException {
+    public void signUpUnregisteredLoginWithCorrectPasswordConfirmation() throws LoginAlreadyExistsException, PasswordConfirmationException {
         authenticationService.signUp(new Login(UNREGISTERED_LOGIN), new Password(PASSWORD), new Password(PASSWORD));
 
         final User registeredUser = userRepository.findByLogin(UNREGISTERED_LOGIN);
@@ -70,7 +70,7 @@ public class AuthenticationServiceInMemoryTest {
     }
 
     @Test
-    public void signUp_unregisteredLogin_wrongPasswordConfirmation() throws LoginAlreadyExistsException, PasswordConfirmationException {
+    public void signUpUnregisteredLoginWithWrongPasswordConfirmation() throws LoginAlreadyExistsException, PasswordConfirmationException {
         expectedException.expect(PasswordConfirmationException.class);
         expectedException.expectMessage("Password and password confirmation do not match");
 
@@ -78,7 +78,7 @@ public class AuthenticationServiceInMemoryTest {
     }
 
     @Test
-    public void signUp_registeredLogin() throws LoginAlreadyExistsException, PasswordConfirmationException {
+    public void signUpWithRegisteredLogin() throws LoginAlreadyExistsException, PasswordConfirmationException {
         expectedException.expect(LoginAlreadyExistsException.class);
         expectedException.expectMessage("User with login '" + REGISTERED_LOGIN + "' already exists");
 
@@ -86,7 +86,7 @@ public class AuthenticationServiceInMemoryTest {
     }
 
     @Test
-    public void signIn_registeredUser() throws AuthenticationException {
+    public void signInRegisteredUser() throws AuthenticationException {
         final SecurityTokenDTO securityTokenDTO = authenticationService.signIn(new Login(REGISTERED_LOGIN), new Password(PASSWORD));
 
         final SecurityToken securityToken = securityTokenRepository.findByToken(securityTokenDTO.getToken());
@@ -95,7 +95,7 @@ public class AuthenticationServiceInMemoryTest {
     }
 
     @Test
-    public void signIn_unregisteredUser() throws AuthenticationException {
+    public void signInUnregisteredUser() throws AuthenticationException {
         expectedException.expect(AuthenticationException.class);
         expectedException.expectMessage("Wrong credentials. Login '" + UNREGISTERED_LOGIN + "', password '" + PASSWORD + "'");
 
@@ -110,7 +110,7 @@ public class AuthenticationServiceInMemoryTest {
     }
 
     @Test
-    public void receiveUserDTO_withValidSecurityToken() throws InvalidSecurityTokenException {
+    public void receiveUserDTOWithValidSecurityToken() throws InvalidSecurityTokenException {
         final SecurityTokenDTO securityToken = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getToken());
         final UserDTO expectedDTO = new UserDTO(REGISTERED_USER.getId(), REGISTERED_USER.getLogin());
 
@@ -121,7 +121,7 @@ public class AuthenticationServiceInMemoryTest {
     }
 
     @Test
-    public void receiveUserDTO_withInvalidSecurityToken() throws InvalidSecurityTokenException {
+    public void receiveUserDTOWithInvalidSecurityToken() throws InvalidSecurityTokenException {
         expectedException.expect(InvalidSecurityTokenException.class);
 
         authenticationService.retrieveUser(new SecurityTokenDTO(EXPIRED_SECURITY_TOKEN.getToken()));

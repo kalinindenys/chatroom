@@ -87,7 +87,7 @@ public class AuthenticationServiceMockTest {
     }
 
     @Test
-    public void signUp_unregisteredLogin_correctPasswordConfirmation() throws LoginAlreadyExistsException, PasswordConfirmationException {
+    public void signUpUnregisteredLoginWithCorrectPasswordConfirmation() throws LoginAlreadyExistsException, PasswordConfirmationException {
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
 
         authenticationService.signUp(new Login(UNREGISTERED_LOGIN), new Password(PASSWORD), new Password(PASSWORD));
@@ -98,7 +98,7 @@ public class AuthenticationServiceMockTest {
     }
 
     @Test
-    public void signUp_unregisteredLogin_wrongPasswordConfirmation() throws LoginAlreadyExistsException, PasswordConfirmationException {
+    public void signUpUnregisteredLoginWithWrongPasswordConfirmation() throws LoginAlreadyExistsException, PasswordConfirmationException {
         expectedException.expect(PasswordConfirmationException.class);
         expectedException.expectMessage("Password and password confirmation do not match");
 
@@ -106,7 +106,7 @@ public class AuthenticationServiceMockTest {
     }
 
     @Test
-    public void signUp_registeredLogin() throws LoginAlreadyExistsException, PasswordConfirmationException {
+    public void signUpWithRegisteredLogin() throws LoginAlreadyExistsException, PasswordConfirmationException {
         expectedException.expect(LoginAlreadyExistsException.class);
         expectedException.expectMessage("User with login '" + REGISTERED_LOGIN + "' already exists");
 
@@ -114,7 +114,7 @@ public class AuthenticationServiceMockTest {
     }
 
     @Test
-    public void signIn_registeredUser() throws AuthenticationException {
+    public void signInRegisteredUser() throws AuthenticationException {
         final String passwordHash = "5f4dcc3b5aa765d61d8327deb882cf99"; //for PASSWORD value
         Mockito.when(userRepository.findByLoginAndPassword(REGISTERED_LOGIN, passwordHash)).thenReturn(REGISTERED_USER);
         Mockito.when(securityTokenRepository.save(any(SecurityToken.class))).thenReturn(VALID_SECURITY_TOKEN);
@@ -128,7 +128,7 @@ public class AuthenticationServiceMockTest {
     }
 
     @Test
-    public void signIn_unregisteredUser() throws AuthenticationException {
+    public void signInUnregisteredUser() throws AuthenticationException {
         expectedException.expect(AuthenticationException.class);
         expectedException.expectMessage("Wrong credentials. Login '" + UNREGISTERED_LOGIN + "', password '" + PASSWORD + "'");
 
@@ -145,7 +145,7 @@ public class AuthenticationServiceMockTest {
     }
 
     @Test
-    public void receiveUserDTO_withValidSecurityToken() throws InvalidSecurityTokenException {
+    public void receiveUserDTOWithValidSecurityToken() throws InvalidSecurityTokenException {
         SecurityTokenDTO securityToken = new SecurityTokenDTO(VALID_SECURITY_TOKEN.getToken());
         UserDTO expectedDTO = new UserDTO(REGISTERED_USER.getId(), REGISTERED_USER.getLogin());
 
@@ -157,7 +157,7 @@ public class AuthenticationServiceMockTest {
     }
 
     @Test
-    public void receiveUserDTO_withInvalidSecurityToken() throws InvalidSecurityTokenException {
+    public void receiveUserDTOWithInvalidSecurityToken() throws InvalidSecurityTokenException {
         expectedException.expect(InvalidSecurityTokenException.class);
 
         authenticationService.retrieveUser(new SecurityTokenDTO(EXPIRED_SECURITY_TOKEN.getToken()));

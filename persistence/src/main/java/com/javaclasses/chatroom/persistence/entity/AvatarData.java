@@ -1,6 +1,7 @@
 package com.javaclasses.chatroom.persistence.entity;
 
 import javax.persistence.*;
+import java.util.Arrays;
 
 @Entity
 public class AvatarData {
@@ -11,14 +12,14 @@ public class AvatarData {
 
     @Column(columnDefinition = "BLOB")
     private byte[] avatar;
-    private String fileExtension;
+    private AvatarContentType contentType;
 
     public AvatarData() {
     }
 
-    public AvatarData(byte[] avatar, String fileExtension) {
+    public AvatarData(byte[] avatar, AvatarContentType contentType) {
         this.avatar = avatar;
-        this.fileExtension = fileExtension;
+        this.contentType = contentType;
     }
 
     public Long getId() {
@@ -37,11 +38,29 @@ public class AvatarData {
         this.avatar = avatar;
     }
 
-    public String getFileExtension() {
-        return fileExtension;
+    public AvatarContentType getContentType() {
+        return contentType;
     }
 
-    public void setFileExtension(String fileExtension) {
-        this.fileExtension = fileExtension;
+    public void setContentType(AvatarContentType contentType) {
+        this.contentType = contentType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AvatarData that = (AvatarData) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (!Arrays.equals(avatar, that.avatar)) return false;
+        return contentType == that.contentType;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

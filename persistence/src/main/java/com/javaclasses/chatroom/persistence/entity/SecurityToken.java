@@ -58,4 +58,22 @@ public class SecurityToken {
         this.expirationDate = expirationDate;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SecurityToken that = (SecurityToken) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (user != null ? !user.equals(that.user) : that.user != null) return false;
+        if (token != null ? !token.equals(that.token) : that.token != null) return false;
+        return expirationDate != null ? expirationDate.equals(that.expirationDate) : that.expirationDate == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }
