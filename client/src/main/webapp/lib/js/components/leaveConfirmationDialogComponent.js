@@ -1,6 +1,8 @@
 var LeaveConfirmationDialogComponent = function (commandBus, rootDivId, chatRoomMember, chatRoomName) {
     var confirmLeaveId = rootDivId + "_confirmLeaveDialogComponent";
     var confirmButtonId = confirmLeaveId + "_confirmButton";
+    var popupId = '#popup';
+
     var cancelButtonId = confirmLeaveId + "_cancelButton";
 
     $('#popup').html('').append('<div id=' + confirmLeaveId + ' class="modal-dialog modal-sm" role="document"> ' +
@@ -13,8 +15,8 @@ var LeaveConfirmationDialogComponent = function (commandBus, rootDivId, chatRoom
         '<button id=' + cancelButtonId + ' type="button" class="btn btn-default" style="float: right">Cancel</button> ' +
         '</div></div></div></div>'
     );
-
     var confirmButton = $("#" + confirmButtonId);
+
     var cancelButton = $("#" + cancelButtonId);
 
     cancelButton.on("click", function () {
@@ -26,14 +28,11 @@ var LeaveConfirmationDialogComponent = function (commandBus, rootDivId, chatRoom
         commandBus.emit(command.toMessage());
         _closeConfirmDialog();
     });
-
     var _closeConfirmDialog = function () {
-        $('#popup').modal('hide');
+        $(popupId).modal('hide');
     };
 
-    new function () {
-        $('#popup').modal();
-    };
+        $(popupId).modal();
 };
 
 LeaveConfirmationDialogComponent.init = function (commandBus, rootDivId, chatRoomMember, chatRoomName) {

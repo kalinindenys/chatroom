@@ -14,7 +14,7 @@ var ChatRoomWidgetDirector = function (eventBus, commandBus, rootDivId) {
 
     function _updateUserNumber(evt) {
         for (var i = 0; i < items.length; i++) {
-            if ((items[i].getChatRoomId == evt.data.chatRoomId) && (items[i].getUserId == evt.data.id)) {
+            if (items[i].getUser === evt.data) {
                 $("#" + items[i].getItemId).remove();
             }
         }

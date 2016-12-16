@@ -1,10 +1,14 @@
+
 describe('ChatRoomService', function () {
     var storage = new InMemoryStorage();
+    var CHAT_ROOM_NUMBER = 5;
+    var CHAT_ROOM_TO_TEST_ID;
+
     var service = new ChatRoomService(storage);
 
     describe('#createChatRoom()', function () {
         it('should create five different chat rooms', function () {
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < CHAT_ROOM_NUMBER; i++) {
                 var chatRoomName = "chatRoom" + i;
                 var chatRoom = service.createChatRoom(chatRoomName);
                 var answer = storage.getItemById(Types.CHATROOM, chatRoom.id);
@@ -15,13 +19,13 @@ describe('ChatRoomService', function () {
 
         it('should throw an error when the chat room name already exist', function () {
             var chatRoomName = "chatRoom1";
-            var existingChatRoomCreationDate = storage.getItemById(Types.CHATROOM, 1).date;
+            var inValidChatRoom;
             try {
-                service.createChatRoom(chatRoomName);
+                inValidChatRoom = service.createChatRoom(chatRoomName);
             } catch (err) {
                 unitjs.string("Error: " + Errors.CHAT_ROOM_ALREADY_EXISTS).isEqualTo(err);
             }
-            unitjs.date(existingChatRoomCreationDate).isEqualTo(storage.getItemById(Types.CHATROOM, 1).date);
+            unitjs.value(inValidChatRoom).isUndefined();
         });
 
         it('should throw an error when the length of the chat room name is less then two symbols', function () {
@@ -50,7 +54,7 @@ describe('ChatRoomService', function () {
     describe('#readAllChatRooms()', function () {
         before(function () {
             if (storage.getAllByType(Types.CHATROOM) === null) {
-                for (var i = 0; i < 5; i++) {
+                for (var i = 0; i < CHAT_ROOM_NUMBER; i++) {
                     service.createChatRoom("chatRoom" + i);
                 }
             }
@@ -59,23 +63,23 @@ describe('ChatRoomService', function () {
         it('should return all created chat rooms', function () {
             var allChatRooms = service.readAllChatRooms();
             unitjs.array(allChatRooms).isNotEmpty();
-            unitjs.array(allChatRooms).hasLength(5);
+            unitjs.array(allChatRooms).hasLength(CHAT_ROOM_NUMBER);
 
         });
     });
-
     describe('#joinChatRoom()', function () {
         before(function () {
             if (storage.getAllByType(Types.CHATROOM) === null) {
-                for (var i = 0; i < 5; i++) {
+                for (var i = 0; i < CHAT_ROOM_NUMBER; i++) {
                     service.createChatRoom("chatRoom" + i);
                 }
             }
         });
         it('should create five different users and add their ids to five different chat rooms', function () {
+            var allChatRooms = service.readAllChatRooms();
             for (var i = 0; i < 5; i++) {
                 var username = "user" + i;
-                var chatRoomMember = new UserDto(null, username, i);
+                var chatRoomMember = new UserDto(null, username, allChatRooms[i].id);
                 var data = service.joinChatRoom(chatRoomMember);
                 var chatRoom = data.chatRoomDto;
                 unitjs.object(chatRoom);
@@ -93,10 +97,13 @@ describe('ChatRoomService', function () {
                 service.createChatRoom("chatRoom0");
                 service.joinChatRoom(new UserDto(null, "user0", 0))
             }
+            var allChatRooms = service.readAllChatRooms();
+            CHAT_ROOM_TO_TEST_ID = allChatRooms[0].id;
         });
+
         it('should return "true" when nickname is valid', function () {
             var validNickname = "user0_valid";
-            var chatRoomMember = new UserDto(null, validNickname, 0);
+            var chatRoomMember = new UserDto(null, validNickname, CHAT_ROOM_TO_TEST_ID);
             var isValid = service.validateNickname(chatRoomMember);
             unitjs.bool(isValid).isTrue();
 
@@ -104,7 +111,7 @@ describe('ChatRoomService', function () {
 
         it("should throw an error when nickname is empty", function () {
             var invalidNickname = "";
-            var chatRoomMember = new UserDto(null, invalidNickname, 0);
+            var chatRoomMember = new UserDto(null, invalidNickname, CHAT_ROOM_TO_TEST_ID);
             try {
                 var isValid = service.validateNickname(chatRoomMember);
             } catch (err) {
@@ -115,7 +122,7 @@ describe('ChatRoomService', function () {
 
         it("should throw an error when the nickname already exists", function () {
             var invalidNickname = "user0";
-            var chatRoomMember = new UserDto(null, invalidNickname, 0);
+            var chatRoomMember = new UserDto(null, invalidNickname, CHAT_ROOM_TO_TEST_ID);
             try {
                 var isValid = service.validateNickname(chatRoomMember);
             } catch (err) {
@@ -126,7 +133,7 @@ describe('ChatRoomService', function () {
 
         it("should throw an error when nickname is invalid", function () {
             var invalidNickname = "            ";
-            var chatRoomMember = new UserDto(null, invalidNickname, 0);
+            var chatRoomMember = new UserDto(null, invalidNickname, CHAT_ROOM_TO_TEST_ID);
             try {
                 var isValid = service.validateNickname(chatRoomMember);
             } catch (err) {
@@ -140,12 +147,17 @@ describe('ChatRoomService', function () {
         before(function () {
             if (storage.getAllByType(Types.CHATROOM) === null) {
                 service.createChatRoom("chatRoom0");
-                service.joinChatRoom(new UserDto(null, 0, 0))
+                var createdChatRooms = service.readAllChatRooms();
+                service.joinChatRoom(new UserDto(null, 0, createdChatRooms[0].id))
             }
+
+            var allChatRooms = service.readAllChatRooms();
+            CHAT_ROOM_TO_TEST_ID = allChatRooms[0].id;
         });
         it("should remove user's id in the chat room", function () {
-            service.leaveChatRoom(new UserDto(0, 0, 0));
-            var chatRoom = storage.getItemById(Types.CHATROOM, 0);
+            var userId = storage.getItemById(Types.CHATROOM, CHAT_ROOM_TO_TEST_ID).userIds[0];
+            service.leaveChatRoom(new UserDto(userId, 0, CHAT_ROOM_TO_TEST_ID));
+            var chatRoom = storage.getItemById(Types.CHATROOM, CHAT_ROOM_TO_TEST_ID);
 
             unitjs.object(chatRoom);
             unitjs.array(chatRoom.userIds).hasLength(0);
@@ -157,27 +169,31 @@ describe('ChatRoomService', function () {
         before(function () {
             if (storage.getAllByType(Types.CHATROOM) === null) {
                 service.createChatRoom("chatRoom0");
-                service.joinChatRoom(new UserDto(null, "user0", 0))
+                service.createChatRoom("chatRoom0");
+                var createdChatRooms = service.readAllChatRooms();
+                service.joinChatRoom(new UserDto(null, "user0", createdChatRooms[0].id));
             }
+
+            var allChatRooms = service.readAllChatRooms();
+            CHAT_ROOM_TO_TEST_ID = allChatRooms[0].id;
         });
 
         it("should create the message and add it's id to the chat room", function () {
+            var chatRoom = storage.getItemById(Types.CHATROOM, CHAT_ROOM_TO_TEST_ID);
             var date = new Date();
-            var userId = 0;
+            var userId = chatRoom.userIds[0];
             var username = "user0";
-            var chatRoomId = 0;
-            var content = "message2";
-            var message = new MessageDto(null, userId, username, chatRoomId, content, date);
+            var content = "message0";
+            var message = new MessageDto(null, userId, username, CHAT_ROOM_TO_TEST_ID, content, date);
             service.postMessage(message);
-            var chatRoom = storage.getItemById(Types.CHATROOM, chatRoomId);
+            chatRoom = storage.getItemById(Types.CHATROOM, CHAT_ROOM_TO_TEST_ID);
 
             unitjs.array(chatRoom.messageIds).hasLength(1);
-            unitjs.value(chatRoom.messageIds[0]).isEqualTo(0);
-            var messageInStorage = storage.getItemById(Types.MESSAGE, 0);
+            var messageInStorage = storage.getItemById(Types.MESSAGE, chatRoom.messageIds[0]);
             unitjs.object(messageInStorage);
             unitjs.value(messageInStorage.userId).isEqualTo(userId);
             unitjs.value(messageInStorage.username).isEqualTo(username);
-            unitjs.value(messageInStorage.chatRoomId).isEqualTo(chatRoomId);
+            unitjs.value(messageInStorage.chatRoomId).isEqualTo(CHAT_ROOM_TO_TEST_ID);
             unitjs.value(messageInStorage.content).isEqualTo(content);
             unitjs.value(messageInStorage.date).isEqualTo(date);
 

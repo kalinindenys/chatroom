@@ -21,11 +21,9 @@ var ChatRoomListComponent = function (eventBus, commandBus, rootDivId) {
         if (chatRooms && chatRooms.length > 0) {
             containerElement.append('<ul class="list-group">');
 
-            for (var chatRoomIndex = 0; chatRoomIndex < chatRooms.length; chatRoomIndex++) {
-                var aChatRoom = chatRooms[chatRoomIndex];
-                ChatRoomListItemComponent.init(eventBus, commandBus, chatRoomListContainerId, aChatRoom);
-            }
-
+            chatRooms.forEach(function (chatRoom) {
+                ChatRoomListItemComponent.init(eventBus, commandBus, chatRoomListContainerId, chatRoom)
+            });
             containerElement.append('</ul>');
         } else {
             containerElement.append('<span class="chat-date"> --- No Chat Rooms yet ---</span>');

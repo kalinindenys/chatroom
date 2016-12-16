@@ -76,7 +76,8 @@ var ChatRoomWidgetItemComponent = function (eventBus, commandBus, rootDivId, cha
     return {
         "getUserId": user.id,
         "getChatRoomId": chatRoom.id,
-        "getItemId": chatRoomWidgetItemComponentId
+        "getItemId": chatRoomWidgetItemComponentId,
+        "getUser": user
     }
 
 };

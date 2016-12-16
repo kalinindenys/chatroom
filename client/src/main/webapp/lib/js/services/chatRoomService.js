@@ -1,4 +1,6 @@
 var ChatRoomService = function (storage) {
+    var MAX_CHAT_ROOM_NAME_SIZE = 50;
+    var MIN_CHAT_ROOM_NAME_SIZE = 2;
 
     var _readAllChatRooms = function () {
         var allChatRooms = storage.getAllByType(Types.CHATROOM);
@@ -13,14 +15,14 @@ var ChatRoomService = function (storage) {
     var _createChatRoom = function (chatRoomName) {
         chatRoomName = chatRoomName.trim();
         var type = Types.CHATROOM;
-        if (chatRoomName.length > 2 && chatRoomName.length <= 50) {
+        if (chatRoomName.length > MIN_CHAT_ROOM_NAME_SIZE && chatRoomName.length <= MAX_CHAT_ROOM_NAME_SIZE) {
             var items = storage.getAllByType(type);
             var isItemFound = false;
             if (items) {
-                var ids = Object.keys(items);
-                for (id in ids) {
+                for (id in items) {
                     if (items[id].name === chatRoomName) {
                         isItemFound = true;
+                        break;
                     }
                 }
             }
@@ -35,7 +37,7 @@ var ChatRoomService = function (storage) {
                 return chatroomDto;
             }
         } else {
-            if (chatRoomName.length <= 2) {
+            if (chatRoomName.length <= MIN_CHAT_ROOM_NAME_SIZE) {
                 throw new Error(Errors.SHORT_CHAT_ROOM_NAME);
             } else {
                 throw new Error(Errors.LONG_CHAT_ROOM_NAME);

@@ -1,5 +1,5 @@
 function InMemoryStorage() {
-    var storage = [];
+    var storage = {};
 
     function _saveItem(type, entity) {
         if (storage[type] === undefined) {
@@ -9,7 +9,11 @@ function InMemoryStorage() {
     }
 
     function _getItemById(type, id) {
-        return storage[type][id];
+        if (storage[type] === undefined || storage[type][id] === undefined) {
+            return null;
+        } else {
+            return storage[type][id];
+        }
     }
 
     function _getAllByType(type) {
@@ -21,11 +25,14 @@ function InMemoryStorage() {
     }
 
     function _generateId(type) {
-        if (storage[type] === undefined || storage[type].length == 0) {
-            return 0;
-        } else {
-            return storage[type][storage[type].length - 1].id+1;
-        }
+        var date = new Date();
+        var milliseconds = date.getMilliseconds();
+        var randomNumber = Math.floor((Math.random() * 100000) + 1);
+        var id;
+        do {
+            id = milliseconds + randomNumber;
+        } while (_getItemById(type, id) != null);
+        return id;
     }
 
     return {
