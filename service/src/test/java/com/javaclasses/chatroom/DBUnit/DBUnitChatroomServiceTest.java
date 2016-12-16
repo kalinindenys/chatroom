@@ -95,9 +95,7 @@ public class DBUnitChatroomServiceTest {
     public void postMessage() throws Exception {
 
 
-
         chatroomService.postMessage(new MessageDTO(userRepository.findOne(0L), "Added message from test"), 20L, setDefaultDate());
-
 
 
     }
@@ -137,13 +135,13 @@ public class DBUnitChatroomServiceTest {
     @DatabaseSetup("/DBUnit/InitialData.xml")
     @ExpectedDatabase("/DBUnit/InitialData.xml")
     public void findChatroomTest() throws Exception {
-        Iterable<Chatroom> chatroom = chatroomService.findChatroomsByName("chatroom20");
+        Chatroom chatroom = chatroomService.findChatroomByName("chatroom20");
         LOGGER.info("findChatroomTest: " + chatroom.toString());
-        chatroom = chatroomService.findChatroomsByName("chatroom21");
+        chatroom = chatroomService.findChatroomByName("chatroom21");
         LOGGER.info("findChatroomTest: " + chatroom.toString());
-        chatroom = chatroomService.findChatroomsByName("chatroom25");
+        chatroom = chatroomService.findChatroomByName("chatroom25");
         LOGGER.info("findChatroomTest: " + chatroom.toString());
-        chatroom = chatroomService.findChatroomsByName("chatroom");
+        chatroom = chatroomService.findChatroomByName("chatroom");
         LOGGER.info("findChatroomTest:  by 'chatroom'" + chatroom.toString());
 
     }
@@ -152,7 +150,7 @@ public class DBUnitChatroomServiceTest {
     @DatabaseSetup("/DBUnit/InitialData.xml")
     @ExpectedDatabase("/DBUnit/CreateChatroomResultData.xml")
     public void createChatroom() throws Exception {
-        chatroomService.createChatroom(new ChatroomName("created Chatroom"), new UserId(0L));
+        chatroomService.createChatroom(new ChatroomName("created Chatroom"));
     }
 
     @Test
